@@ -6,12 +6,16 @@
 
 ### Post Methods:
 
-<ol>post: {host}/api/register</ol>
+post: {host}/api/register
+
+<ol></ol>
   <li>(body.username and password requried)</li>
 
 ### Get Methods
 
-<ol>get: {host}/api/login</ol>
+get: {host}/api/login
+
+<ol></ol>
   <li> (body.username and password requried)</li>
 
 ## ACCOUNT HANDLING
