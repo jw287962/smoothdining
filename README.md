@@ -6,11 +6,11 @@
 
 post: {hostLink}/api/register
 
-  <li>body.username and password requried</li>
+  <p> &ensp;body.username and password requried</p>
 
 get: {hostLink}/api/login
 
-  <li> body.username and password requried</li>
+  <p> &ensp; body.username and password requried</p>
 
 ## ACCOUNT HANDLING
 
@@ -18,7 +18,7 @@ get: {hostLink}/api/login
 
 {hostLink}/api/account/store
 
-  <p>   To create a new store under your account -->  body.name and body.address required</p>
+  <p> &ensp;To create a new store under your account -->  body.name and body.address required</p>
 
 <!-- ## Create Store/Restaurant -->
 
