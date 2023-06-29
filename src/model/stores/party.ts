@@ -20,13 +20,4 @@ const partySchema = new Schema({
   // finished: { type: Boolean },
 });
 
-// partySchema.pre("save", function (next) {
-//   if (this.checkInTime) {
-//     this.waitingTime = new Date(
-//       this.checkInTime.getTime() - new Date().getTime()
-//     );
-//   }
-//   next();
-// });
-
 export default model("Party", partySchema);
