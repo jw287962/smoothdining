@@ -4,7 +4,7 @@ const waiterSchema = new Schema({
   birthdate: { type: Date },
   // section: { type: Number },
   // workers: [{ type: Schema.Types.ObjectId, ref: "Waiters" }],
-  shifts: [{ type: Schema.Types.ObjectId, ref: "Shift" }],
+  // shifts: [{ type: Schema.Types.ObjectId, ref: "Shift" }],
   store: { type: Schema.Types.ObjectId, ref: "Store", required: true },
 });
 
