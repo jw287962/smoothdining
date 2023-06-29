@@ -1,6 +1,20 @@
 import { Schema, model, Document } from "mongoose";
-
-const userSchema = new Schema({
+export interface UserInterface {
+  signUpDate: Date;
+  // title: { type: String },
+  google?: {
+    id?: string;
+    name?: string;
+    email?: string;
+  };
+  username: string;
+  salt: string;
+  hash: string;
+  store: Schema.Types.ObjectId[];
+  role: string;
+  _id: Schema.Types.ObjectId;
+}
+const userSchema: Schema<UserInterface> = new Schema<UserInterface>({
   signUpDate: { type: Date, required: true },
   // title: { type: String },
   google: {
@@ -12,7 +26,11 @@ const userSchema = new Schema({
   salt: { type: String, required: true },
   hash: { type: String, required: true },
   store: [{ type: Schema.Types.ObjectId, ref: "Store" }],
-  role: { enum: ["Owner", "Worker", "Customer"], default: "Owner" },
+  role: {
+    type: String,
+    enum: ["Owner", "Worker", "Customer"],
+    default: "Owner",
+  },
 });
 
 // comments should hold an array of comment.js Models

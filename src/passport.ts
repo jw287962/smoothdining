@@ -20,7 +20,6 @@ passport.use(
 
     function (username: string, password: string, cb) {
       // console.log(email);
-      console.log(username, password);
       return User.findOne({ username })
         .then((user) => {
           if (!user) {
@@ -63,7 +62,6 @@ export const genPassword = function genPassword(password: string) {
 };
 
 passport.serializeUser(function (user: any, done) {
-  console.log(user);
   done(null, user.id);
 });
 
