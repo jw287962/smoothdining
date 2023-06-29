@@ -2,12 +2,27 @@
 
 # API Requests
 
-## login
+## LOGIN
 
-post: {host}/api/register (body.username and password requried)
-get: {host}/api/login (body.username and password requried)
+### Post Methods:
 
-## Create Store/Restaurant
+post: {host}/api/register
+<span>- (body.username and password requried)</span>
+
+### Get Methods
+
+get: {host}/api/login
+<span>- (body.username and password requried)</span>
+
+## ACCOUNT HANDLING
+
+### Post Methods:
+
+{host}/api/account/store
+
+- To create a new store under your account
+
+<!-- ## Create Store/Restaurant -->
 
 # DATA MODELS USING NOSQL (MONGODB) (V1)
 
