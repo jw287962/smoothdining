@@ -6,21 +6,20 @@
 
 ### Post Methods:
 
-post: {host}/api/register
-<span>- (body.username and password requried)</span>
+<ul>post: {host}/api/register</ul>
+<li>- (body.username and password requried)</li>
 
 ### Get Methods
 
-get: {host}/api/login
-<span>- (body.username and password requried)</span>
+<ul>get: {host}/api/login</ul>
+<li>- (body.username and password requried)</li>
 
 ## ACCOUNT HANDLING
 
 ### Post Methods:
 
-{host}/api/account/store
-
-- To create a new store under your account
+<ul>{host}/api/account/store</ul>
+<li>- To create a new store under your account</li>
 
 <!-- ## Create Store/Restaurant -->
 
