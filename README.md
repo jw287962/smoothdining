@@ -6,23 +6,23 @@
 
 ### Post Methods:
 
-{hostLink}/api/register
+    {hostLink}/api/register
 
-  <li>body.username and password requried</li>
+      <li>body.username and password requried</li>
 
 ### Get Methods
 
-{hostLink}/api/login
+    {hostLink}/api/login
 
-  <li> body.username and password requried</li>
+      <li> body.username and password requried</li>
 
 ## ACCOUNT HANDLING
 
 ### Post Methods:
 
-{hostLink}/api/account/store
+    {hostLink}/api/account/store
 
-  <li>To create a new store under your account</li>
+      <li>To create a new store under your account</li>
 
 <!-- ## Create Store/Restaurant -->
 
