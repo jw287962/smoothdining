@@ -1,6 +1,5 @@
 import { Schema, model, Document } from "mongoose";
 
-
 const userSchema = new Schema({
   signUpDate: { type: Date, required: true },
   // title: { type: String },
@@ -13,6 +12,7 @@ const userSchema = new Schema({
   salt: { type: String, required: true },
   hash: { type: String, required: true },
   store: [{ type: Schema.Types.ObjectId, ref: "Store" }],
+  role: { enum: ["Owner", "Worker", "Customer"], default: "Owner" },
 });
 
 // comments should hold an array of comment.js Models
