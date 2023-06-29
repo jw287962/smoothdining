@@ -6,6 +6,8 @@ import { validate, ValidationError } from "express-validation";
 
 const userLogin_Controller = require("../controller/user_controller");
 
+import account from "./ApiRouter/store";
+
 const express = require("express");
 const router = express.Router();
 
@@ -42,4 +44,6 @@ router.use(function (
 
   return res.status(500).json(err);
 });
+
+router.use("/account", account);
 module.exports = router;
