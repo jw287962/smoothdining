@@ -2,27 +2,23 @@
 
 # API Requests
 
-## LOGIN
+## LOGIN/REGISTER
 
-### Post Methods:
+post: {hostLink}/api/register
 
-    {hostLink}/api/register
+  <li>body.username and password requried</li>
 
-      <li>body.username and password requried</li>
+get: {hostLink}/api/login
 
-### Get Methods
-
-    {hostLink}/api/login
-
-      <li> body.username and password requried</li>
+  <li> body.username and password requried</li>
 
 ## ACCOUNT HANDLING
 
 ### Post Methods:
 
-    {hostLink}/api/account/store
+{hostLink}/api/account/store
 
-      <li>To create a new store under your account</li>
+  <p>To create a new store under your account -->  body.name and body.address required</p>
 
 <!-- ## Create Store/Restaurant -->
 
