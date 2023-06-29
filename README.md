@@ -13,6 +13,8 @@ get: {host}/api/login (body.username and password requried)
 
 ## User
 
+Support different user Roles, but will implement owner support first
+
 ```js
   signUpDate: { type: Date, required: true },
   google: {
@@ -24,6 +26,7 @@ get: {host}/api/login (body.username and password requried)
   hash: { type: String, required: true }, //hashed
   salt: { type: String, required: true },
   store: [{ type: Schema.Types.ObjectId, ref: "Store" }],
+  role: { enum: ["Owner", "Worker", "Customer"], default: "Owner" },
 ```
 
 ## Store
