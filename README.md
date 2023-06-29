@@ -12,7 +12,7 @@
     email: { type: String },
   },
   username: { type: String, required: true },
-  password: { type: String, required: true }, //hashed
+  hash: { type: String, required: true }, //hashed
   salt: { type: String, required: true },
   store: [{ type: Schema.Types.ObjectId, ref: "Store" }],
 ```
