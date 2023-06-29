@@ -1,9 +1,11 @@
 import { Express, NextFunction, Request, Response } from "express";
 import { HttpError } from "http-errors";
-
+import mongoose from "mongoose";
+import passport from "passport";
 // const { Express, NextFunction, Request, Response } = require("express");
 // const { HttpError } = require("http-errors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+// const { MongoClient, ServerApiVersion } = require("mongodb");
+const session = require("express-session");
 
 const createError = require("http-errors");
 const express = require("express");
@@ -20,9 +22,19 @@ const dotenv = require("dotenv").config();
 
 const app: Express = express();
 // view engine setup
+
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
+app.use(
+  session({
+    secret: process.env.SECRET,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 },
+    saveUninitialized: true,
+    resave: false,
+  })
+);
+app.use(passport.initialize());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -54,28 +66,20 @@ app.use(function (
   res.render("error");
 });
 
-const dbString: string = process.env.MONGODB_URI || "";
+const dbString: string =
+  process.env.MONGODB_URI ||
+  "mongodb+srv://your_user_name:your_password@cluster0.lz91hw2.mongodb.net/blog-api?retryWrites=true&w=majority";
 
-const client = new MongoClient(dbString, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+// const client = new MongoClient(dbString, {
+//   serverApi: {
+//     version: ServerApiVersion.v1,
+//     strict: true,
+//     deprecationErrors: true,
+//   },
+// });
 async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
+  await mongoose.connect(dbString);
+  console.log("You successfully connected to MongoDB! ");
 }
-run().catch(console.dir);
+run().catch((err) => console.log(err));
 export default app;

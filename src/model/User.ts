@@ -1,5 +1,6 @@
 import { Schema, model, Document } from "mongoose";
 
+
 const userSchema = new Schema({
   signUpDate: { type: Date, required: true },
   // title: { type: String },
@@ -9,8 +10,8 @@ const userSchema = new Schema({
     email: { type: String },
   },
   username: { type: String, required: true },
-  password: { type: String, required: true }, //hashed
   salt: { type: String, required: true },
+  hash: { type: String, required: true },
   store: [{ type: Schema.Types.ObjectId, ref: "Store" }],
 });
 
