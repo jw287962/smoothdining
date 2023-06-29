@@ -1,0 +1,7 @@
+{
+  "exec": "ts-node ./bin/www",
+  "ext": "ts",
+  "watch": ["src"],
+  "ignore": ["src/**/*.spec.ts"],
+  "delay": "1000"
+}
