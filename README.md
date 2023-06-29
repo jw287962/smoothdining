@@ -6,7 +6,6 @@
 
 ```js
   signUpDate: { type: Date, required: true },
-  // title: { type: String },
   google: {
     id: { type: String },
     name: { type: String },
@@ -34,9 +33,6 @@ name: { type: String, required: true },
     maxActiveTableForPermission: { type: Number },
     waitToSitUntilEntreeOut: { min: { type: Number } },
   },
-  // section: { type: Number },
-  // workers: [{ type: Schema.Types.ObjectId, ref: "Waiters" }],
-  // shifts: [{ type: Schema.Types.ObjectId, ref: "Shift" }],
   store: { type: Schema.Types.ObjectId, ref: "Store", required: true },
 ```
 
@@ -53,8 +49,6 @@ date: {
   waiters: { type: Schema.Types.ObjectId, ref: "Waiters" },
   shiftNumber: { type: Number }, //for Grouping
   shiftTables: [{ type: Schema.Types.ObjectId, ref: "Party" }],
-  // store: { type: Schema.Types.ObjectId, ref: "Store", required: true },
-  // dailyData: { type: Schema.Types.ObjectId, ref: "DailyData" },
   lastPartyTaken: { type: Date },
 ```
 
