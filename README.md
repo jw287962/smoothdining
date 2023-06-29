@@ -18,7 +18,7 @@ get: {hostLink}/api/login
 
 {hostLink}/api/account/store
 
-  <p>To create a new store under your account -->  body.name and body.address required</p>
+  <p>   To create a new store under your account -->  body.name and body.address required</p>
 
 <!-- ## Create Store/Restaurant -->
 
