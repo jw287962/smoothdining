@@ -1,5 +1,14 @@
 # smoothdining
 
+# API Requests
+
+## login
+
+post: {host}/api/register (body.username and password requried)
+get: {host}/api/login (body.username and password requried)
+
+## Create Store/Restaurant
+
 # DATA MODELS USING NOSQL (MONGODB) (V1)
 
 ## User
@@ -27,7 +36,7 @@
 ## Waiters
 
 ```js
-name: { type: String, required: true },
+  name: { type: String, required: true },
   birthdate: { type: Date },
   preferences: {
     maxActiveTableForPermission: { type: Number },
@@ -39,7 +48,7 @@ name: { type: String, required: true },
 ## Shifts
 
 ```js
-date: {
+  date: {
     type: Date,
     set: ...
     get: ...
@@ -55,7 +64,7 @@ date: {
 ## Party (Customer Party)
 
 ```js
-name: { type: String },
+  name: { type: String },
   partySize: { type: Number, required: true },
   phoneNumber: { type: Number, required: true },
   reservationDate: { type: Date },
