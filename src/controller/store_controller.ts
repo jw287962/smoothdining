@@ -7,6 +7,7 @@ import { Joi } from "express-validation";
 
 import Store, { storeInterface } from "../model/stores/Store";
 import User, { UserInterface } from "../model/User";
+import { ObjectId } from "mongodb";
 
 export const storecontroller = {
   getStores: async (req: Request, res: Response, next: NextFunction) => {
@@ -23,19 +24,24 @@ export const storecontroller = {
   },
 
   getStoreData: async (req: Request, res: Response, next: NextFunction) => {
-    const storeID = req.params.storeID;
+    const storeID: string = req.params.storeID;
+
     if (storeID) {
       try {
         const user = req.user as UserInterface;
 
-        const data = await Store.findById({ _id: storeID });
-
-        res.json({ store: data });
-        // const sessionID = req.?sessionID;
+        const data = await Store.findById(new ObjectId(storeID));
+        res.setHeader(
+          "Set-Cookie",
+          `storeID=${storeID}; Path=/api/account/store;HttpOnly; Secure; SameSite=Strict`
+        );
+        // ;HttpOnly; Secure;
+        res.json({ store: data, storeID: storeID });
       } catch (e) {
-        res
-          .status(400)
-          .json({ message: "failed to get specific store", error: e });
+        res.status(400).json({
+          message: "failed to get specific store, storeID may be wrong",
+          error: e,
+        });
       }
     } else {
       res
