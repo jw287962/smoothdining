@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Party from "../model/stores/Party";
 import { helperFunctions } from "./helper_Controller";
-import { body, cookie, header } from "express-validator";
+import { body, cookie } from "express-validator";
 
 declare module "express" {
   interface Request {
@@ -70,14 +70,18 @@ const partyController = {
     validateCreatePartyData: [
       body("name").notEmpty().escape().isString(),
       body("partySize").notEmpty().isNumeric(),
-      body("reservationDate").isDate().notEmpty(),
-      body("checkInTime").isDate(),
-      body("status").notEmpty(),
+      body("reservationDate").optional().isDate(),
+      body("checkInTime").optional().isDate(),
+      body("status").optional(),
+      body("phoneNumber").isMobilePhone(["en-US"], { strictMode: false }),
       cookie("storeID").escape().notEmpty(),
-      body("phoneNumber").isMobilePhone,
       helperFunctions.expressValidationMiddleware,
     ],
   },
 };
+
+// .matches(
+//   /^((\+1|1)?( |-)?)?(\(([2-9])(?:\d(?!\5)\d|(?!\5)\d\d)\)|([2-9])(?:\d(?!\6)\d|(?!\6)\d\d))( |-)?([2-9][0-9]{2}( |-)?[0-9]{4})$/
+// ),
 
 export default partyController;

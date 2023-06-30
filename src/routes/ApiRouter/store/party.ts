@@ -5,5 +5,9 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", partyController.queryAllPartyToday);
-router.post("/", partyController.createNewParty);
+router.post(
+  "/",
+  partyController.validation.validateCreatePartyData,
+  partyController.createNewParty
+);
 module.exports = router;
