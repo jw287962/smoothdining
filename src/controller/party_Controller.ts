@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import Party from "../model/stores/Party";
 import { helperFunctions } from "./helper_Controller";
-import { body, header } from "express-validator";
+import { body, cookie, header } from "express-validator";
 
 declare module "express" {
   interface Request {
     headers: {
-      storeid?: string;
+      storeID?: string;
     };
   }
 }
@@ -29,6 +29,10 @@ const partyController = {
   createNewParty: async (req: Request, res: Response, next: NextFunction) => {
     const party = req.body;
     const head = req.headers;
+    if (party.reservationDate === undefined) {
+      party.reservationDate = null;
+      party.checkInTime = new Date().toString();
+    }
     try {
       const newParty = new Party({
         name: party.name,
@@ -45,10 +49,10 @@ const partyController = {
           waitingTime: null,
         },
         status: "Active",
-        store: head.storeid,
+        store: req.cookies.storeID,
       });
 
-      const result = Party.create(newParty);
+      const result = await Party.create(newParty);
       res.json({ message: "new Party Created", result: result });
     } catch (e) {
       res.status(400).json({ error: e, message: "Failed to create Party" });
@@ -63,15 +67,16 @@ const partyController = {
   setPartyStatus: async (req: Request, res: Response, next: NextFunction) => {},
 
   validation: {
-    validateCreatePartyData:
-      (body("name").notEmpty().escape().isString(),
+    validateCreatePartyData: [
+      body("name").notEmpty().escape().isString(),
       body("partySize").notEmpty().isNumeric(),
       body("reservationDate").isDate().notEmpty(),
       body("checkInTime").isDate(),
       body("status").notEmpty(),
-      header("storeID").escape().notEmpty(),
+      cookie("storeID").escape().notEmpty(),
       body("phoneNumber").isMobilePhone,
-      helperFunctions.expressValidationMiddleware),
+      helperFunctions.expressValidationMiddleware,
+    ],
   },
 };
 
