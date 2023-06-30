@@ -3,6 +3,8 @@ import { NextFunction, Request, Response } from "express";
 const express = require("express");
 const router = express.Router();
 
+const waiters = require("./waiters");
+
 import { validate } from "express-validation";
 
 import {
@@ -12,6 +14,7 @@ import {
 import { helperFunctions } from "../../controller/helper_Controller";
 
 /* GET home page. */
+
 router.use(helperFunctions.isAuthenticated);
 
 router.get("/", function (req: Request, res: Response, next: NextFunction) {
@@ -24,6 +27,7 @@ router.post(
   validate(validateStoreData, {}, {}),
   storecontroller.createStore
 );
+router.use("/store/waiters", waiters);
 router.use(helperFunctions.handleFormValidationError);
 export default router;
 // within /account/....

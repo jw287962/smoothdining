@@ -3,7 +3,11 @@ import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import passport from "passport";
 import { validate, ValidationError } from "express-validation";
 
-import { userController, loginValidation } from "../controller/user_controller";
+import {
+  userController,
+  loginValidation,
+  registerValidation,
+} from "../controller/user_controller";
 import account from "./ApiRouter/store";
 import { helperFunctions } from "../controller/helper_Controller";
 
@@ -26,7 +30,7 @@ router.get(
 
 router.post(
   "/register",
-  validate(loginValidation, {}, {}),
+  validate(registerValidation, {}, {}),
   userController.userRegister
 );
 // router.use("user", user_controller);

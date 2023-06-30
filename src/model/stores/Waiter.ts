@@ -1,5 +1,16 @@
+import { ObjectId } from "mongodb";
 import { Schema, model, Document } from "mongoose";
-const waiterSchema = new Schema({
+interface waiterInterface {
+  name: string;
+  birthdate: Date;
+  preferences?: {
+    maxActiveTableForPermission: number;
+    waitToSitUntilEntreeOut: { min: number };
+  };
+  store: ObjectId;
+}
+
+const waiterSchema: Schema<waiterInterface> = new Schema<waiterInterface>({
   name: { type: String, required: true },
   birthdate: { type: Date },
   preferences: {

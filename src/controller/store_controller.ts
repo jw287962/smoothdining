@@ -22,6 +22,7 @@ export const storecontroller = {
       const storeData = new Store({
         address: data.address,
         name: data.name,
+        state: data.state,
       });
       const newStore: storeInterface = await Store.create(storeData);
       const userData = await User.findById(user._id);
@@ -37,13 +38,6 @@ export const storecontroller = {
         .json({ error: e, message: "fail to create store and add to user" });
     }
   },
-  addStoreToAccount: async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    console.log("addStoreToAccount");
-  },
 };
 
 export const validateStoreData = {
@@ -51,6 +45,9 @@ export const validateStoreData = {
     name: Joi.string().required(),
     address: Joi.string()
       .regex(/[a-zA-Z0-9]{3}/)
+      .required(),
+    state: Joi.string()
+      .regex(/[a-zA-Z]{3}/)
       .required(),
   }),
 };

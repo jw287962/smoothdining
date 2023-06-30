@@ -17,7 +17,9 @@ export const userController = {
   },
   userRegister: async (req: Request, res: Response, next: NextFunction) => {
     const user = req.body;
-    if (!user) {
+    if (user.repeatpassword != user.password) {
+      res.status(401).json({ message: "Password does not match" });
+    } else if (!user) {
       res.status(401).json({
         errorCode: "INVALID_REQUEST",
         errorMessage: "User Exists Already",
@@ -47,19 +49,28 @@ export const userController = {
 
 export const loginValidation = {
   body: Joi.object({
-    username: Joi.string().required(),
-    password: Joi.string()
+    username: Joi.string()
+      .alphanum()
       .regex(/[a-zA-Z0-9]{3,30}/)
+      .required(),
+    password: Joi.string()
+      .pattern(new RegExp("^(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$"))
+      .max(30)
       .required(),
   }),
 };
 
 export const registerValidation = {
   body: Joi.object({
-    username: Joi.string().required(),
-    password: Joi.string()
+    username: Joi.string()
+      .alphanum()
       .regex(/[a-zA-Z0-9]{3,30}/)
       .required(),
+    password: Joi.string()
+      .pattern(new RegExp("^(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$"))
+      .max(30)
+      .required(),
+    repeatpassword: Joi.ref("password"),
   }),
 };
 export default userController;
