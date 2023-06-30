@@ -76,6 +76,7 @@ export const waiterController = {
     body("maxActiveTableForPermission").isNumeric(),
     body("waitToSitUntilEntreeOut").isNumeric(),
     helperFunctions.expressValidationMiddleware),
+    
   updateWaiter: async (req: Request, res: Response, next: NextFunction) => {
     const updateData = {
       name: req.body.name,
