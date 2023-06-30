@@ -16,21 +16,61 @@ const partyController = {
     res: Response,
     next: NextFunction
   ) => {
+    const store = req.cookies.storeID;
     const allPartyToday = await Party.find({
-      reservationDate: new Date().toDateString(),
+      reservationDate: new Date().setHours(0, 0, 0, 0),
+      store: store,
     });
 
     res.json({
       message: "query shifts of party of today",
       todayParties: allPartyToday,
+      forStoreID: store,
     });
+  },
+  queryAllPartyOnDate: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const store = req.cookies.storeID;
+    const dateID = new Date(req.params.dateID).setHours(0, 0, 0, 0);
+
+    try {
+      const allPartyToday = await Party.find({
+        reservationDate: dateID,
+        store: store,
+      });
+
+      res.json({
+        message: "query shifts of party of date:" + dateID,
+        todayParties: allPartyToday,
+      });
+    } catch (e) {
+      res.status(400).json({
+        message:
+          "failed to query the date" +
+          dateID +
+          ". new Date() must be able to take the dateID as a parameter.",
+      });
+    }
   },
   createNewParty: async (req: Request, res: Response, next: NextFunction) => {
     const party = req.body;
     const head = req.headers;
+    party.reservationDateTime = party.reservationDate;
     if (party.reservationDate === undefined) {
-      party.reservationDate = null;
-      party.checkInTime = new Date().toString();
+      const date = new Date();
+      date.setHours(0, 0, 0, 0);
+      party.reservationDate = date;
+      party.checkInTime = date;
+    } else {
+      party.reservationDate = new Date(party.reservationDate).setHours(
+        0,
+        0,
+        0,
+        0
+      );
     }
     try {
       const newParty = new Party({
@@ -57,11 +97,16 @@ const partyController = {
       res.status(400).json({ error: e, message: "Failed to create Party" });
     }
   },
-  setPartyCheckIn: async (
+  updatePartyDetails: async (
     req: Request,
     res: Response,
     next: NextFunction
-  ) => {},
+  ) => {
+    res.json({
+      message:
+        "not done. make sure data time is set to 0,0,0,0 on backend for reservationDate",
+    });
+  },
 
   setPartyTimeData: async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.partyID;
@@ -134,6 +179,24 @@ const partyController = {
     ],
     validateStatusData: [
       body("status").escape().isIn(["Active", "Finished", "Canceled"]),
+      helperFunctions.expressValidationMiddleware,
+    ],
+    validateUpdatePartyData: [
+      body("name").notEmpty().escape().isString().optional(),
+      body("partySize").notEmpty().isNumeric().optional(),
+      body("reservationDate")
+        .optional()
+        .matches(dateRegex)
+        .withMessage("format: new Date() objects | YYYY-MM-DDTHH:mm:ss.SSSZ"),
+      body("checkInTime").optional().matches(dateRegex),
+      body("status")
+        .optional()
+        .isIn(["Active", "Finished", "Canceled"])
+        .withMessage("Active, Finished, or Canceled Only"),
+      body("phoneNumber")
+        .isMobilePhone(["en-US"], { strictMode: false })
+        .optional(),
+      cookie("storeID").escape().notEmpty().optional(),
       helperFunctions.expressValidationMiddleware,
     ],
   },

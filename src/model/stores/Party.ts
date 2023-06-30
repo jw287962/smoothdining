@@ -6,6 +6,7 @@ interface partyInterface {
   partySize: number;
   phoneNumber: string;
   reservationDate: Date;
+  reservationDateTime: Date;
   timeData: {
     checkInTime: Date;
     startDining: { time: Date; isEntreeOnTable: boolean };
@@ -20,6 +21,7 @@ const partySchema: Schema<partyInterface> = new Schema<partyInterface>({
   partySize: { type: Number, required: true },
   phoneNumber: { type: String, required: true },
   reservationDate: { type: Date },
+  reservationDateTime: { type: Date },
   timeData: {
     checkInTime: { type: Date },
     startDining: { time: { type: Date }, isEntreeOnTable: { type: Boolean } },

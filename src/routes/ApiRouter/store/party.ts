@@ -5,10 +5,17 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", partyController.queryAllPartyToday);
+router.get("/:dateID", partyController.queryAllPartyOnDate);
 router.post(
   "/",
   partyController.validation.validateCreatePartyData,
   partyController.createNewParty
+);
+
+router.put(
+  "/:partyID",
+  partyController.validation.validateUpdatePartyData,
+  partyController.updatePartyDetails
 );
 router.put(
   "/timeData/:partyID",
