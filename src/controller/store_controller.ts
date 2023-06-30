@@ -18,7 +18,29 @@ export const storecontroller = {
     } catch (e) {
       res
         .status(400)
-        .json({ message: "failed to get store from user", error: e });
+        .json({ message: "failed to get stores of user", error: e });
+    }
+  },
+
+  getStoreData: async (req: Request, res: Response, next: NextFunction) => {
+    const storeID = req.params.storeID;
+    if (storeID) {
+      try {
+        const user = req.user as UserInterface;
+
+        const data = await Store.findById({ _id: storeID });
+
+        res.json({ store: data });
+        // const sessionID = req.?sessionID;
+      } catch (e) {
+        res
+          .status(400)
+          .json({ message: "failed to get specific store", error: e });
+      }
+    } else {
+      res
+        .status(400)
+        .json({ error: "There is no storeID parameter in the url to process" });
     }
   },
   createStore: async (req: Request, res: Response, next: NextFunction) => {

@@ -22,8 +22,9 @@ router.use(helperFunctions.isAuthenticatedOwner);
 router.get("/", function (req: Request, res: Response, next: NextFunction) {
   res.json({ message: "implementing Store creation to add to account" });
 });
-
-router.get("/store", storecontroller.getStores);
+router.get("/stores", storecontroller.getStores);
+router.get("/store/:storeID", storecontroller.getStoreData);
+// router.get("/store", );
 router.post(
   "/store",
   validate(validateStoreData, {}, {}),
