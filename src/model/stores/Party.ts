@@ -1,7 +1,7 @@
 import { check } from "express-validator";
 import { ObjectId } from "mongodb";
 import { Schema, model, Document } from "mongoose";
-interface partyInterface {
+export interface partyInterface {
   name: string;
   partySize: number;
   phoneNumber: string;

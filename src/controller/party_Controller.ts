@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import Party from "../model/stores/Party";
+import Party, { partyInterface } from "../model/stores/Party";
 import { dateRegex, helperFunctions } from "./helper_Controller";
 import { body, cookie } from "express-validator";
+import { ObjectId } from "mongodb";
 // declare module "express" {
 //   interface Request {
 //     headers: {
@@ -59,19 +60,8 @@ const partyController = {
     const party = req.body;
     const head = req.headers;
     party.reservationDateTime = party.reservationDate;
-    if (party.reservationDate === undefined) {
-      const date = new Date();
-      date.setHours(0, 0, 0, 0);
-      party.reservationDate = date;
-      party.checkInTime = date;
-    } else {
-      party.reservationDate = new Date(party.reservationDate).setHours(
-        0,
-        0,
-        0,
-        0
-      );
-    }
+    removeTimeData(party);
+    
     try {
       const newParty = new Party({
         name: party.name,
@@ -208,3 +198,27 @@ const partyController = {
 // ),
 
 export default partyController;
+interface partyInterfaceFormData {
+  name: string;
+  partySize: number;
+  phoneNumber: string;
+  reservationDate: Date;
+  reservationDateTime: Date;
+  checkInTime: Date;
+  startDining: { time: Date; isEntreeOnTable: boolean };
+  finishedTime: Date;
+  waitingTime: string;
+  status: string;
+  store: ObjectId;
+}
+function removeTimeData(party: partyInterfaceFormData) {
+  if (party.reservationDate === undefined) {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    party.reservationDate = date;
+    party.checkInTime = date;
+  } else {
+    party.reservationDate = new Date(party.reservationDate);
+    party.reservationDate.setHours(0, 0, 0, 0);
+  }
+}
