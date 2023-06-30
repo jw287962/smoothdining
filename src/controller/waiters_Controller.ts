@@ -12,7 +12,7 @@ import { helperFunctions } from "./helper_Controller";
 declare module "express" {
   interface Request {
     headers: {
-      storeid?: string;
+      storeID?: string;
     };
   }
 }
@@ -21,7 +21,7 @@ export const waiterController = {
     const header = req.headers;
 
     try {
-      const result = await Waiter.find({ store: header.storeid });
+      const result = await Waiter.find({ store: header.storeID });
       res.json({ result: result });
     } catch (e) {
       res.json({ e: e, message: "failed to get all waiters" });
@@ -40,7 +40,7 @@ export const waiterController = {
             waiterFormData.maxActiveTableForPermission,
           waitToSitUntilEntreeOut: waiterFormData.waitToSitUntilEntreeOut,
         },
-        store: header.storeid,
+        store: header.storeID,
       });
 
       const waiter = await Waiter.create(newWaiter);
@@ -52,7 +52,7 @@ export const waiterController = {
       res.json({
         e: e,
         message: "failed to add new Waiter with Store Data:",
-        storeID: header.storeid,
+        storeID: header.storeID,
       });
     }
   },
@@ -63,7 +63,7 @@ export const waiterController = {
     next: NextFunction
   ) => {
     const header = req.headers;
-    if (header.storeid) {
+    if (header.storeID) {
       next();
     } else {
       res.status(400).json({ error: "Missing store Header Data" });
