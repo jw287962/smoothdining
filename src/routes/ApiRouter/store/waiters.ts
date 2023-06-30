@@ -19,7 +19,7 @@ router.post(
   waiterController.addNewWaiter
 );
 
-router.post(
+router.patch(
   "/:waiterID",
   waiterController.validateHeaderStoreData,
   waiterController.validateBodyWaiterData,

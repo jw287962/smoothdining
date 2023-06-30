@@ -20,7 +20,7 @@ import { helperFunctions } from "../../controller/helper_Controller";
 router.use(helperFunctions.isAuthenticatedOwner);
 
 router.get("/", function (req: Request, res: Response, next: NextFunction) {
-  res.json({ message: "implementing Store creation to add to account" });
+  res.json({ message: "try /stores or /store  " });
 });
 router.get("/stores", storecontroller.getStores);
 router.get("/store/:storeID", storecontroller.getStoreData);
