@@ -18,7 +18,10 @@ export const userController = {
   userRegister: async (req: Request, res: Response, next: NextFunction) => {
     const user = req.body;
     if (user.repeatpassword != user.password) {
-      res.status(401).json({ message: "Password does not match" });
+      res.status(401).json({
+        error: true,
+        message: "Password does not match",
+      });
     } else if (!user) {
       res.status(401).json({
         errorCode: "INVALID_REQUEST",
@@ -41,7 +44,9 @@ export const userController = {
           message: "Welcome new User",
         });
       } catch (e) {
-        res.status(401).json({ e: e, message: "Failed to create new User" });
+        res
+          .status(401)
+          .json({ error: e, message: "Failed to create new User" });
       }
     }
   },

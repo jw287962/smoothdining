@@ -3,6 +3,7 @@ import { UserInterface } from "../model/User";
 import Waiter from "../model/stores/Waiter";
 import { body, header, query, validationResult } from "express-validator";
 import { Db } from "mongodb";
+import { helperFunctions } from "./helper_Controller";
 
 // interface headerData extends Record<string, string | string[] | undefined> {
 //   storeID: string;
@@ -74,14 +75,7 @@ export const waiterController = {
     header("storeID").escape(),
     body("maxActiveTableForPermission").isNumeric(),
     body("waitToSitUntilEntreeOut").isNumeric(),
-    async (req: Request, res: Response, next: NextFunction) => {
-      const result = validationResult(req);
-      if (result.isEmpty()) {
-        next();
-      } else {
-        res.send({ errors: result.array() });
-      }
-    }),
+    helperFunctions.expressValidationMiddleware),
   updateWaiter: async (req: Request, res: Response, next: NextFunction) => {
     const updateData = {
       name: req.body.name,
@@ -109,7 +103,7 @@ export const waiterController = {
         message: "updated Data for Waiter",
       });
     } catch (e) {
-      res.status(500).json({ e: e, message: "Failed to update data" });
+      res.status(500).json({ error: e, message: "Failed to update data" });
     }
   },
 };

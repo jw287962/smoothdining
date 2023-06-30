@@ -13,8 +13,8 @@ const partySchema = new Schema({
   },
   status: {
     type: String,
-    enum: ["active", "finished", "canceled"],
-    default: "active",
+    enum: ["Active", "Finished", "Canceled"],
+    default: "Active",
   },
   store: { type: Schema.Types.ObjectId, ref: "Store" },
   // finished: { type: Boolean },

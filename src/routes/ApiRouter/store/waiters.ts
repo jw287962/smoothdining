@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { helperFunctions } from "../../controller/helper_Controller";
+import { helperFunctions } from "../../../controller/helper_Controller";
 
-import { waiterController } from "../../controller/waiters_Controller";
+import { waiterController } from "../../../controller/waiters_Controller";
 const express = require("express");
 const router = express.Router();
 
