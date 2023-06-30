@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Party from "../model/stores/Party";
-import { helperFunctions } from "./helper_Controller";
+import { dateRegex, helperFunctions } from "./helper_Controller";
 import { body, cookie } from "express-validator";
 declare module "express" {
   interface Request {
@@ -71,9 +71,9 @@ const partyController = {
       body("partySize").notEmpty().isNumeric(),
       body("reservationDate")
         .optional()
-        .matches(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
+        .matches(dateRegex)
         .withMessage("format: new Date() objects | YYYY-MM-DDTHH:mm:ss.SSSZ"),
-      body("checkInTime").optional().escape(),
+      body("checkInTime").optional().matches(dateRegex),
       body("status").optional(),
       body("phoneNumber").isMobilePhone(["en-US"], { strictMode: false }),
       cookie("storeID").escape().notEmpty(),
@@ -81,6 +81,7 @@ const partyController = {
     ],
   },
 };
+
 // THH:mm:ss.SSSZ
 // .matches(
 //   /^((\+1|1)?( |-)?)?(\(([2-9])(?:\d(?!\5)\d|(?!\5)\d\d)\)|([2-9])(?:\d(?!\6)\d|(?!\6)\d\d))( |-)?([2-9][0-9]{2}( |-)?[0-9]{4})$/
