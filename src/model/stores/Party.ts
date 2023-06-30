@@ -1,6 +1,21 @@
+import { check } from "express-validator";
+import { ObjectId } from "mongodb";
 import { Schema, model, Document } from "mongoose";
-
-const partySchema = new Schema({
+interface partyInterface {
+  name: string;
+  partySize: number;
+  phoneNumber: string;
+  reservationDate: Date;
+  timeData: {
+    checkInTime: Date;
+    startDining: { time: Date; isEntreeOnTable: boolean };
+    finishedTime: Date;
+    waitingTime: string;
+  };
+  status: string;
+  store: ObjectId;
+}
+const partySchema: Schema<partyInterface> = new Schema<partyInterface>({
   name: { type: String },
   partySize: { type: Number, required: true },
   phoneNumber: { type: String, required: true },
@@ -9,7 +24,7 @@ const partySchema = new Schema({
     checkInTime: { type: Date },
     startDining: { time: { type: Date }, isEntreeOnTable: { type: Boolean } },
     finishedTime: { type: Date },
-    waitingTime: { type: Date },
+    waitingTime: { type: String },
   },
   status: {
     type: String,
@@ -18,6 +33,32 @@ const partySchema = new Schema({
   },
   store: { type: Schema.Types.ObjectId, ref: "Store" },
   // finished: { type: Boolean },
+});
+partySchema.pre("save", function (next) {
+  if (this.timeData?.checkInTime && this.timeData?.startDining?.time) {
+    const checkInTime = this.timeData.checkInTime.getTime();
+    const startDiningTime = this.timeData.startDining.time.getTime();
+
+    if (startDiningTime <= checkInTime) {
+      const err = new Error("startDining time must be after checkInTime");
+      return next(err);
+    }
+  }
+
+  // Call the next middleware
+  next();
+});
+partySchema.pre("save", function (next) {
+  const checkInTime = this.timeData?.checkInTime;
+  const startDining = this.timeData?.startDining?.time;
+  if (checkInTime && startDining) {
+    const timeDifferenceMS = startDining.getTime() - checkInTime.getTime();
+    const hour = Math.floor(timeDifferenceMS / 1000 / 60 / 24);
+    const minutes = Math.floor(timeDifferenceMS / 1000 / 60) % 60;
+    const seconds = Math.floor(timeDifferenceMS / 1000) % 60;
+    this.timeData.waitingTime = `${hour}:${minutes}:${seconds}`;
+  }
+  next();
 });
 
 export default model("Party", partySchema);
