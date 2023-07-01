@@ -22,6 +22,14 @@ get: {hostLink}/api/login
 
 <!-- ## Create Store/Restaurant -->
 
+# TESTS Using JEST
+
+## Plan to implement full test coverage in the future.
+
+currently, focusing on finishign and creating a working project with manual tests w/ Postman on each new implementation of code.
+But, may add tests to certain parts that may be more complex and hard to test with postman.
+Plan to implement full test coverage in the future.
+
 # DATA MODELS USING NOSQL (MONGODB) (V1)
 
 ## User

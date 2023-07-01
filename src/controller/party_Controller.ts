@@ -58,10 +58,9 @@ const partyController = {
   },
   createNewParty: async (req: Request, res: Response, next: NextFunction) => {
     const party = req.body;
-    const head = req.headers;
     party.reservationDateTime = party.reservationDate;
     removeTimeData(party);
-    
+
     try {
       const newParty = new Party({
         name: party.name,

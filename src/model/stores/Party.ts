@@ -8,10 +8,10 @@ export interface partyInterface {
   reservationDate: Date;
   reservationDateTime: Date;
   timeData: {
-    checkInTime: Date;
-    startDining: { time: Date; isEntreeOnTable: boolean };
-    finishedTime: Date;
-    waitingTime: string;
+    checkInTime?: Date;
+    startDining?: { time: Date; isEntreeOnTable: boolean };
+    finishedTime?: Date;
+    waitingTime?: string;
   };
   status: string;
   store: ObjectId;
