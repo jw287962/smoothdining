@@ -2,29 +2,63 @@
 
 # API Requests
 
-## LOGIN/REGISTER
+HOSTLINK: "NONE" not deployed atm
 
-post: {hostLink}/api/register
+## LOGIN/REGISTER - {hostLink}/...
 
-  <p> &emsp;body.username and password requried</p>
+<em>URL:</em> /api/register
+<em>Method:</em>Post
+<em>Request Body:</em>body.username and password requried
 
-get: {hostLink}/api/login
+<em>URL:</em> /api/login
+<em>Method:</em>get
+<em>Request Body:</em>body.username and password requried
+<em>Response:</em> Allow session with passport validation
 
-  <p> &emsp; body.username and password requried</p>
+## ACCOUNT HANDLING (MUST BE LOGIN) - {hostLink}/api/account
 
-## ACCOUNT HANDLING
+### STORE HANDLING
 
-### Post Methods:
+#### Get Stores/Restaurants under Account
 
-{hostLink}/api/account/store
+<em>URL:</em> '/stores'
+<em>Method:</em>Get
+<em>Request Body:</em>
+<em>Response:</em> Returns ALL stores under your account
 
-  <p> &emsp;To create a new store under your account -->  body.name and body.address required</p>
+#### Create a new Store/Restaurant under Account
 
-<!-- ## Create Store/Restaurant -->
+<em>URL:</em> '/store'
+<em>Method:</em>Post
+<em>Request Body:</em>body.name and body.address
+<em>Response:</em>
+
+### Party Handling
+
+#### Get a list of all parties today.
+
+<em>URL:</em> '/party/'
+<em>Method:</em>GET
+<em>Response:</em> An array of party objects
+
+#### Get party of a day, will check ReservationDate
+
+<em>URL:</em>'party/:dateID'
+<em>Method:</em>GET
+<em>Response:</em> An array of party object
+<em>Default: </em> Default reservationDate to today with time as 00:00:00
+
+#### Create New Party Table of customer data
+
+<em>URL:</em>''
+<em>Method:</em>POST
+<em>Response:</em> success or failure
 
 # TESTS Using JEST
 
 ## Plan to implement full test coverage in the future.
+
+<em>PartyController.spec.js: </em> Tests some middleware of partyController with mocking
 
 currently, focusing on finishign and creating a working project with manual tests w/ Postman on each new implementation of code.
 But, may add tests to certain parts that may be more complex and hard to test with postman.
