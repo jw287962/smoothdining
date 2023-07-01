@@ -10,16 +10,17 @@ HOSTLINK: "NONE" not deployed atm
 Register Account
 
 <ul>
-<li>**URL:**  /api/register</li>
-<li>**Method:** Post</li>
-<li>**Request Body:** body.username and password requried</li>
+<li> **URL:**  /api/register</li>
+<li> **Method:** Post</li>
+<li> **Request Body:** body.username and password requried</li>
 </ul>
 
 Login Account
-**URL:** /api/login
-**Method:** get
-**Request Body:**body.username and password requried
-**Response:** Allow session with passport validation
+
+- **URL:** /api/login
+- **Method:** get
+- **Request Body:**body.username and password requried
+- **Response:** Allow session with passport validation
 
 ## ACCOUNT HANDLING (REQ: LOGIN)-
 
