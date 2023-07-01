@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, response } from "express";
+import { Request, Response, NextFunction, response, json } from "express";
 import Party, { partyInterface } from "../../model/stores/Party";
 import partyController from "../party_Controller";
 import { ObjectId } from "mongodb";
@@ -32,7 +32,7 @@ const req = {
 describe("createNewParty", () => {
   it("sould create a new party", async () => {
     const res = {
-      json: jest.fn(),
+      json: jest.fn(json),
       status: jest.fn(response.status),
     } as unknown as Response;
 
@@ -47,7 +47,7 @@ describe("createNewParty", () => {
   it("phoneNumber not correct format. Send status and error", async () => {
     partyData.phoneNumber = "123";
     const res = {
-      json: jest.fn(),
+      json: jest.fn(json),
       status: jest.fn(response.status),
     } as unknown as Response;
 
