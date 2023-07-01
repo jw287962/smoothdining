@@ -91,10 +91,27 @@ const partyController = {
     res: Response,
     next: NextFunction
   ) => {
-    res.json({
-      message:
-        "not done. make sure data time is set to 0,0,0,0 on backend for reservationDate",
-    });
+    const partyData = req.body;
+    const id = req.params.partyID;
+
+    try {
+      const filterPartyData = Object.fromEntries(
+        Object.entries(partyData).filter(
+          ([key, value]) => value !== undefined && value !== null
+        )
+      );
+
+      const result = await Party.updateOne(
+        { _id: id },
+        { $set: filterPartyData }
+      );
+      res.json({
+        message: "Succesfully update Party Data",
+        result: result,
+      });
+    } catch (e) {
+      res.status(400).json({ message: "Failed to Update Data", error: e });
+    }
   },
 
   setPartyTimeData: async (req: Request, res: Response, next: NextFunction) => {
@@ -111,7 +128,9 @@ const partyController = {
     const timeData = req.body;
     try {
       const timeDataFilter = Object.fromEntries(
-        Object.entries(timeData).filter(([key, value]) => value != undefined)
+        Object.entries(timeData).filter(
+          ([key, value]) => value != undefined && value != null
+        )
       );
 
       const result = Party.updateOne({ _id: id }, { $set: timeDataFilter });
@@ -171,8 +190,8 @@ const partyController = {
       helperFunctions.expressValidationMiddleware,
     ],
     validateUpdatePartyData: [
-      body("name").notEmpty().escape().isString().optional(),
-      body("partySize").notEmpty().isNumeric().optional(),
+      body("name").escape().isString().optional(),
+      body("partySize").isNumeric().optional(),
       body("reservationDate")
         .optional()
         .matches(dateRegex)
@@ -185,7 +204,7 @@ const partyController = {
       body("phoneNumber")
         .isMobilePhone(["en-US"], { strictMode: false })
         .optional(),
-      cookie("storeID").escape().notEmpty().optional(),
+      cookie("storeID").escape().optional(),
       helperFunctions.expressValidationMiddleware,
     ],
   },
