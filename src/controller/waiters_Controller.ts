@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { UserInterface } from "../model/User";
 import Waiter from "../model/stores/Waiter";
 import { body, header, query, validationResult } from "express-validator";
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 import { helperFunctions } from "./helper_Controller";
 
 // interface headerData extends Record<string, string | string[] | undefined> {
@@ -12,7 +12,7 @@ import { helperFunctions } from "./helper_Controller";
 declare module "express" {
   interface Request {
     headers: {
-      storeID?: string;
+      storeid?: string;
     };
   }
 }
@@ -21,10 +21,14 @@ export const waiterController = {
     const header = req.headers;
 
     try {
-      const result = await Waiter.find({ store: header.storeID });
+      const result = await Waiter.find({ store: new ObjectId(header.storeid) });
       res.json({ result: result });
     } catch (e) {
-      res.json({ e: e, message: "failed to get all waiters" });
+      res.json({
+        e: e,
+        message: "failed to get all waiters",
+        controller: "getAllWaiters",
+      });
     }
   },
   addNewWaiter: async (req: Request, res: Response, next: NextFunction) => {
@@ -40,7 +44,7 @@ export const waiterController = {
             waiterFormData.maxActiveTableForPermission,
           waitToSitUntilEntreeOut: waiterFormData.waitToSitUntilEntreeOut,
         },
-        store: header.storeID,
+        store: header.storeid,
       });
 
       const waiter = await Waiter.create(newWaiter);
@@ -52,7 +56,8 @@ export const waiterController = {
       res.json({
         e: e,
         message: "failed to add new Waiter with Store Data:",
-        storeID: header.storeID,
+        storeID: header.storeid,
+        controller: "addNewWaiter",
       });
     }
   },
@@ -63,20 +68,25 @@ export const waiterController = {
     next: NextFunction
   ) => {
     const header = req.headers;
-    if (header.storeID) {
+    if (header.storeid) {
       next();
     } else {
-      res.status(400).json({ error: "Missing store Header Data" });
+      res.status(400).json({
+        error: "Missing store Header Data in WaiterController",
+        controller: "validateHeaderStoreData",
+        // header: header,
+      });
     }
   },
-  validateBodyWaiterData:
-    (body("name").notEmpty().escape(),
-    body("birthdate").escape(),
+  validateBodyWaiterData: [
+    body("name").optional().escape(),
+    body("birthdate").optional().escape(),
     header("storeID").escape(),
-    body("maxActiveTableForPermission").isNumeric(),
-    body("waitToSitUntilEntreeOut").isNumeric(),
-    helperFunctions.expressValidationMiddleware),
-    
+    body("maxActiveTableForPermission").isNumeric().optional(),
+    body("waitToSitUntilEntreeOut").isNumeric().optional(),
+    helperFunctions.expressValidationMiddleware,
+  ],
+
   updateWaiter: async (req: Request, res: Response, next: NextFunction) => {
     const updateData = {
       name: req.body.name,
@@ -92,10 +102,13 @@ export const waiterController = {
     // Filter out undefined values
     try {
       const filteredUpdateData = Object.fromEntries(
-        Object.entries(updateData).filter(([key, value]) => value !== undefined)
+        Object.entries(updateData).filter(
+          ([key, value]) => value !== undefined && value !== null
+        )
       );
+
       const result = await Waiter.updateOne(
-        { _id: req.params.waiterID },
+        { _id: new ObjectId(req.params.waiterID) },
         { $set: filteredUpdateData }
       );
       res.json({
@@ -104,7 +117,11 @@ export const waiterController = {
         message: "updated Data for Waiter",
       });
     } catch (e) {
-      res.status(500).json({ error: e, message: "Failed to update data" });
+      res.status(500).json({
+        error: e,
+        message: "Failed to update data",
+        controller: "updateWaiter",
+      });
     }
   },
 };

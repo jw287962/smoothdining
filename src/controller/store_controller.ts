@@ -17,9 +17,11 @@ export const storecontroller = {
 
       res.json({ user: user._id, result: user.store });
     } catch (e) {
-      res
-        .status(400)
-        .json({ message: "failed to get stores of user", error: e });
+      res.status(400).json({
+        message: "failed to get stores of user",
+        error: e,
+        controller: "getStores",
+      });
     }
   },
 
@@ -41,6 +43,7 @@ export const storecontroller = {
         res.status(400).json({
           message: "failed to get specific store, storeID may be wrong",
           error: e,
+          controller: "getStoreData",
         });
       }
     } else {

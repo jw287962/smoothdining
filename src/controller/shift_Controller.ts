@@ -3,6 +3,7 @@ import Shifts, { shiftInterface } from "../model/stores/Shifts";
 import {
   dateRegex,
   groupShiftsType,
+  helperFunctions,
   removeTimeinDate,
 } from "./helper_Controller";
 import { body } from "express-validator";
@@ -108,6 +109,7 @@ const shiftController = {
     next: NextFunction
   ) => {
     const waiter = req.params.waiterID;
+
     const date = removeTimeinDate(new Date());
     const shiftData = req.body;
 
@@ -117,19 +119,17 @@ const shiftController = {
         section: shiftData.section,
         waiter: waiter,
         shiftNumber: shiftData.shiftNumber,
-        shiftTables: undefined,
+        shiftTables: [],
       };
 
       const result = await Shifts.create(shiftsData);
 
       res.json({
-        message: "Succesfully Queried Shifts:" + date,
+        message: "Succesfully Created Shifts",
         result: result,
       });
     } catch (e) {
-      res
-        .status(400)
-        .json({ message: "Failed to query Today's Shifts", error: e });
+      res.status(400).json({ message: "Failed to Create New Shift", error: e });
     }
   },
   addNewPartyTable: async (req: Request, res: Response, next: NextFunction) => {
@@ -139,7 +139,7 @@ const shiftController = {
 
     const date = removeTimeinDate(new Date());
     try {
-      const result = Shifts.updateOne(
+      const result = await Shifts.updateOne(
         {
           _id: waiterID,
           date: date,
@@ -153,6 +153,40 @@ const shiftController = {
       });
     } catch (e) {
       res.status(400).json({ message: "Failed to add Party:" + party.partyID });
+    }
+  },
+  updateWaiterShiftData: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const waiterID = req.params.waiterID;
+    const shiftNumber = req.params.shiftNumber;
+    const shiftData = req.body;
+
+    try {
+      const date = removeTimeinDate(new Date());
+
+      const result = await Shifts.updateOne(
+        {
+          date: date,
+          shiftNumber: shiftNumber,
+          waiter: new ObjectId(waiterID),
+        },
+        { $set: shiftData }
+      );
+
+      res.json({
+        message: "updated Waiter Shift Data",
+        result: result,
+        date: date,
+      });
+    } catch (e) {
+      res.status(400).json({
+        shiftData: shiftData,
+        error: e,
+        message: "Failed to Update Waiter Shift Data",
+      });
     }
   },
   validation: {
@@ -169,9 +203,36 @@ const shiftController = {
         .withMessage(
           "Current ShiftNumber, IE: 0 for morning, 1 for pm. Numerically designed for flexibility "
         ),
+      helperFunctions.expressValidationMiddleware,
     ],
 
-    addPartyTableID: [body("party").notEmpty().isString().escape()],
+    addPartyTableID: [
+      body("party").notEmpty().isString().escape(),
+      helperFunctions.expressValidationMiddleware,
+    ],
+    updateWaiterData: [
+      body("party")
+        .isEmpty()
+        .withMessage(
+          "To add party use the API: .../store/shifts/party/:waiterID/:shiftNumber"
+        ),
+      body("section")
+        .isNumeric()
+        .optional()
+        .withMessage(
+          "Section cannot be empty, Waiters must choose tonight's section"
+        ),
+      body("shiftNumber")
+        .isNumeric()
+        .optional()
+        .withMessage(
+          "Current ShiftNumber, IE: 0 for morning, 1 for pm. Numerically designed for flexibility "
+        ),
+      body("date")
+        .isEmpty()
+        .withMessage("Shifts Data of past date cannot be editted"),
+      helperFunctions.expressValidationMiddleware,
+    ],
   },
 };
 export default shiftController;

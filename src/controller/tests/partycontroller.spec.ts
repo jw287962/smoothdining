@@ -30,7 +30,7 @@ const req = {
   cookies: { storeID: new ObjectId("649e74a70ade9c43e91ae591") },
 } as unknown as Request;
 describe("createNewParty", () => {
-  it("sould create a new party", async () => {
+  it("should create a new party", async () => {
     const res = {
       json: jest.fn(json),
       status: jest.fn(response.status),
