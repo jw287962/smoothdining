@@ -2,6 +2,7 @@ import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
 import { UserInterface } from "../model/User";
 import { ValidationError } from "express-validation";
 import { validationResult } from "express-validator";
+import { shiftInterface } from "../model/stores/Shifts";
 
 export const helperFunctions = {
   isAuthenticatedOwner: (req: Request, res: Response, next: NextFunction) => {
@@ -44,4 +45,10 @@ export const helperFunctions = {
   },
 };
 
+export function removeTimeinDate(date: Date) {
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
+
+export type groupShiftsType = Record<number, shiftInterface[]>;
 export const dateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
