@@ -4,9 +4,9 @@ import shiftController from "../../../controller/shift_Controller";
 const express = require("express");
 const router = express.Router();
 
-router.get("/", shiftController.queryShiftsToday);
+router.get("/:waiterID", shiftController.queryShiftsToday);
 
-router.get("/:dateID", shiftController.queryShiftsDate);
+router.get("/waiterID/:dateID", shiftController.queryShiftsDate);
 
 router.post(
   "/waiterID",
@@ -14,5 +14,9 @@ router.post(
   shiftController.createWaiterShiftData
 );
 
-router.put(":waiterID", shiftController.addNewPartyTable);
+router.put(
+  "/:waiterID/:shiftNumber",
+  shiftController.validation.addPartyTableID,
+  shiftController.addNewPartyTable
+);
 module.exports = router;

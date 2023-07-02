@@ -1,19 +1,54 @@
 import { Request, Response, NextFunction } from "express";
-import Shifts from "../model/stores/Shifts";
+import Shifts, { shiftInterface } from "../model/stores/Shifts";
 import {
   dateRegex,
   groupShiftsType,
   removeTimeinDate,
 } from "./helper_Controller";
 import { body } from "express-validator";
+import { ObjectId } from "mongodb";
+
+const groupByShiftNumber = (result: shiftInterface[]) => {
+  const dataFiltered: groupShiftsType = {};
+  result.forEach((waiterShift) => {
+    const shiftNumber = waiterShift.shiftNumber;
+    if (dataFiltered[shiftNumber]) {
+      dataFiltered[shiftNumber].push(waiterShift);
+    } else {
+      dataFiltered[shiftNumber] = [];
+    }
+  });
+
+  return dataFiltered;
+};
 const shiftController = {
   queryShiftsToday: async (req: Request, res: Response, next: NextFunction) => {
-    const store = req.cookies.storeID;
+    // const store = req.cookies.storeID;
+    const waiter = req.params.waiterID;
     const date = removeTimeinDate(new Date());
     try {
-      const result = await Shifts.find({ date: date, store: store });
-
-      res.json({ message: "Succesfully Queried Shifts Today", result: result });
+      // const result = await Shifts.find({ date: date, store: store });
+      const result = await Shifts.aggregate([
+        {
+          $match: {
+            date: date,
+            waiter: new ObjectId(waiter),
+          },
+        },
+        {
+          $lookup: {
+            from: "Party",
+            localField: "shiftTables",
+            foreignField: "_id",
+            as: "shiftTables",
+          },
+        },
+      ]);
+      const dataFiltered = groupByShiftNumber(result);
+      res.json({
+        message: "Succesfully Queried Shifts Today",
+        result: dataFiltered,
+      });
     } catch (e) {
       res
         .status(400)
@@ -21,7 +56,8 @@ const shiftController = {
     }
   },
   queryShiftsDate: async (req: Request, res: Response, next: NextFunction) => {
-    const store = req.cookies.storeID;
+    // const store = req.cookies.storeID;
+    const waiter = req.params.waiterID;
     const dateID = req.params.dateID;
     if (!Date.parse(dateID)) {
       return res.status(400).json({
@@ -37,16 +73,24 @@ const shiftController = {
     const date = removeTimeinDate(new Date());
 
     try {
-      const result = await Shifts.find({ date: date, store: store });
-      const dataFiltered: groupShiftsType = {};
-      result.forEach((waiterShift) => {
-        const shiftNumber = waiterShift.shiftNumber;
-        if (dataFiltered[shiftNumber]) {
-          dataFiltered[shiftNumber].push(waiterShift);
-        } else {
-          dataFiltered[shiftNumber] = [];
-        }
-      });
+      // const result = await Shifts.find({ date: date, waiter: waiter });
+      const result = await Shifts.aggregate([
+        {
+          $match: {
+            date: date,
+            waiter: new ObjectId(waiter),
+          },
+        },
+        {
+          $lookup: {
+            from: "Party",
+            localField: "shiftTables",
+            foreignField: "_id",
+            as: "shiftTables",
+          },
+        },
+      ]);
+      const dataFiltered = groupByShiftNumber(result);
       res.json({
         message: "Succesfully Queried Shifts:" + date,
         result: dataFiltered,
@@ -90,12 +134,22 @@ const shiftController = {
   },
   addNewPartyTable: async (req: Request, res: Response, next: NextFunction) => {
     const waiterID = req.params.waiterID;
+    const shiftNumber = req.params.shiftNumber;
     const party = req.body;
+
     const date = removeTimeinDate(new Date());
     try {
-      const result = Shifts.updateOne({
-        _id: waiterID,
-        date: date,
+      const result = Shifts.updateOne(
+        {
+          _id: waiterID,
+          date: date,
+          shiftNumber: shiftNumber,
+        },
+        { $push: { shiftTables: new ObjectId(party) } }
+      );
+      res.json({
+        message: "appended table to waiter ",
+        result: result,
       });
     } catch (e) {
       res.status(400).json({ message: "Failed to add Party:" + party.partyID });
@@ -116,6 +170,8 @@ const shiftController = {
           "Current ShiftNumber, IE: 0 for morning, 1 for pm. Numerically designed for flexibility "
         ),
     ],
+
+    addPartyTableID: [body("party").notEmpty().isString().escape()],
   },
 };
 export default shiftController;

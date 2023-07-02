@@ -46,7 +46,7 @@ describe("test query Shifts controller", () => {
 
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({
-      message: "Not Date Format",
+      message: "Not Date Format, should be 2023-07-03T00:00:00.000Z",
     });
   });
 });
