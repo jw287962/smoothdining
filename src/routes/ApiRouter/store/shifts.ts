@@ -6,16 +6,22 @@ const router = express.Router();
 
 router.get("/:waiterID", shiftController.queryShiftsToday);
 
-router.get("/waiterID/:dateID", shiftController.queryShiftsDate);
+router.get("/:waiterID/:dateID", shiftController.queryShiftsDate);
 
 router.post(
-  "/waiterID",
+  "/:waiterID",
   shiftController.validation.createWaiterData,
   shiftController.createWaiterShiftData
 );
 
 router.put(
   "/:waiterID/:shiftNumber",
+  shiftController.validation.updateWaiterData,
+  shiftController.updateWaiterShiftData
+);
+
+router.put(
+  "/party/:waiterID/:shiftNumber",
   shiftController.validation.addPartyTableID,
   shiftController.addNewPartyTable
 );

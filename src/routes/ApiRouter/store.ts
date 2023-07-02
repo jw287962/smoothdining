@@ -18,6 +18,9 @@ import { helperFunctions } from "../../controller/helper_Controller";
 /* GET home page. */
 
 router.use(helperFunctions.isAuthenticatedOwner);
+router.use("/store/waiters", waiters);
+router.use("/store/shifts", shifts);
+router.use("/store/party", party);
 
 router.get("/", function (req: Request, res: Response, next: NextFunction) {
   res.json({ message: "try /stores or /store  " });
@@ -30,9 +33,7 @@ router.post(
   validate(validateStoreData, {}, {}),
   storecontroller.createStore
 );
-router.use("/store/waiters", waiters);
-router.use("/store/shifts", shifts);
-router.use("/store/party", party);
+
 router.use(helperFunctions.handleFormValidationError);
 export default router;
 // within /account/....
