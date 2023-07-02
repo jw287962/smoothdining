@@ -8,13 +8,13 @@ HOSTLINK: "NONE" not deployed atm
 
 **{hostLink}/...**
 
-Register Account
+POST: Register Account
 
 - **URL:** /api/register
 - **Method:** Post
 - **Request Body:** body.username and password requried
 
-Login Account
+GET: Login Account
 
 - **URL:** /api/login
 - **Method:** get
@@ -27,39 +27,45 @@ Login Account
 
 ### STORE HANDLING
 
-Get Stores/Restaurants under Account
+GET: Get Stores/Restaurants under Account
 
-- **URL:** '/stores'
+- **URL:** api/stores
 - **Method:** Get
 - **Request Body:**
 - **Response:** Returns ALL stores under your account
 
-Create a new Store/Restaurant under Account
+POST : Create a new Store/Restaurant under Account
 
-- **URL:** '/store'
-- **Method:**Post
-- **Request Body:**body.name and body.address
+- **URL:** /api/store
+- **Method:** Post
+- **Request Body:** body.name and body.address
 - **Response:**
 
 ### Party Handling
 
-Get a list of all parties today.
+GET: Get a list of all parties today.
 
-- **URL:** '/party/'
+- **URL:** /api/party/
 - **Method:** GET
 - **Response:** An array of party objects
 
-Get party of a day, will check ReservationDate
+GET: Get party of a day, will check ReservationDate
 
-- **URL:**'party/:dateID'
-- **Method:**GET
+- **URL:** /api/party/:dateID
+- **Method:** GET
 - **Response:** An array of party object
 - **Default:** Default reservationDate to today with time as 00:00:00
 
-Create New Party Table of customer data
+POST: Create New Party Table of customer data
 
-- **URL:**''
-- **Method:**POST
+- **URL:** '/api/party'
+- **Method:** POST
+- **Response:** success or failure
+
+PUT: Update Party Details
+
+- **URL:** '/api/:partyID'
+- **Method:** POST
 - **Response:** success or failure
 
 # TESTS Using JEST
