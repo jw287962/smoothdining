@@ -1,5 +1,10 @@
 # smoothdining
 
+# NOTES!
+
+SENDING DATE DATA: Dates will and should be stored as : 2023-06-30T00:00:00.000+00:00
+Thus, query data of dates should be sent in the same format.
+
 # API Requests
 
 HOSTLINK: "NONE" not deployed atm
