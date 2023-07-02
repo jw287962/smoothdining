@@ -15,7 +15,7 @@ export const storecontroller = {
       const user = req.user as UserInterface;
       // const sessionID = req.?sessionID;
 
-      res.json({ user: user._id, store: user.store });
+      res.json({ user: user._id, result: user.store });
     } catch (e) {
       res
         .status(400)
@@ -36,7 +36,7 @@ export const storecontroller = {
           `storeID=${storeID}; Path=/api/account/store;HttpOnly; Secure; SameSite=Strict`
         );
         // ;HttpOnly; Secure;
-        res.json({ store: data, storeID: storeID });
+        res.json({ store: data, results: storeID });
       } catch (e) {
         res.status(400).json({
           message: "failed to get specific store, storeID may be wrong",
@@ -71,7 +71,7 @@ export const storecontroller = {
         await userData?.save();
         res.json({
           message: "created store, updated Data",
-          newStore: newStore,
+          results: newStore,
         });
       }
     } catch (e) {

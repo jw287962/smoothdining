@@ -25,7 +25,7 @@ const partyController = {
 
     res.json({
       message: "query shifts of party of today",
-      todayParties: allPartyToday,
+      result: allPartyToday,
       forStoreID: store,
     });
   },
@@ -45,7 +45,7 @@ const partyController = {
 
       res.json({
         message: "query shifts of party of date:" + dateID,
-        todayParties: allPartyToday,
+        result: allPartyToday,
       });
     } catch (e) {
       res.status(400).json({
