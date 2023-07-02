@@ -29,6 +29,7 @@ const req = {
   body: { party: partyData },
   cookies: { storeID: new ObjectId("649e74a70ade9c43e91ae591") },
 } as unknown as Request;
+
 describe("createNewParty", () => {
   it("should create a new party", async () => {
     const res = {
@@ -66,4 +67,6 @@ describe("createNewParty", () => {
       message: "Failed to create Party",
     });
   });
+
+  it("empty", async () => {});
 });
