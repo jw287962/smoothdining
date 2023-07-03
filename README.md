@@ -35,14 +35,14 @@ GET: :file_folder: Login Account
 
 ### STORE HANDLING
 
-GET: Get Stores/Restaurants under Account
+GET :file_folder:: Get Stores/Restaurants under Account
 
 - **URL:** api/account/stores
 - **Method:** Get
 - **Request Body:**
 - **Response:** Returns ALL stores under your account
 
-POST : Create a new Store/Restaurant under Account
+POST :pencil: : Create a new Store/Restaurant under Account
 
 - **URL:** /api/account/store
 - **Method:** Post
@@ -51,33 +51,33 @@ POST : Create a new Store/Restaurant under Account
 
 ### Party Handling
 
-GET: Get a list of all parties today.
+GET :file_folder:: Get a list of all parties today.
 
 - **URL:** /api/account/party/
 - **Method:** GET
 - **Response:** An array of party objects
 
-GET: Get party of a day, will check ReservationDate
+GET :file_folder:: Get party of a day, will check ReservationDate
 
 - **URL:** /api/account/party/:dateID
 - **Method:** GET
 - **Response:** An array of party object
 - **Default:** Default reservationDate to today with time as 00:00:00
 
-POST: Create New Party Table of customer data
+POST :pencil: : Create New Party Table of customer data
 
 - **URL:** '/api/account/party'
 - **Method:** POST
 - **Response:** success or failure
 
-POST: Create New Party Table of customer data
+POST :pencil: : Create New Party Table of customer data
 
 - **URL:** '/api/account/party/generic'
 - **Method:** POST
 - **Note:** CREATE GENERIC PARTY QUICKLY (Only requires partySize)
 - **Response:** Success/Failur
 
-PUT: Update Party Details
+PUT :pencil2: : Update Party Details
 
 - **URL:** '/api/account/:partyID'
 - **Method:** POST
