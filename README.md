@@ -14,10 +14,10 @@ Thus, query data of dates should be sent in the same format.
 # API Requests
 
 HOSTLINK: "NONE" not deployed atm
+ALL REQUEST API CALLS are built based on the HOSTLINK
+**{hostLink}/...**
 
 ## LOGIN/REGISTER
-
-**{hostLink}/...**
 
 POST: Register Account
 
