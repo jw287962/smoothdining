@@ -201,7 +201,8 @@ const partyController = {
         name: "Generic",
         partySize: party.partySize,
         // phoneNumber: null,
-        // reservationDate: null,
+        reservationDate: removeTimeinDate(new Date()),
+        reservationDateTime: new Date(),
         timeData: {
           checkInTime: new Date(),
           // startDining: {
