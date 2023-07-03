@@ -1,4 +1,10 @@
-import { Express, NextFunction, Request, Response } from "express";
+import {
+  Express,
+  NextFunction,
+  Request,
+  Response,
+  ErrorRequestHandler,
+} from "express";
 import { HttpError } from "http-errors";
 import mongoose from "mongoose";
 import passport from "passport";
@@ -56,25 +62,33 @@ app.use("/api", apiRouter);
 app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req: Request, res: Response, next: NextFunction) {
-  next(createError(404));
+app.use((req, res: Response, next: NextFunction) => {
+  let err = new HttpError("Not found");
+  err.status = 404;
+  next(err);
 });
 
+// interface Errors extends Error {
+//   status: number;
+// }
 // error handler
-app.use(function (
-  err: HttpError,
-  req: Request,
+
+const errorHandle: ErrorRequestHandler = (
+  err: any,
+  req: any,
   res: Response,
   next: NextFunction
-) {
-  // set locals, only providing error in development
+) => {
+  // Handle errors
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
   res.status(err.status || 500);
   res.render("error");
-});
+};
+
+app.use(errorHandle);
 
 const dbString: string =
   process.env.MONGODB_URI ||
