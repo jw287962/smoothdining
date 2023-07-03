@@ -40,14 +40,14 @@ GET: Login Account
 
 GET: Get Stores/Restaurants under Account
 
-- **URL:** api/stores
+- **URL:** api/account/stores
 - **Method:** Get
 - **Request Body:**
 - **Response:** Returns ALL stores under your account
 
 POST : Create a new Store/Restaurant under Account
 
-- **URL:** /api/store
+- **URL:** /api/account/store
 - **Method:** Post
 - **Request Body:** body.name and body.address
 - **Response:**
@@ -56,26 +56,33 @@ POST : Create a new Store/Restaurant under Account
 
 GET: Get a list of all parties today.
 
-- **URL:** /api/party/
+- **URL:** /api/account/party/
 - **Method:** GET
 - **Response:** An array of party objects
 
 GET: Get party of a day, will check ReservationDate
 
-- **URL:** /api/party/:dateID
+- **URL:** /api/account/party/:dateID
 - **Method:** GET
 - **Response:** An array of party object
 - **Default:** Default reservationDate to today with time as 00:00:00
 
 POST: Create New Party Table of customer data
 
-- **URL:** '/api/party'
+- **URL:** '/api/account/party'
 - **Method:** POST
 - **Response:** success or failure
 
+POST: Create New Party Table of customer data
+
+- **URL:** '/api/account/party/generic'
+- **Method:** POST
+- **Note:** CREATE GENERIC PARTY QUICKLY (Only requires partySize)
+- **Response:** Success/Failur
+
 PUT: Update Party Details
 
-- **URL:** '/api/:partyID'
+- **URL:** '/api/account/:partyID'
 - **Method:** POST
 - **Response:** success or failure
 
