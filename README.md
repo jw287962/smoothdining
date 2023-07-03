@@ -83,6 +83,10 @@ PUT :pencil2: : Update Party Details
 - **Method:** POST
 - **Response:** success or failure
 
+### Waiter Handling
+
+### Shifts Handling
+
 # TESTS Using JEST
 
 ## Plan to implement full test coverage in the future.
