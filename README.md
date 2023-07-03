@@ -16,17 +16,17 @@ ALL REQUEST API CALLS are built based on the HOSTLINK
 
 ## LOGIN/REGISTER
 
-POST: Register Account
+POST :pencil: : Register Account
 
 - **URL:** /api/register
 - **Method:** Post
 - **Request Body:** body.username and password requried
 
-GET: Login Account
+GET: :file_folder: Login Account
 
 - **URL:** /api/login
 - **Method:** get
-- **Request Body:**body.username and password requried
+- **Request Body:** body.username and password requried
 - **Response:** Allow session with passport validation
 
 ## ACCOUNT HANDLING (REQ: LOGIN)-
