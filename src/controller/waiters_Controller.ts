@@ -4,20 +4,24 @@ import Waiter from "../model/stores/Waiter";
 import { body, header, query, validationResult } from "express-validator";
 import { Db, ObjectId } from "mongodb";
 import { helperFunctions } from "./helper_Controller";
+import { request } from "http";
 
 // interface headerData extends Record<string, string | string[] | undefined> {
 //   storeID: string;
 // }
 
-declare module "express" {
-  interface Request {
-    headers: {
-      storeid?: string;
-    };
-  }
+interface RequestEdit extends Request {
+  headers: {
+    storeid?: string;
+  };
 }
+
 export const waiterController = {
-  getAllWaiters: async (req: Request, res: Response, next: NextFunction) => {
+  getAllWaiters: async (
+    req: RequestEdit,
+    res: Response,
+    next: NextFunction
+  ) => {
     const header = req.headers;
 
     try {
@@ -31,7 +35,7 @@ export const waiterController = {
       });
     }
   },
-  addNewWaiter: async (req: Request, res: Response, next: NextFunction) => {
+  addNewWaiter: async (req: RequestEdit, res: Response, next: NextFunction) => {
     const header = req.headers;
     const waiterFormData = req.body;
 
@@ -63,7 +67,7 @@ export const waiterController = {
   },
 
   validateHeaderStoreData: async (
-    req: Request,
+    req: RequestEdit,
     res: Response,
     next: NextFunction
   ) => {
@@ -87,7 +91,7 @@ export const waiterController = {
     helperFunctions.expressValidationMiddleware,
   ],
 
-  updateWaiter: async (req: Request, res: Response, next: NextFunction) => {
+  updateWaiter: async (req: RequestEdit, res: Response, next: NextFunction) => {
     const updateData = {
       name: req.body.name,
       age: req.body.age,

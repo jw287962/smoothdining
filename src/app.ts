@@ -75,7 +75,7 @@ app.use((req, res: Response, next: NextFunction) => {
 
 const errorHandle: ErrorRequestHandler = (
   err: any,
-  req: any,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
