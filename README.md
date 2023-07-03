@@ -39,7 +39,7 @@ GET :file_folder:: Get Stores/Restaurants under Account
 
 - **URL:** api/account/stores
 - **Method:** Get
-- **Request Body:**
+- **Request Body:** None
 - **Response:** Returns ALL stores under your account
 
 POST :pencil: : Create a new Store/Restaurant under Account
@@ -47,7 +47,7 @@ POST :pencil: : Create a new Store/Restaurant under Account
 - **URL:** /api/account/store
 - **Method:** Post
 - **Request Body:** body.name and body.address
-- **Response:**
+- **Response:** Success/Failure
 
 ### Party Handling
 
@@ -68,20 +68,20 @@ POST :pencil: : Create New Party Table of customer data
 
 - **URL:** '/api/account/party'
 - **Method:** POST
-- **Response:** success or failure
+- **Response:** Success/Failure
 
 POST :pencil: : Create New Party Table of customer data
 
 - **URL:** '/api/account/party/generic'
 - **Method:** POST
 - **Note:** CREATE GENERIC PARTY QUICKLY (Only requires partySize)
-- **Response:** Success/Failur
+- **Response:** Success/Failure
 
 PUT :pencil2: : Update Party Details
 
 - **URL:** '/api/account/:partyID'
 - **Method:** POST
-- **Response:** success or failure
+- **Response:** Success/Failure
 
 ### Waiter Handling
 
