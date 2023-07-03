@@ -11,7 +11,11 @@ router.post(
   partyController.validation.validateCreatePartyData,
   partyController.createNewParty
 );
-
+router.post(
+  "/generic",
+  partyController.validation.genericPartyData,
+  partyController.createGenericPartySize
+);
 router.put(
   "/:partyID",
   partyController.validation.validateUpdatePartyData,
@@ -27,4 +31,5 @@ router.put(
   partyController.validation.validateStatusData,
   partyController.setPartyStatus
 );
+
 module.exports = router;

@@ -1,5 +1,8 @@
 # smoothdining
 
+- May implement a way for customers to search and ask for a reservation and requestted time, and which the owner/host would configure and confirm.
+  but, for now, it would only allow hosts/owners to add party in person that the customer would call about.
+
 # NOTES!
 
 SENDING DATE DATA: Dates will and should be stored as : 2023-06-30T00:00:00.000+00:00
