@@ -5,9 +5,6 @@
 
 # NOTES!
 
-SENDING DATE DATA: Dates will and should be stored as : 2023-06-30T00:00:00.000+00:00
-Thus, query data of dates should be sent in the same format.
-
 - Thinking of Implementing a shiftData Model to let users define and edit a AM shift PM shift or more shifts, from which a Shift will link to, or I could leave it like now, and have the Front-end determine what each number represents, and when to create a shift 0 or 1 or 2.
   If so, I may just add shiftData that takes a string like PM or a descriptive name within Shift model
 
