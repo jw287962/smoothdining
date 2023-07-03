@@ -12,7 +12,7 @@ jest.mock("../../model/stores/Shifts");
 
 describe("test query Shifts controller", () => {
   it("return error if future date", async () => {
-    const tmr = new Date(1688281421943 + 86400000);
+    const tmr = new Date(new Date().getTime() + 86400000);
     const req = {
       params: { dateID: tmr },
       cookies: jest.fn(request.cookies),
