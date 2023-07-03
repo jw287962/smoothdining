@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import Party, { partyInterface } from "../model/stores/Party";
-import { dateRegex, helperFunctions } from "./helper_Controller";
+import {
+  dateRegex,
+  helperFunctions,
+  removeTimeinDate,
+} from "./helper_Controller";
 import { body, cookie } from "express-validator";
 import { ObjectId } from "mongodb";
 // declare module "express" {
@@ -150,7 +154,7 @@ const partyController = {
       res.json({ message: "New Status:" + status, result: result });
     } catch (e) {
       res.status(400).json({
-        e: e,
+        error: e,
         message: "Failed to Update Status",
         id: id,
         storeID: store,
@@ -158,7 +162,75 @@ const partyController = {
     }
   },
 
+  // setPartyTimeData: async (req: Request, res: Response, next: NextFunction) => {
+  //   const id = req.params.partyID;
+  //   // const timeData = {
+  //   //   checkInTime: req.body.checkInTime,
+  //   //   startDining: {
+  //   //     time: req.body.startDining,
+  //   //     isEntreeOnTable: req.body.isEntreeOnTable,
+  //   //   },
+  //   //   finishedTime: req.body.finishedTime,
+  //   //   waitingTime: req.body.waitingTime,
+  //   // };
+  //   const timeData = req.body;
+  //   try {
+  //     const timeDataFilter = Object.fromEntries(
+  //       Object.entries(timeData).filter(
+  //         ([key, value]) => value != undefined && value != null
+  //       )
+  //     );
+
+  //     const result = Party.updateOne({ _id: id }, { $set: timeDataFilter });
+  //     res.json({ result: result, message: "Party Time Updated Successfully" });
+  //   } catch (e) {
+  //     res.status(400).json({ message: "Failed to Update Party Time Data" });
+  //   }
+  // },
+  createGenericPartySize: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const store = req.cookies.storeID;
+    const status = req.body.status;
+    const party = req.body;
+
+    try {
+      const newParty = {
+        name: "Generic",
+        partySize: party.partySize,
+        // phoneNumber: null,
+        // reservationDate: null,
+        timeData: {
+          checkInTime: new Date(),
+          // startDining: {
+          //    time: null,
+          //   isEntreeOnTable: null,
+          // },
+          // finishedTime: null,
+          // waitingTime: null,
+        },
+        status: "Active",
+        store: req.cookies.storeID,
+      };
+
+      const result = await Party.create(newParty);
+
+      res.json({ message: "Generic Party Size Created", result: result });
+    } catch (e) {
+      res.status(400).json({
+        error: e,
+        message: "Failed to create Generic Party",
+        input: req.body,
+      });
+    }
+  },
   validation: {
+    genericPartyData: [
+      body("partySize").isNumeric().notEmpty(),
+      helperFunctions.expressValidationMiddleware,
+    ],
     validateCreatePartyData: [
       body("name").notEmpty().escape().isString(),
       body("partySize").notEmpty().isNumeric(),
@@ -171,7 +243,9 @@ const partyController = {
         .optional()
         .isIn(["Active", "Finished", "Canceled"])
         .withMessage("Active, Finished, or Canceled Only"),
-      body("phoneNumber").isMobilePhone(["en-US"], { strictMode: false }),
+      body("phoneNumber")
+        .optional()
+        .isMobilePhone(["en-US"], { strictMode: false }),
       cookie("storeID").escape().notEmpty(),
       helperFunctions.expressValidationMiddleware,
     ],

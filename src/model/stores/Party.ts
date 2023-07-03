@@ -4,7 +4,7 @@ import { Schema, model, Document } from "mongoose";
 export interface partyInterface {
   name: string;
   partySize: number;
-  phoneNumber: string;
+  phoneNumber?: string;
   reservationDate: Date;
   reservationDateTime: Date;
   timeData: {
@@ -19,7 +19,7 @@ export interface partyInterface {
 const partySchema: Schema<partyInterface> = new Schema<partyInterface>({
   name: { type: String },
   partySize: { type: Number, required: true },
-  phoneNumber: { type: String, required: true },
+  phoneNumber: { type: String },
   reservationDate: { type: Date },
   reservationDateTime: { type: Date },
   timeData: {
