@@ -152,13 +152,14 @@ Support different user Roles, but will implement owner support first
 ## Waiters
 
 ```js
-  name: { type: String, required: true },
-  birthdate: { type: Date },
-  preferences: {
-    maxActiveTableForPermission: { type: Number },
-    waitToSitUntilEntreeOut: { min: { type: Number } },
-  },
-  store: { type: Schema.Types.ObjectId, ref: "Store", required: true },
+  name: string;
+  birthdate: Date;
+  preferences?: {
+    maxActiveTableForPermission: number,
+    waitToSitUntilEntreeOut: { min: number },
+  };
+  store: ObjectId;
+  status: Boolean;
 ```
 
 ## Shifts
