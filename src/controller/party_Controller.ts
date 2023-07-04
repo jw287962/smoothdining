@@ -27,12 +27,11 @@ const partyController = {
       reservationDate: new Date().setHours(0, 0, 0, 0),
       store: store,
     });
-    const status = parseStatusQuery(req.query);
+    // const status = req.query.status
     res.json({
       message: "query shifts of party of today",
       result: allPartyToday,
       forStoreID: store,
-      status: status,
     });
   },
   queryAllPartyOnDate: async (

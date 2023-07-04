@@ -39,7 +39,7 @@ GET :file_folder:: Get Stores/Restaurants under Account
 
 - **URL:** api/account/stores
 - **Method:** Get
-- **Request Body:** None
+- **Request Body:**
 - **Response:** Returns ALL stores under your account
 
 POST :pencil: : Create a new Store/Restaurant under Account
@@ -53,37 +53,62 @@ POST :pencil: : Create a new Store/Restaurant under Account
 
 GET :file_folder:: Get a list of all parties today.
 
-- **URL:** /api/account/party/
+- **URL:** /api/account/store/party/
 - **Method:** GET
+- **Request Body:** (WILL ADD: req.queryActive) True for Active | False for inactive | & not set for ALL
 - **Response:** An array of party objects
 
 GET :file_folder:: Get party of a day, will check ReservationDate
 
-- **URL:** /api/account/party/:dateID
+- **URL:** /api/account/store/party/:dateID
 - **Method:** GET
 - **Response:** An array of party object
 - **Default:** Default reservationDate to today with time as 00:00:00
 
 POST :pencil: : Create New Party Table of customer data
 
-- **URL:** '/api/account/party'
+- **URL:** '/api/account/store/party'
 - **Method:** POST
 - **Response:** Success/Failure
 
 POST :pencil: : Create New Party Table of customer data
 
-- **URL:** '/api/account/party/generic'
+- **URL:** '/api/account/store/party/generic'
 - **Method:** POST
 - **Note:** CREATE GENERIC PARTY QUICKLY (Only requires partySize)
 - **Response:** Success/Failure
 
 PUT :pencil2: : Update Party Details
 
-- **URL:** '/api/account/:partyID'
+- **URL:** '/api/account/store/:partyID'
 - **Method:** POST
 - **Response:** Success/Failure
 
 ### Waiter Handling
+
+Get :file_folder:: Get All Waiters
+
+- **URL:** '/api/account/store/waiters'
+- **Method:** GET
+- **Note:** GET ALL WAITERS UNDER A STORE
+- **Request Body:** (WILL ADD: req.queryActive) True for Active | False for inactive | & not set for ALL
+- **Response:** Success/Failure
+
+POST :pencil: : ADD NEW WAITER
+
+- **URL:** '/api/account/store/waiters'
+- **Method:** POST
+- **Request:** req.body { name: string , birtdate: Date ,
+  Preferences: {maxActiveTableForPermission: number waitToSitUntilEntreeOut: number}}
+- **Response:** Success/Failure
+
+PUT :pencil2: : UPDATE WAITER DETAILS
+
+- **URL:** '/api/account/store/waiters/:waiterID'
+- **Method:** POST
+- **Request:** req.body { name: string , birtdate: Date ,
+  Preferences: {maxActiveTableForPermission: number waitToSitUntilEntreeOut: number}}
+- **Response:** Success/Failure
 
 ### Shifts Handling
 
