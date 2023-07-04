@@ -50,5 +50,14 @@ export function removeTimeinDate(date: Date) {
   return date;
 }
 
+export function parseStatusQuery(query: Request["query"]) {
+  const isActive =
+    query.status === "true" || query.status === "false"
+      ? JSON.parse(query.status.toLowerCase())
+      : undefined;
+
+  return isActive;
+}
+
 export type groupShiftsType = Record<number, shiftInterface[]>;
 export const dateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
