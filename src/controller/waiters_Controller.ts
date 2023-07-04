@@ -3,7 +3,7 @@ import { UserInterface } from "../model/User";
 import Waiter from "../model/stores/Waiter";
 import { body, header, query, validationResult } from "express-validator";
 import { Db, ObjectId } from "mongodb";
-import { helperFunctions } from "./helper_Controller";
+import { helperFunctions, parseIsActiveQuery } from "./helper_Controller";
 import { request } from "http";
 
 // interface headerData extends Record<string, string | string[] | undefined> {
@@ -24,8 +24,13 @@ export const waiterController = {
   ) => {
     const header = req.headers;
 
+    const status = parseIsActiveQuery(req.query);
+
     try {
-      const result = await Waiter.find({ store: new ObjectId(header.storeid) });
+      const result = await Waiter.find({
+        store: new ObjectId(header.storeid),
+        isActive: status,
+      });
       res.json({ result: result });
     } catch (e) {
       res.json({
@@ -49,6 +54,7 @@ export const waiterController = {
           waitToSitUntilEntreeOut: waiterFormData.waitToSitUntilEntreeOut,
         },
         store: header.storeid,
+        isActive: true,
       });
 
       const waiter = await Waiter.create(newWaiter);
@@ -82,14 +88,17 @@ export const waiterController = {
       });
     }
   },
-  validateBodyWaiterData: [
-    body("name").optional().escape(),
-    body("birthdate").optional().escape(),
-    header("storeID").escape(),
-    body("maxActiveTableForPermission").isNumeric().optional(),
-    body("waitToSitUntilEntreeOut").isNumeric().optional(),
-    helperFunctions.expressValidationMiddleware,
-  ],
+  validation: {
+    validateBodyWaiterData: [
+      body("name").optional().escape(),
+      body("birthdate").optional().escape(),
+      header("storeID").escape(),
+      body("maxActiveTableForPermission").isNumeric().optional(),
+      body("waitToSitUntilEntreeOut").isNumeric().optional(),
+      helperFunctions.expressValidationMiddleware,
+    ],
+    // queryDataisActiveCheck: [body("isActive").optional().isBoolean()],
+  },
 
   updateWaiter: async (req: RequestEdit, res: Response, next: NextFunction) => {
     const updateData = {
