@@ -3,7 +3,7 @@ import { UserInterface } from "../model/User";
 import Waiter from "../model/stores/Waiter";
 import { body, header, query, validationResult } from "express-validator";
 import { Db, ObjectId } from "mongodb";
-import { helperFunctions, parseIsActiveQuery } from "./helper_Controller";
+import { helperFunctions, parseStatusQuery } from "./helper_Controller";
 import { request } from "http";
 
 // interface headerData extends Record<string, string | string[] | undefined> {
@@ -24,7 +24,7 @@ export const waiterController = {
   ) => {
     const header = req.headers;
 
-    const status = parseIsActiveQuery(req.query);
+    const status = parseStatusQuery(req.query);
 
     try {
       const result = await Waiter.find({

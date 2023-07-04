@@ -3,7 +3,7 @@ import Party, { partyInterface } from "../model/stores/Party";
 import {
   dateRegex,
   helperFunctions,
-  parseIsActiveQuery,
+  parseStatusQuery,
   removeTimeinDate,
 } from "./helper_Controller";
 import { body, cookie } from "express-validator";
@@ -27,7 +27,7 @@ const partyController = {
       reservationDate: new Date().setHours(0, 0, 0, 0),
       store: store,
     });
-    const status = parseIsActiveQuery(req.query);
+    const status = parseStatusQuery(req.query);
     res.json({
       message: "query shifts of party of today",
       result: allPartyToday,
