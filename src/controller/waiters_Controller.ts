@@ -29,7 +29,7 @@ export const waiterController = {
     try {
       const result = await Waiter.find({
         store: new ObjectId(header.storeid),
-        isActive: status,
+        status: status,
       });
       res.json({ result: result });
     } catch (e) {

@@ -55,7 +55,7 @@ GET :file_folder:: Get a list of all parties today.
 
 - **URL:** /api/account/store/party/
 - **Method:** GET
-- **Request Body:** (WILL ADD: req.queryActive) True for Active | False for inactive | & not set for ALL
+- **Request Body:**
 - **Response:** An array of party objects
 
 GET :file_folder:: Get party of a day, will check ReservationDate
@@ -91,7 +91,7 @@ Get :file_folder:: Get All Waiters
 - **URL:** '/api/account/store/waiters'
 - **Method:** GET
 - **Note:** GET ALL WAITERS UNDER A STORE
-- **Request Body:** (WILL ADD: req.queryActive) True for Active | False for inactive | & not set for ALL
+- **Request Body:** req.query.status True for Active | False for inactive | & no query status param will retrieve any waiter
 - **Response:** Success/Failure
 
 POST :pencil: : ADD NEW WAITER
