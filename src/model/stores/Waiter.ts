@@ -8,6 +8,7 @@ interface waiterInterface {
     waitToSitUntilEntreeOut: { min: number };
   };
   store: ObjectId;
+  status: Boolean;
 }
 
 const waiterSchema: Schema<waiterInterface> = new Schema<waiterInterface>({
@@ -21,6 +22,7 @@ const waiterSchema: Schema<waiterInterface> = new Schema<waiterInterface>({
   // workers: [{ type: Schema.Types.ObjectId, ref: "Waiters" }],
   // shifts: [{ type: Schema.Types.ObjectId, ref: "Shift" }],
   store: { type: Schema.Types.ObjectId, ref: "Store", required: true },
+  status: { type: Boolean, required: true, default: true },
 });
 
 export default model("Waiter", waiterSchema);
