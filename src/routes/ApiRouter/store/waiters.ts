@@ -15,14 +15,14 @@ router.get(
 router.post(
   "/",
   waiterController.validateHeaderStoreData,
-  waiterController.validateBodyWaiterData,
+  waiterController.validation.validateBodyWaiterData,
   waiterController.addNewWaiter
 );
 
 router.patch(
   "/:waiterID",
   waiterController.validateHeaderStoreData,
-  waiterController.validateBodyWaiterData,
+  waiterController.validation.validateBodyWaiterData,
   waiterController.updateWaiter
 );
 router.use(helperFunctions.handleFormValidationError);
