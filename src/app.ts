@@ -92,6 +92,7 @@ app.use(errorHandle);
 
 const dbString: string =
   process.env.MONGODB_URI ||
+  process.env.CUSTOMCONNSTR_MONGODB_URI ||
   "mongodb+srv://your_user_name:your_password@cluster0.lz91hw2.mongodb.net/blog-api?retryWrites=true&w=majority";
 
 // const client = new MongoClient(dbString, {
