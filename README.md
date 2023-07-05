@@ -10,7 +10,7 @@
 
 # API Requests
 
-HOSTLINK: "NONE" not deployed atm
+DEPLOYED with AZURE Pipelines: https://smoothdining.azurewebsites.net/
 ALL REQUEST API CALLS are built based on the HOSTLINK
 **{hostLink}/...**
 
