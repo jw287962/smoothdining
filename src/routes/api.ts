@@ -21,7 +21,7 @@ router.get("/", function (req: Request, res: Response, next: NextFunction) {
   res.json({ api: "beta" });
 });
 
-router.get(
+router.post(
   "/login",
   validate(loginValidation, {}, {}),
   passport.authenticate("local"),
