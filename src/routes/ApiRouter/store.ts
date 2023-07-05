@@ -24,7 +24,7 @@ router.use("/store/shifts", shifts);
 router.use("/store/party", party);
 
 router.get("/", function (req: Request, res: Response, next: NextFunction) {
-  res.json({ message: "try /stores or /store  " });
+  res.json({ message: "try /stores or /store" });
 });
 router.get("/stores", storecontroller.getStores);
 router.get("/store/:storeID", storecontroller.getStoreData);
