@@ -38,7 +38,11 @@ describe("createNewParty", () => {
     } as unknown as Response;
     // console.log("Party:", Party);
 
-    (Party.create as jest.Mock).mockResolvedValue(partyData);
+    const partyMockImplementation = jest.fn().mockResolvedValue(partyData);
+
+    jest.spyOn(Party, "create").mockImplementation(partyMockImplementation);
+    // Party.create.mockImplementation(partyMockImplementation);
+
     await partyController.createNewParty(req, res, {} as NextFunction);
     expect(res.json).toHaveBeenCalledWith({
       message: "new Party Created",
@@ -55,9 +59,14 @@ describe("createNewParty", () => {
     // Mock the Party.create method to throw an error
     console.log("Party:", Party);
 
-    (Party.create as jest.Mock).mockRejectedValue(
-      new Error("Party creation failed")
-    );
+    const createPartyMock = jest
+      .fn()
+      .mockRejectedValue(new Error("Party creation failed"));
+    jest.spyOn(Party, "create").mockImplementation(createPartyMock);
+
+    // Party.create.mockRejectedValue(
+    //   new Error("Party creation failed")
+    // );
 
     // Call the createNewParty function
     await partyController.createNewParty(req, res, {} as NextFunction);
