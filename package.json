@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "ts-node ./bin/www",
+    "start": "node .dist/app.js",
+    "build": "tsc",
     "dev": "nodemon --exec ts-node ./bin/www",
     "test": "npx jest"
   },
