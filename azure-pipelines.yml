@@ -48,6 +48,7 @@ stages:
               archiveType: zip
               archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
               replaceExistingArchive: true
+              exclude: "/src"
 
           - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
             artifact: SmoothDiningDrop
