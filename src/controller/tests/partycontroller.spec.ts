@@ -36,6 +36,7 @@ describe("createNewParty", () => {
       json: jest.fn(json),
       status: jest.fn(response.status),
     } as unknown as Response;
+    console.log("Party:", Party);
 
     (Party.create as jest.Mock).mockResolvedValue(partyData);
     await partyController.createNewParty(req, res, {} as NextFunction);
