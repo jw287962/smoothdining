@@ -57,8 +57,6 @@ describe("createNewParty", () => {
       status: jest.fn(response.status),
     } as unknown as Response;
     // Mock the Party.create method to throw an error
-    console.log("Party:", Party);
-
     const createPartyMock = jest
       .fn()
       .mockRejectedValue(new Error("Party creation failed"));
