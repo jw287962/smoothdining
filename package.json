@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "ts-node ./bin/www",
+    "start": "node dist/app.js",
     "dev": "nodemon --exec ts-node ./bin/www",
+    "build": "cp .env .dist/.env && tsc",
     "test": "npx jest"
   },
   "dependencies": {
