@@ -5,4 +5,4 @@ const { execSync } = require("child_process");
 execSync("tsc");
 
 // Copy Pug files
-fs.copySync("src/views", ".dist/views");
+fs.copySync("src/views", ".dist/src/views");
