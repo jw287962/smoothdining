@@ -15,7 +15,22 @@ export const storecontroller = {
       const user = req.user as UserInterface;
       // const sessionID = req.?sessionID;
 
-      res.json({ user: user._id, result: user.store });
+      const result = await User.aggregate([
+        {
+          $match: {
+            user: user._id,
+          },
+        },
+        {
+          $lookup: {
+            from: "Store",
+            localField: "store",
+            foreignField: "_id",
+            as: "store",
+          },
+        },
+      ]);
+      res.json({ user: user._id, result: result });
     } catch (e) {
       res.status(400).json({
         message: "failed to get stores of user",
