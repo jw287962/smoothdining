@@ -12,7 +12,7 @@ export const helperFunctions = {
     } else {
       res.status(401).json({
         user: user,
-        error: "Not authenticated, login at: /api/login",
+        error: "Not authenticated, or non-owner role. login at: /api/login",
         login: false,
       });
     }
