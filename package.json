@@ -5,7 +5,6 @@
   "scripts": {
     "start": "ts-node ./bin/www",
     "dev": "nodemon --exec ts-node ./bin/www",
-    "build": " ",
     "test": "npx jest"
   },
   "dependencies": {
