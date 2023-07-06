@@ -28,6 +28,8 @@ router.post(
   userController.userLogin
 );
 
+router.get("/logout", userController.userSignout);
+
 router.post(
   "/register",
   validate(registerValidation, {}, {}),

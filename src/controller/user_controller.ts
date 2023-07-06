@@ -11,10 +11,12 @@ export const userController = {
     const { username, password } = req.body;
     const user = req.user as UserInterface;
     // res.setHeader("Set-Cookie", `user=${JSON.stringify(user._id)}; Path=/`);
-    res.cookie("connect.sid", "your-cookie-value", {
+    const connectSid = req.cookies["connect.sid"];
+
+    res.cookie("connect.sid", connectSid, {
       // Set the appropriate options for your cookie
       // For example, you can set the domain, path, secure, etc.
-      domain: "your-domain.com",
+      domain: req.hostname,
       path: "/",
       httpOnly: true,
       secure: true,
@@ -22,7 +24,24 @@ export const userController = {
     res.json({
       message: "login successfully. Welcome" + username,
       userID: user._id,
+      host: req.hostname,
     });
+  },
+  userSignout: (req: Request, res: Response, next: NextFunction) => {
+    try {
+      req.logout((err) => {
+        if (err) {
+          throw err;
+        }
+        res.clearCookie("connect.sid");
+
+        res.json({
+          message: "SIGNOUT Successfully",
+        });
+      });
+    } catch (e) {
+      res.status(500).json({ message: "signout failed", error: e });
+    }
   },
   userRegister: async (req: Request, res: Response, next: NextFunction) => {
     const user = req.body;
