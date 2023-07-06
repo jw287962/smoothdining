@@ -39,6 +39,7 @@ export const userController = {
       res.status(401).json({
         error: true,
         message: "Password does not match",
+        missingValue: "repeatpassword",
       });
     } else if (!user) {
       res.status(401).json({
