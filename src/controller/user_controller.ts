@@ -11,7 +11,14 @@ export const userController = {
     const { username, password } = req.body;
     const user = req.user as UserInterface;
     // res.setHeader("Set-Cookie", `user=${JSON.stringify(user._id)}; Path=/`);
-
+    res.cookie("connect.sid", "your-cookie-value", {
+      // Set the appropriate options for your cookie
+      // For example, you can set the domain, path, secure, etc.
+      domain: "your-domain.com",
+      path: "/",
+      httpOnly: true,
+      secure: true,
+    });
     res.json({
       message: "login successfully. Welcome" + username,
       userID: user._id,
