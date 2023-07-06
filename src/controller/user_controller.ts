@@ -16,7 +16,7 @@ export const userController = {
     res.cookie("connect.sid", connectSid, {
       // Set the appropriate options for your cookie
       // For example, you can set the domain, path, secure, etc.
-      domain: "https://jw287962.github.io/smoothDiningAngular/",
+      domain: "jw287962.github.io/smoothDiningAngular/",
       path: "/",
       httpOnly: true,
       secure: true,
