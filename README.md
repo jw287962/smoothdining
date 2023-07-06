@@ -1,3 +1,9 @@
+# API Requests
+
+DEPLOYED with AZURE Pipelines: https://smoothdining.azurewebsites.net/
+ALL REQUEST API CALLS are built based on the HOSTLINK
+**{hostLink}/...**
+
 # smoothdining
 
 - May implement a way for customers to search and ask for a reservation and requestted time, and which the owner/host would configure and confirm.
@@ -7,12 +13,6 @@
 
 - Thinking of Implementing a shiftData Model to let users define and edit a AM shift PM shift or more shifts, from which a Shift will link to, or I could leave it like now, and have the Front-end determine what each number represents, and when to create a shift 0 or 1 or 2.
   If so, I may just add shiftData that takes a string like PM or a descriptive name within Shift model
-
-# API Requests
-
-DEPLOYED with AZURE Pipelines: https://smoothdining.azurewebsites.net/
-ALL REQUEST API CALLS are built based on the HOSTLINK
-**{hostLink}/...**
 
 ## LOGIN/REGISTER
 
