@@ -38,7 +38,7 @@ const shiftController = {
         },
         {
           $lookup: {
-            from: "Party",
+            from: "parties",
             localField: "shiftTables",
             foreignField: "_id",
             as: "shiftTables",

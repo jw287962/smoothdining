@@ -18,19 +18,19 @@ export const storecontroller = {
       const result = await User.aggregate([
         {
           $match: {
-            user: user._id,
+            _id: user._id,
           },
         },
         {
           $lookup: {
-            from: "Store",
+            from: "stores",
             localField: "store",
             foreignField: "_id",
-            as: "store",
+            as: "populatedStore",
           },
         },
       ]);
-      res.json({ user: user._id, result: result });
+      res.json({ user: user._id, result: result[0].populatedStore });
     } catch (e) {
       res.status(400).json({
         message: "failed to get stores of user",
