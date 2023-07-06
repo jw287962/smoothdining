@@ -7,6 +7,10 @@ import { shiftInterface } from "../model/stores/Shifts";
 export const helperFunctions = {
   isAuthenticatedOwner: (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as UserInterface;
+
+    if (user) {
+      (res.locals.login = true), { role: user.role };
+    }
     if (user && user.role === "Owner") {
       next();
     } else {
@@ -26,9 +30,11 @@ export const helperFunctions = {
   ) {
     if (err instanceof ValidationError) {
       return res.status(err.statusCode).json(err);
+    } else if (err) {
+      return res.status(500).json(err);
+    } else {
+      next();
     }
-
-    return res.status(500).json(err);
   },
 
   expressValidationMiddleware: async (

@@ -4,7 +4,7 @@ import passportLocal, {
   IStrategyOptionsWithRequest,
 } from "passport-local";
 
-import User from "./model/User";
+import User, { UserInterface } from "./model/User";
 const crypto = require("crypto");
 // const jwt = require("jsonwebtoken");
 
@@ -64,11 +64,20 @@ export const genPassword = function genPassword(password: string) {
 passport.serializeUser(function (user: any, done) {
   done(null, user.id);
 });
-
+interface checkUser extends UserInterface {
+  login?: Boolean;
+}
 passport.deserializeUser(async function (id, done) {
   try {
     const user = await User.findById(id);
-    done(null, user);
+
+    if (user) {
+      const userSuccess: checkUser = user;
+      userSuccess.login = true;
+      done(null, userSuccess);
+    } else {
+      done(null, user);
+    }
   } catch (err) {
     done(err);
   }
