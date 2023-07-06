@@ -59,8 +59,8 @@ export const userController = {
         const { username, _id, signUpDate } = await User.create(newUser);
 
         res.json({
-          result: { username, _id, signUpDate },
-          message: "Welcome new User",
+          result: { username, signUpDate, user: _id },
+          message: "Success",
         });
       } catch (e) {
         res
