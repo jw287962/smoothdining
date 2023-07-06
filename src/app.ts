@@ -11,9 +11,24 @@ import passport from "passport";
 // const { Express, NextFunction, Request, Response } = require("express");
 // const { HttpError } = require("http-errors");
 // const { MongoClient, ServerApiVersion } = require("mongodb");
-const session = require("express-session");
 
 const cors = require("cors");
+const allowedOrigins = [
+  "https://jw287962.github.io/smoothDiningAngular",
+  "http://localhost:4200",
+];
+const corsOptions = {
+  origin: (origin: string, callback: any) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+
+const session = require("express-session");
 
 const createError = require("http-errors");
 const express = require("express");
@@ -32,18 +47,7 @@ const app: Express = express();
 
 // CORS
 
-// const allowedOrigins = ["https://jw287962.github.io/smoothDiningAngular"];
-// const corsOptions = {
-//   origin: function (origin: string, callback: any) {
-//     if (allowedOrigins.includes(origin) || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   },
-// };
-
-app.use(cors());
+app.use(cors(corsOptions));
 // view engine setup
 
 app.set("views", path.join(__dirname, "views"));

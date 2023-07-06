@@ -8,19 +8,8 @@ import { genPassword } from "../passport";
 import { Joi } from "express-validation";
 export const userController = {
   userLogin: (req: Request, res: Response, next: NextFunction) => {
-    const { username, password } = req.body;
+    const { username } = req.body;
     const user = req.user as UserInterface;
-    // res.setHeader("Set-Cookie", `user=${JSON.stringify(user._id)}; Path=/`);
-    const connectSid = req.cookies["connect.sid"];
-
-    res.cookie("connect.sid", connectSid, {
-      // Set the appropriate options for your cookie
-      // For example, you can set the domain, path, secure, etc.
-      domain: "jw287962.github.io/smoothDiningAngular/",
-      path: "/",
-      httpOnly: true,
-      secure: true,
-    });
 
     res.json({
       message: "login successfully. Welcome" + username,

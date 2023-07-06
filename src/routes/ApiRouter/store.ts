@@ -16,9 +16,7 @@ import {
 import { helperFunctions } from "../../controller/helper_Controller";
 
 /* GET home page. */
-
 router.use(helperFunctions.isAuthenticatedOwner);
-
 router.use("/store/waiters", waiters);
 router.use("/store/shifts", shifts);
 router.use("/store/party", party);
