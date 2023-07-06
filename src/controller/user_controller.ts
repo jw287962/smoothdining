@@ -10,7 +10,7 @@ export const userController = {
   userLogin: (req: Request, res: Response, next: NextFunction) => {
     const { username, password } = req.body;
     const user = req.user as UserInterface;
-    res.setHeader("Set-Cookie", `user=${JSON.stringify(user._id)}; Path=/`);
+    // res.setHeader("Set-Cookie", `user=${JSON.stringify(user._id)}; Path=/`);
 
     res.json({
       message: "login successfully. Welcome" + username,
