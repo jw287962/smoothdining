@@ -33,7 +33,7 @@ const app: Express = express();
 
 // CORS
 const allowedOrigins = [
-  "https://jw287962.github.io/smoothDiningAngular",
+  "https://jw287962.github.io/smoothDiningAngular/",
   "http://localhost:4200",
 ];
 const corsOptions = {
