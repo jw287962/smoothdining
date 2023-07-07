@@ -10,12 +10,15 @@ export const userController = {
   userLogin: (req: Request, res: Response, next: NextFunction) => {
     const { username } = req.body;
     const user = req.user as UserInterface;
-
-    res.json({
-      message: "login successfully. Welcome" + username,
-      userID: user._id,
-      host: req.hostname,
-    });
+    try {
+      res.json({
+        message: "login successfully. Welcome" + username,
+        userID: user._id,
+        host: req.hostname,
+      });
+    } catch (e: any) {
+      res.status(500).json({ error: e, message: "Failed to login" });
+    }
   },
   userSignout: (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -76,11 +79,22 @@ export const loginValidation = {
     username: Joi.string()
       .alphanum()
       .regex(/[a-zA-Z0-9]{3,30}/)
-      .required(),
+      .required()
+      .messages({
+        "string.alphanum": "Username must only contain alphanumeric characters",
+        "string.pattern.base": "Username must be at least 3 characters long",
+        "any.required": "Username is required",
+      }),
     password: Joi.string()
       .pattern(new RegExp("^(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$"))
       .max(30)
-      .required(),
+      .required()
+      .messages({
+        "string.pattern.base":
+          "Password must contain at least one special character",
+        "string.max": "Password cannot exceed 30 characters",
+        "any.required": "Password is required",
+      }),
   }),
 };
 
@@ -89,11 +103,22 @@ export const registerValidation = {
     username: Joi.string()
       .alphanum()
       .regex(/[a-zA-Z0-9]{3,30}/)
-      .required(),
+      .required()
+      .messages({
+        "string.alphanum": "Username must only contain alphanumeric characters",
+        "string.pattern.base": "Username must be at least 3 characters long",
+        "any.required": "Username is required",
+      }),
     password: Joi.string()
       .pattern(new RegExp("^(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]+$"))
       .max(30)
-      .required(),
+      .required()
+      .messages({
+        "string.pattern.base":
+          "Password must contain at least one special character",
+        "string.max": "Password cannot exceed 30 characters",
+        "any.required": "Password is required",
+      }),
     repeatpassword: Joi.ref("password"),
   }),
 };

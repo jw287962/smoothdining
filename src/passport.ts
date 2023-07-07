@@ -24,7 +24,7 @@ passport.use(
         .then((user) => {
           if (!user) {
             return cb(null, false, {
-              message: "Incorrect username.",
+              message: "Incorrect username or password",
             });
           }
           const isValid = validPassword(password, user.hash, user.salt);
@@ -35,7 +35,10 @@ passport.use(
             // password wrong
           }
         })
-        .catch((err) => cb(err));
+        .catch((err) => {
+          console.log("pasport caught error", err);
+          cb(err);
+        });
     }
   )
 );
@@ -62,7 +65,11 @@ export const genPassword = function genPassword(password: string) {
 };
 
 passport.serializeUser(function (user: any, done) {
-  done(null, user.id);
+  try {
+    done(null, user.id);
+  } catch (e) {
+    console.log("seralize ERROR");
+  }
 });
 interface checkUser extends UserInterface {
   login?: Boolean;
@@ -72,13 +79,14 @@ passport.deserializeUser(async function (id, done) {
     const user = await User.findById(id);
 
     if (user) {
-      const userSuccess: checkUser = user;
-      userSuccess.login = true;
-      done(null, userSuccess);
+      // const userSuccess: checkUser = user;
+      // userSuccess.login = true;
+      done(null, user);
     } else {
       done(null, user);
     }
   } catch (err) {
+    console.log("deserailize ERROR", err);
     done(err);
   }
 });
