@@ -35,11 +35,8 @@ const app: Express = express();
 const allowedOrigins = ["https://jw287962.github", "http://localhost:4200"];
 const corsOptions = {
   origin: (origin: string, callback: any) => {
-    if (allowedOrigins.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
+    var originIsWhitelisted = allowedOrigins.indexOf(origin) !== -1;
+    callback(null, originIsWhitelisted);
   },
   credentials: true,
 };
