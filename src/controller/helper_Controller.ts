@@ -30,7 +30,6 @@ export const helperFunctions = {
     next: NextFunction
   ) {
     try {
-      console.log("handleform error");
       if (err.name === "ValidationError") {
         const errorMessage = err.details?.body?.[0].message;
         res.status(err.statusCode).json({ error: err, message: errorMessage });

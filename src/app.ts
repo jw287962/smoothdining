@@ -36,6 +36,9 @@ const allowedOrigins = ["https://jw287962.github.io", "http://localhost:4200"];
 const corsOptions = {
   origin: (origin: string, callback: any) => {
     var originIsWhitelisted = allowedOrigins.indexOf(origin) !== -1;
+    if (!originIsWhitelisted) {
+      console.log(origin);
+    }
     callback(null, originIsWhitelisted);
   },
   credentials: true,
