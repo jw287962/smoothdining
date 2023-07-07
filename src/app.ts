@@ -13,20 +13,6 @@ import passport from "passport";
 // const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const cors = require("cors");
-const allowedOrigins = [
-  "https://jw287962.github.io/smoothDiningAngular",
-  "http://localhost:4200",
-];
-const corsOptions = {
-  origin: (origin: string, callback: any) => {
-    if (allowedOrigins.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
 
 const session = require("express-session");
 
@@ -46,7 +32,20 @@ const dotenv = require("dotenv").config();
 const app: Express = express();
 
 // CORS
-
+const allowedOrigins = [
+  "https://jw287962.github.io/smoothDiningAngular",
+  "http://localhost:4200",
+];
+const corsOptions = {
+  origin: (origin: string, callback: any) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
 app.use(cors(corsOptions));
 // view engine setup
 
@@ -84,6 +83,7 @@ app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res: Response, next: NextFunction) => {
+  console.log("app.ts Main error");
   let err = new HttpError("Not found");
   err.status = 404;
   next(err);

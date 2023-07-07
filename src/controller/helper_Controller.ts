@@ -7,13 +7,14 @@ import { shiftInterface } from "../model/stores/Shifts";
 export const helperFunctions = {
   isAuthenticatedOwner: (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as UserInterface;
-
-    if (user) {
-      (res.locals.login = true), { role: user.role };
-    }
+    // if (user) {
+    //   res.locals.login = { login: true, roles: user.role };
+    // }
     if (user && user.role === "Owner") {
       next();
     } else {
+      console.log("isAuthOwnerFailed");
+
       res.status(401).json({
         user: user,
         error: "Not authenticated, or non-owner role. login at: /api/login",
@@ -23,17 +24,26 @@ export const helperFunctions = {
   },
 
   handleFormValidationError: function (
-    err: ErrorRequestHandler,
+    err: ValidationError,
     req: Request,
     res: Response,
     next: NextFunction
   ) {
-    if (err instanceof ValidationError) {
-      return res.status(err.statusCode).json(err);
-    } else if (err) {
-      return res.status(500).json(err);
-    } else {
-      next();
+    try {
+      console.log("handleform error");
+      if (err.name === "ValidationError") {
+        const errorMessage = err.details?.body?.[0].message;
+        res.status(err.statusCode).json({ error: err, message: errorMessage });
+      } else if (err) {
+        console.log("handleForm error", err);
+        res.status(500).json({ error: err, message: "handleForm Error" });
+      } else {
+        next();
+      }
+    } catch (e) {
+      console.log(" handleFOrmvalid", e);
+
+      res.status(400).json({ error: e, message: "Form Validation Failed" });
     }
   },
 
@@ -42,12 +52,18 @@ export const helperFunctions = {
     res: Response,
     next: NextFunction
   ) => {
+    // try {
     const result = validationResult(req);
     if (result.isEmpty()) {
       next();
     } else {
-      res.status(400).send({ error: result.array() });
+      res
+        .status(400)
+        .send({ error: result.array(), message: "ExpressValidation Failed" });
     }
+    // } catch (e) {
+    //   res.status(400).json({ error: e, message: "expressValidationFailed" });
+    // }
   },
 };
 

@@ -33,7 +33,7 @@ export const storecontroller = {
       res.json({
         user: user._id,
         result: result[0].populatedStore,
-        login: res.locals.login,
+        // login: res.locals.login,
       });
     } catch (e) {
       res.status(400).json({
@@ -56,7 +56,7 @@ export const storecontroller = {
           `storeID=${storeID}; Path=/api/account/store; HttpOnly; Secure; SameSite=Strict`
         );
         // ;HttpOnly; Secure;
-        res.json({ store: data, results: storeID, login: res.locals.login });
+        res.json({ store: data, results: storeID });
       } catch (e) {
         res.status(400).json({
           message: "failed to get specific store, storeID may be wrong",
