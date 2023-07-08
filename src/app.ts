@@ -32,7 +32,11 @@ const dotenv = require("dotenv").config();
 const app: Express = express();
 
 // CORS
-const allowedOrigins = ["https://jw287962.github.io", "http://localhost:4200"];
+const allowedOrigins = [
+  "https://jw287962.github.io",
+  "https://smoothdining.netlify.app",
+  "http://localhost:4200",
+];
 const corsOptions = {
   origin: (origin: string, callback: any) => {
     var originIsWhitelisted = allowedOrigins.indexOf(origin) !== -1;
