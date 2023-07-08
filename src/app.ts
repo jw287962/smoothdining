@@ -47,6 +47,14 @@ const corsOptions = {
     callback(null, originIsWhitelisted);
   },
   credentials: true,
+  allowedHeaders: [
+    "Content-Type",
+    "POST",
+    "GET",
+    "OPTIONS",
+    "DELETE",
+    "Cookie",
+  ],
 };
 const dbString: string =
   process.env.MONGODB_URI ||
@@ -57,9 +65,10 @@ const store = new MongoDBStore({
   collection: "sessions", // Collection name for session data
 });
 
-app.enable("trust proxy");
+app.set("trust proxy", true);
 app.use(
   session({
+    name: "sessionId",
     secret: process.env.SECRET,
     saveUninitialized: false, //Should set to false in production
     resave: false,
@@ -70,6 +79,7 @@ app.use(
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
     },
+    proxy: true,
   })
 );
 app.use(cors(corsOptions));

@@ -26,7 +26,7 @@ export const userController = {
         if (err) {
           throw err;
         }
-        res.clearCookie("connect.sid");
+        res.clearCookie("sessionId");
 
         res.json({
           message: "SIGNOUT Successfully",
