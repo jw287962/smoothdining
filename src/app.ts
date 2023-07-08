@@ -47,11 +47,6 @@ const corsOptions = {
   },
   credentials: true,
 };
-app.use(cors(corsOptions));
-// view engine setup
-
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
 
 app.use(
   session({
@@ -61,6 +56,11 @@ app.use(
     resave: false,
   })
 );
+app.use(cors(corsOptions));
+// view engine setup
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
 
 const RateLimit = require("express-rate-limit");
 const limiter = RateLimit({
