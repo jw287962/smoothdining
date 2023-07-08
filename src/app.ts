@@ -11,11 +11,11 @@ import passport from "passport";
 // const { Express, NextFunction, Request, Response } = require("express");
 // const { HttpError } = require("http-errors");
 // const { MongoClient, ServerApiVersion } = require("mongodb");
-const MongoDBStore = require("connect-mongodb-session")(session);
 
 const cors = require("cors");
 
 const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 
 const createError = require("http-errors");
 const express = require("express");
