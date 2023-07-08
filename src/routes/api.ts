@@ -46,8 +46,9 @@ router.post(
           req.logIn(user, (err) => {
             if (err) {
               next(err);
+            } else {
+              next();
             }
-            res.json({ message: "Login successful" });
           });
         }
       }

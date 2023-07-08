@@ -58,11 +58,17 @@ const store = new MongoDBStore({
 });
 app.use(
   session({
+    name: "Session",
     secret: process.env.SECRET,
-    cookie: { maxAge: 1000 * 60 * 60 * 24, sameSite: "None", secure: true },
-    saveUninitialized: true, //Should set to false in production
+    saveUninitialized: false, //Should set to false in production
     resave: false,
     store: store,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24,
+      sameSite: "None",
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+    },
   })
 );
 app.use(cors(corsOptions));
