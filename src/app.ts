@@ -56,9 +56,10 @@ const store = new MongoDBStore({
   uri: dbString, // MongoDB connection URI
   collection: "sessions", // Collection name for session data
 });
+
+// app.enable("trust proxy");
 app.use(
   session({
-    name: "Session",
     secret: process.env.SECRET,
     saveUninitialized: false, //Should set to false in production
     resave: false,
@@ -92,6 +93,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use((req, res: Response, next: NextFunction) => {
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, POST, GET, OPTIONS, DELETE"
+  );
+  next();
+});
 
 app.use("/", indexRouter);
 app.use("/api", apiRouter);
