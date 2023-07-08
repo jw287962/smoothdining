@@ -11,6 +11,7 @@ import passport from "passport";
 // const { Express, NextFunction, Request, Response } = require("express");
 // const { HttpError } = require("http-errors");
 // const { MongoClient, ServerApiVersion } = require("mongodb");
+const MongoDBStore = require("connect-mongodb-session")(session);
 
 const cors = require("cors");
 
@@ -47,13 +48,21 @@ const corsOptions = {
   },
   credentials: true,
 };
-
+const dbString: string =
+  process.env.MONGODB_URI ||
+  process.env.CUSTOMCONNSTR_MONGODB_URI ||
+  "mongodb+srv://your_user_name:your_password@cluster0.lz91hw2.mongodb.net/blog-api?retryWrites=true&w=majority";
+const store = new MongoDBStore({
+  uri: dbString, // MongoDB connection URI
+  collection: "sessions", // Collection name for session data
+});
 app.use(
   session({
     secret: process.env.SECRET,
     cookie: { maxAge: 1000 * 60 * 60 * 24 },
     saveUninitialized: true, //Should set to false in production
     resave: false,
+    store: store,
   })
 );
 app.use(cors(corsOptions));
@@ -111,11 +120,6 @@ const errorHandle: ErrorRequestHandler = (
 };
 
 app.use(errorHandle);
-
-const dbString: string =
-  process.env.MONGODB_URI ||
-  process.env.CUSTOMCONNSTR_MONGODB_URI ||
-  "mongodb+srv://your_user_name:your_password@cluster0.lz91hw2.mongodb.net/blog-api?retryWrites=true&w=majority";
 
 // const client = new MongoClient(dbString, {
 //   serverApi: {
