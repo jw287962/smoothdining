@@ -65,7 +65,7 @@ const store = new MongoDBStore({
   collection: "sessions", // Collection name for session data
 });
 
-app.set("trust proxy", true);
+// app.set("trust proxy", true);
 app.use(
   session({
     name: "sessionId",
