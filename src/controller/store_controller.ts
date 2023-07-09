@@ -48,7 +48,7 @@ export const storecontroller = {
     const storeID: string = req.params.storeID;
     if (storeID) {
       try {
-        const user = req.user as UserInterface;
+        // const user = req.user as UserInterface;
 
         const data = await Store.findById(new ObjectId(storeID));
         res.setHeader(

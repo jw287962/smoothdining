@@ -3,23 +3,22 @@ import { UserInterface } from "../model/User";
 import { ValidationError } from "express-validation";
 import { validationResult } from "express-validator";
 import { shiftInterface } from "../model/stores/Shifts";
-import { ObjectId } from "mongodb";
+import mongoose, { ObjectId, Types } from "mongoose";
 
 export const helperFunctions = {
   userHasStoreID: (req: Request, res: Response, next: NextFunction) => {
+    const storeID: string = req.params.storeID || req.cookies.storeID;
+    const checkStoreID = (value: Types.ObjectId) => {
+      return value.equals(storeID);
+    };
+
     const user = req.user as UserInterface;
-    console.log(user);
-    if (
-      req.cookies.storeID &&
-      user.store.findIndex(req.cookies.storeID) != -1
-    ) {
+    if (!req.cookies.storeID && !req.params.storeID) {
       next();
     } else if (
-      req.params.storeID &&
-      user.store.findIndex(req.params.storeID as any) != -1
+      req.cookies.storeID &&
+      (user.store as unknown as Types.ObjectId[]).some(checkStoreID)
     ) {
-      next();
-    } else if (!req.cookies.storeID && !req.params.storeID) {
       next();
     } else {
       res
