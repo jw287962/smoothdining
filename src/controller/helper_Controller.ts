@@ -3,8 +3,27 @@ import { UserInterface } from "../model/User";
 import { ValidationError } from "express-validation";
 import { validationResult } from "express-validator";
 import { shiftInterface } from "../model/stores/Shifts";
+import { ObjectId } from "mongodb";
 
 export const helperFunctions = {
+  userHasStoreID: (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user as UserInterface;
+    console.log(user);
+    if (req.cookies.storeID && user.store.findIndex(req.cookies.storeID)) {
+      next();
+    } else if (
+      req.params.storeID &&
+      user.store.findIndex(req.params.storeID as any)
+    ) {
+      next();
+    } else if (!req.cookies.storeID && !req.params.storeID) {
+      next();
+    } else {
+      res
+        .status(401)
+        .json({ message: "You do not have permission to view this store!" });
+    }
+  },
   isAuthenticatedOwner: (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as UserInterface;
     // if (user) {

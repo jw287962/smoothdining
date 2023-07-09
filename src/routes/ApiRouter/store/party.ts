@@ -1,9 +1,11 @@
 import { Response, Request, NextFunction } from "express";
 import partyController from "../../../controller/party_Controller";
+import { helperFunctions } from "../../../controller/helper_Controller";
 
 const express = require("express");
 const router = express.Router();
 
+router.use(helperFunctions.userHasStoreID); //should make sure storeID is under user
 router.get("/", partyController.queryAllPartyToday);
 router.get("/:dateID", partyController.queryAllPartyOnDate);
 router.post(

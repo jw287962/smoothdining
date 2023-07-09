@@ -25,7 +25,12 @@ router.get("/", function (req: Request, res: Response, next: NextFunction) {
   res.json({ message: "try /stores or /store" });
 });
 router.get("/stores", storecontroller.getStores);
-router.get("/store/:storeID", storecontroller.getStoreData);
+
+router.get(
+  "/store/:storeID",
+  helperFunctions.userHasStoreID,
+  storecontroller.getStoreData
+);
 // router.get("/store", );
 router.post(
   "/store",
