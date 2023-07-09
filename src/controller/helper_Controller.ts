@@ -9,11 +9,14 @@ export const helperFunctions = {
   userHasStoreID: (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as UserInterface;
     console.log(user);
-    if (req.cookies.storeID && user.store.findIndex(req.cookies.storeID)) {
+    if (
+      req.cookies.storeID &&
+      user.store.findIndex(req.cookies.storeID) != -1
+    ) {
       next();
     } else if (
       req.params.storeID &&
-      user.store.findIndex(req.params.storeID as any)
+      user.store.findIndex(req.params.storeID as any) != -1
     ) {
       next();
     } else if (!req.cookies.storeID && !req.params.storeID) {
