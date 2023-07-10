@@ -96,8 +96,8 @@ export const waiterController = {
   },
   validation: {
     validateBodyWaiterData: [
-      body("name").optional().escape(),
-      body("birthdate").optional().escape(),
+      body("name").escape(),
+      body("birthdate").optional().escape().default(undefined),
       cookie("storeid").escape(),
       body("maxActiveTableForPermission").isNumeric().optional(),
       body("waitToSitUntilEntreeOut").isNumeric().optional(),
