@@ -42,6 +42,13 @@ GET :file_folder:: Get Stores/Restaurants under Account
 - **Request Body:**
 - **Response:** Returns ALL stores under your account
 
+GET :file_folder:: Get Stores/Restaurants under Account
+
+- **URL:** api/account/store/:storeID
+- **Method:** Get
+- **Request Body:** put storeID in param to get specific storeData
+- **Response:** Returns ALL stores under your account
+
 POST :pencil: : Create a new Store/Restaurant under Account
 
 - **URL:** /api/account/store

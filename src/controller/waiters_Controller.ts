@@ -1,7 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import { UserInterface } from "../model/User";
 import Waiter from "../model/stores/Waiter";
-import { body, header, query, validationResult } from "express-validator";
+import {
+  body,
+  cookie,
+  header,
+  query,
+  validationResult,
+} from "express-validator";
 import { Db, ObjectId } from "mongodb";
 import { helperFunctions, parseStatusQuery } from "./helper_Controller";
 import { request } from "http";
@@ -22,13 +28,13 @@ export const waiterController = {
     res: Response,
     next: NextFunction
   ) => {
-    const header = req.headers;
+    const headers = req.cookies;
 
     const status = parseStatusQuery(req.query);
-
+    console.log("headers", headers);
     try {
       const result = await Waiter.find({
-        store: new ObjectId(header.storeid),
+        store: new ObjectId(headers.storeid),
         status: status,
       });
       res.json({ result: result });
@@ -77,12 +83,13 @@ export const waiterController = {
     res: Response,
     next: NextFunction
   ) => {
-    const header = req.headers;
+    const header = req.cookies;
     if (header.storeid) {
       next();
     } else {
       res.status(400).json({
-        error: "Missing store Header Data in WaiterController",
+        error:
+          "Missing store Header Data in WaiterController in req.cookies.storeID",
         controller: "validateHeaderStoreData",
         // header: header,
       });
@@ -92,7 +99,7 @@ export const waiterController = {
     validateBodyWaiterData: [
       body("name").optional().escape(),
       body("birthdate").optional().escape(),
-      header("storeID").escape(),
+      cookie("storeid").escape(),
       body("maxActiveTableForPermission").isNumeric().optional(),
       body("waitToSitUntilEntreeOut").isNumeric().optional(),
       helperFunctions.expressValidationMiddleware,

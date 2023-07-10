@@ -7,23 +7,20 @@ import mongoose, { ObjectId, Types } from "mongoose";
 
 export const helperFunctions = {
   userHasStoreID: (req: Request, res: Response, next: NextFunction) => {
-    const storeID: string = req.params.storeID || req.cookies.storeID;
+    const storeID: string = req.params.storeID || req.cookies.storeid;
     const checkStoreID = (value: Types.ObjectId) => {
       return value.equals(storeID);
     };
 
     const user = req.user as UserInterface;
-    if (!req.cookies.storeID && !req.params.storeID) {
+    if (!req.cookies.storeid && !req.params.storeID) {
       next();
-    } else if (
-      req.cookies.storeID &&
-      (user.store as unknown as Types.ObjectId[]).some(checkStoreID)
-    ) {
+    } else if ((user.store as unknown as Types.ObjectId[]).some(checkStoreID)) {
       next();
     } else {
       res
         .status(401)
-        .json({ message: "You do not have permission to view this store!" });
+        .json({ message: "You do not have permission to view this store! " });
     }
   },
   isAuthenticatedOwner: (req: Request, res: Response, next: NextFunction) => {
