@@ -101,8 +101,9 @@ export const waiterController = {
     } else {
       res.status(400).json({
         error:
-          "Missing store Header Data in WaiterController in req.cookies.storeID",
+          "Missing store Header Data in WaiterController in req.cookies.storeid",
         controller: "validateHeaderStoreData",
+        header: header,
         // header: header,
       });
     }
