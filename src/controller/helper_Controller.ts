@@ -89,10 +89,13 @@ export function removeTimeinDate(date: Date) {
   return date;
 }
 
-export function parseStatusQuery(query: Request["query"]) {
+export function parseStatusQuery(query: Request["query"]): boolean | undefined {
+  if (typeof query.status === "string") {
+    query.status.toLowerCase();
+  }
   const isActive =
     query.status === "true" || query.status === "false"
-      ? JSON.parse(query.status.toLowerCase())
+      ? JSON.parse(query.status)
       : undefined;
 
   return isActive;
