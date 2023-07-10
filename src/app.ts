@@ -104,9 +104,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use((req, res: Response, next: NextFunction) => {
+  // res.header(
+  // "Access-Control-Allow-Headers",
+  // "Content-Type, POST, GET, OPTIONS, DELETE"
+  // );
   res.header(
     "Access-Control-Allow-Headers",
-    "Content-Type, POST, GET, OPTIONS, DELETE"
+    "Origin, X-Requested-With, Content-Type, Accept"
   );
   next();
 });
