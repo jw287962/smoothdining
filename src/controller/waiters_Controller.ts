@@ -31,7 +31,6 @@ export const waiterController = {
     const headers = req.cookies;
 
     const status = parseStatusQuery(req.query);
-    console.log("headers", headers);
     try {
       const result = await Waiter.find({
         store: new ObjectId(headers.storeid),
@@ -47,7 +46,7 @@ export const waiterController = {
     }
   },
   addNewWaiter: async (req: RequestEdit, res: Response, next: NextFunction) => {
-    const header = req.headers;
+    const header = req.cookies;
     const waiterFormData = req.body;
 
     try {
