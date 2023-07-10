@@ -103,7 +103,9 @@ export const waiterController = {
         error:
           "Missing store Header Data in WaiterController in req.cookies.storeid",
         controller: "validateHeaderStoreData",
-        header: header,
+        headers: req.headers,
+        header: req.header,
+
         // header: header,
       });
     }
