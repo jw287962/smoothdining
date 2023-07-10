@@ -38,6 +38,10 @@ export const userController = {
   },
   userRegister: async (req: Request, res: Response, next: NextFunction) => {
     const user = req.body;
+    const found = await User.find({ username: user });
+    if (found) {
+      throw new Error("Username is taken");
+    }
     if (user.repeatpassword != user.password) {
       res.status(401).json({
         error: true,
