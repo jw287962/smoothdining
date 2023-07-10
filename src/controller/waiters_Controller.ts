@@ -44,7 +44,7 @@ export const waiterController = {
       const result = await Waiter.find(search);
       res.json({ result: result });
     } catch (e) {
-      res.json({
+      res.status(400).json({
         error: e,
         message: "failed to get all waiters",
         controller: "getAllWaiters",
