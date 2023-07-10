@@ -76,7 +76,7 @@ export const helperFunctions = {
     } else {
       res
         .status(400)
-        .send({ error: result.array(), message: "ExpressValidation Failed" });
+        .json({ error: result.array(), message: "ExpressValidation Failed" });
     }
     // } catch (e) {
     //   res.status(400).json({ error: e, message: "expressValidationFailed" });
