@@ -105,8 +105,12 @@ POST :pencil: : ADD NEW WAITER
 
 - **URL:** '/api/account/store/waiters'
 - **Method:** POST
-- **Request:** req.body { name: string , birtdate: Date ,
-  Preferences: {maxActiveTableForPermission: number waitToSitUntilEntreeOut: number}}
+- **Request:**
+  body("name") Optional
+  body("birthdate") Optional
+  cookie("storeid")
+  body("maxActiveTableForPermission") Optional Number
+  body("waitToSitUntilEntreeOut") Optional Number (At this number of active tables, you should ask to sit if there customres do not have food at the table yet)
 - **Response:** Success/Failure
 
 PUT :pencil2: : UPDATE WAITER DETAILS
