@@ -51,10 +51,7 @@ export const storecontroller = {
         // const user = req.user as UserInterface;
 
         const data = await Store.findById(new ObjectId(storeID));
-        res.setHeader(
-          "Set-Cookie",
-          `storeid=${storeID}; Path=/; HttpOnly; Secure; SameSite=none`
-        );
+        res.setHeader("storeid", storeID);
         // ;HttpOnly; Secure;
         res.json({ store: data, results: storeID });
       } catch (e) {
