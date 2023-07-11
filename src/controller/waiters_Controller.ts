@@ -33,10 +33,10 @@ export const waiterController = {
     res: Response,
     next: NextFunction
   ) => {
-    const headers = req.cookies;
+    const headers = req.cookies.storeid || req.params.storeID;
 
     const status = parseStatusQuery(req.query);
-    const search: waiterFinderType = { store: new ObjectId(headers.storeid) };
+    const search: waiterFinderType = { store: new ObjectId(headers) };
     if (typeof status === "boolean") {
       search.status = status;
     }
