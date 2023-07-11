@@ -83,6 +83,12 @@ export const helperFunctions = {
     //   res.status(400).json({ error: e, message: "expressValidationFailed" });
     // }
   },
+  nocache: (req: Request, res: Response, next: NextFunction) => {
+    res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
+    res.header("Expires", "-1");
+    res.header("Pragma", "no-cache");
+    next();
+  },
 };
 
 export function removeTimeinDate(date: Date) {
