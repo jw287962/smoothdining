@@ -7,13 +7,14 @@ import mongoose, { ObjectId, Types } from "mongoose";
 
 export const helperFunctions = {
   userHasStoreID: (req: Request, res: Response, next: NextFunction) => {
-    const storeID: string = req.params.storeID || req.cookies.storeid;
+    const storeID: string =
+      req.params.storeID || req.cookies.storeid || req.headers.storeid;
     const checkStoreID = (value: Types.ObjectId) => {
       return value.equals(storeID);
     };
 
     const user = req.user as UserInterface;
-    if (!req.cookies.storeid && !req.params.storeID) {
+    if ((!req.cookies.storeid && !req.params.storeID) || !req.headers.storeid) {
       next();
     } else if ((user.store as unknown as Types.ObjectId[]).some(checkStoreID)) {
       next();
