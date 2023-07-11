@@ -4,6 +4,10 @@ DEPLOYED with AZURE Pipelines: https://smoothdining.azurewebsites.net/
 ALL REQUEST API CALLS are built based on the HOSTLINK
 **{hostLink}/...**
 
+# Documentation TODO
+
+I should make a backend route that holds documentations with pug and router in /docs
+
 # smoothdining
 
 - May implement a way for customers to search and ask for a reservation and requestted time, and which the owner/host would configure and confirm.
