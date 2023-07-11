@@ -7,8 +7,7 @@ import { Types } from "mongoose";
 
 export const helperFunctions = {
   userHasStoreID: (req: Request, res: Response, next: NextFunction) => {
-    const storeID: string =
-      req.params.storeID || req.cookies.storeid || req.headers.storeid;
+    const storeID: string = getStoreID(req);
     const checkStoreID = (value: Types.ObjectId) => {
       return value.equals(storeID);
     };
@@ -105,3 +104,7 @@ export function parseStatusQuery(query: Request["query"]): boolean | undefined {
 
 export type groupShiftsType = Record<number, shiftInterface[]>;
 export const dateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+
+export function getStoreID(req: Request) {
+  return req.cookies.storeid || req.params.storeID || req.headers.storeid;
+}

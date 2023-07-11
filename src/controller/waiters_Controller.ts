@@ -9,7 +9,11 @@ import {
   validationResult,
 } from "express-validator";
 import { Db, ObjectId } from "mongodb";
-import { helperFunctions, parseStatusQuery } from "./helper_Controller";
+import {
+  getStoreID,
+  helperFunctions,
+  parseStatusQuery,
+} from "./helper_Controller";
 import { request } from "http";
 
 // interface headerData extends Record<string, string | string[] | undefined> {
@@ -33,8 +37,7 @@ export const waiterController = {
     res: Response,
     next: NextFunction
   ) => {
-    const headers =
-      req.cookies.storeid || req.params.storeID || req.headers.storeid;
+    const headers = getStoreID(req);
 
     const status = parseStatusQuery(req.query);
     const search: waiterFinderType = { store: new ObjectId(headers) };
@@ -50,12 +53,13 @@ export const waiterController = {
         message:
           "failed to get all waiters. takes params or cookie header of storeID",
         controller: "getAllWaiters",
-        headers: req.headers.storeid
+        headers: req.headers.storeid,
       });
     }
   },
   addNewWaiter: async (req: RequestEdit, res: Response, next: NextFunction) => {
-    const header = req.cookies.storeid || req.params.storeID;
+    const header =
+      req.cookies.storeid || req.params.storeID || req.headers.storeid;
     const waiterFormData = req.body;
     const found = await Waiter.find({
       store: header,
