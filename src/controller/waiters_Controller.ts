@@ -55,6 +55,7 @@ export const waiterController = {
         controller: "getAllWaiters",
         headers: req.headers.storeid,
       });
+      console.log(headers);
     }
   },
   addNewWaiter: async (req: RequestEdit, res: Response, next: NextFunction) => {

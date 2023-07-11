@@ -54,6 +54,7 @@ const corsOptions = {
     "OPTIONS",
     "DELETE",
     "Cookie",
+    // "storeid",
   ],
 };
 const dbString: string =
@@ -77,7 +78,7 @@ app.use(
       maxAge: 1000 * 60 * 60 * 24,
       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
       secure: process.env.NODE_ENV === "production",
-      httpOnly: true,
+      httpOnly: process.env.NODE_ENV === "production" ? true : false,
     },
     proxy: true,
   })
@@ -104,13 +105,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use((req, res: Response, next: NextFunction) => {
-  // res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-  res.header("Access-Control-Allow-Credentials", "true"); // allow sending and receiving cookies
+  //   // res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  //   // res.header("Access-Control-Allow-Credentials", "true"); // allow sending and receiving cookies
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"

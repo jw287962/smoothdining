@@ -8,6 +8,7 @@ import { Joi } from "express-validation";
 import Store, { storeInterface } from "../model/stores/Store";
 import User, { UserInterface } from "../model/User";
 import { ObjectId } from "mongodb";
+import { getStoreID } from "./helper_Controller";
 
 export const storecontroller = {
   getStores: async (req: Request, res: Response, next: NextFunction) => {
@@ -45,7 +46,8 @@ export const storecontroller = {
   },
 
   getStoreData: async (req: Request, res: Response, next: NextFunction) => {
-    const storeID: string = req.params.storeID;
+    const storeID: string = getStoreID(req);
+
     if (storeID) {
       try {
         // const user = req.user as UserInterface;
