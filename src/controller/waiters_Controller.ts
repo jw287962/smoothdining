@@ -46,16 +46,17 @@ export const waiterController = {
     } catch (e) {
       res.status(400).json({
         error: e,
-        message: "failed to get all waiters",
+        message:
+          "failed to get all waiters. takes params or cookie header of storeID",
         controller: "getAllWaiters",
       });
     }
   },
   addNewWaiter: async (req: RequestEdit, res: Response, next: NextFunction) => {
-    const header = req.cookies;
+    const header = req.cookies.storeid || req.params.storeID;
     const waiterFormData = req.body;
     const found = await Waiter.find({
-      store: header.storeid,
+      store: header,
       name: waiterFormData.name,
     });
 
@@ -71,7 +72,7 @@ export const waiterController = {
             waiterFormData.maxActiveTableForPermission,
           waitToSitUntilEntreeOut: waiterFormData.waitToSitUntilEntreeOut,
         },
-        store: header.storeid,
+        store: header,
         isActive: true,
       });
 
@@ -95,8 +96,8 @@ export const waiterController = {
     res: Response,
     next: NextFunction
   ) => {
-    const header = req.cookies;
-    if (header.storeid) {
+    const header = req.cookies.storeid || req.params.storeID;
+    if (header) {
       next();
     } else {
       res.status(400).json({

@@ -8,13 +8,13 @@ const router = express.Router();
 // /api/account/store/waiter
 router.use(helperFunctions.userHasStoreID); //should make sure storeID is under user
 router.get(
-  "/:waiterID",
+  "/:storeID",
   waiterController.validateHeaderStoreData,
   waiterController.getAllWaiters
 );
 
 router.post(
-  "/",
+  "/:storeID",
   waiterController.validateHeaderStoreData,
   waiterController.validation.validateBodyWaiterData,
   waiterController.addNewWaiter
