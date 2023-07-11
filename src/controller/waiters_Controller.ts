@@ -33,7 +33,8 @@ export const waiterController = {
     res: Response,
     next: NextFunction
   ) => {
-    const headers = req.cookies.storeid || req.params.storeID;
+    const headers =
+      req.cookies.storeid || req.params.storeID || req.headers.storeid;
 
     const status = parseStatusQuery(req.query);
     const search: waiterFinderType = { store: new ObjectId(headers) };
@@ -49,6 +50,7 @@ export const waiterController = {
         message:
           "failed to get all waiters. takes params or cookie header of storeID",
         controller: "getAllWaiters",
+        headers: req.headers.storeid
       });
     }
   },
@@ -96,7 +98,8 @@ export const waiterController = {
     res: Response,
     next: NextFunction
   ) => {
-    const header = req.cookies.storeid || req.params.storeID;
+    const header =
+      req.cookies.storeid || req.params.storeID || req.headers.storeid;
     if (header) {
       next();
     } else {
