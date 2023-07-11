@@ -3,7 +3,7 @@ import { UserInterface } from "../model/User";
 import { ValidationError } from "express-validation";
 import { validationResult } from "express-validator";
 import { shiftInterface } from "../model/stores/Shifts";
-import mongoose, { ObjectId, Types } from "mongoose";
+import { Types } from "mongoose";
 
 export const helperFunctions = {
   userHasStoreID: (req: Request, res: Response, next: NextFunction) => {
@@ -14,14 +14,15 @@ export const helperFunctions = {
     };
 
     const user = req.user as UserInterface;
-    if ((!req.cookies.storeid && !req.params.storeID) || !req.headers.storeid) {
+    if (!req.cookies.storeid && !req.params.storeID && !req.headers.storeid) {
       next();
     } else if ((user.store as unknown as Types.ObjectId[]).some(checkStoreID)) {
       next();
     } else {
-      res
-        .status(401)
-        .json({ message: "You do not have permission to view this store! " });
+      res.status(401).json({
+        message: "You do not have permission to view this store! ",
+        directHeader: req.headers.storeid,
+      });
     }
   },
   isAuthenticatedOwner: (req: Request, res: Response, next: NextFunction) => {
