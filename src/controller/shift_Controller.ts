@@ -58,7 +58,7 @@ const shiftController = {
   },
   queryShiftsDate: async (req: Request, res: Response, next: NextFunction) => {
     // const store = req.cookies.storeID;
-    const waiter = req.params.waiterID;
+    // const waiter = req.params.waiterID;
     const dateID = req.params.dateID;
     if (!Date.parse(dateID)) {
       return res.status(400).json({
@@ -79,7 +79,7 @@ const shiftController = {
         {
           $match: {
             date: date,
-            waiter: new ObjectId(waiter),
+            // waiter: new ObjectId(waiter),
           },
         },
         {

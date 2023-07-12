@@ -6,9 +6,11 @@ const express = require("express");
 const router = express.Router();
 
 router.use(helperFunctions.userHasStoreID);
+
+// router.get("/:dateID", shiftController.queryShiftsToday);
 router.get("/:waiterID", shiftController.queryShiftsToday);
 
-router.get("/:waiterID/:dateID", shiftController.queryShiftsDate);
+router.get("/:dateID", shiftController.queryShiftsDate);
 
 router.post(
   "/:waiterID",
