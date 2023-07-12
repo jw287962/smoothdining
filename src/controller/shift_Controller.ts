@@ -83,12 +83,25 @@ const shiftController = {
             // waiter: new ObjectId(waiter),
           },
         },
+        // {
+        //   $lookup: {
+        //     from: "parties",
+        //     localField: "shiftTables",
+        //     foreignField: "_id",
+        //     as: "shiftTables",
+        //   },
+        // },
         {
           $lookup: {
-            from: "Party",
-            localField: "shiftTables",
+            from: "waiters",
+            localField: "waiter",
             foreignField: "_id",
-            as: "shiftTables",
+            as: "waiter",
+          },
+        },
+        {
+          $sort: {
+            section: 1,
           },
         },
       ]);
