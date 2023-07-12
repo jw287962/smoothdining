@@ -168,12 +168,12 @@ const shiftController = {
       if (found[0].sectionTaken > 0) {
         res.status(403).json({
           message: "Section Number is taken!, choose a different section",
-          error: "Section Number is taken!, choose a different section",
+          error: "Section Number is taken! Choose a different section",
         });
       } else if (found[0].samePerson > 0) {
         res.status(403).json({
           message:
-            "You can't choose to work 2 sections on the same shift, choose a different section",
+            "You can't choose to work 2 sections on the same shift! Choose a different section",
           error:
             "You can't choose to work 2 sections on the same shift, choose a different section",
         });
