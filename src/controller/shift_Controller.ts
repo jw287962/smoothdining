@@ -114,20 +114,32 @@ const shiftController = {
     const shiftData = req.body;
 
     try {
-      const shiftsData = {
+      const found = await Shifts.find({
         date: date,
-        section: shiftData.section,
-        waiter: waiter,
         shiftNumber: shiftData.shiftNumber,
-        shiftTables: [],
-      };
-
-      const result = await Shifts.create(shiftsData);
-
-      res.json({
-        message: "Succesfully Created Shifts",
-        result: result,
+        section: shiftData.section,
       });
+      if (found) {
+        res.status(403).json({
+          message: "Shift Number is taken!, choose a different section",
+          error: "error",
+        });
+      } else {
+        const shiftsData = {
+          date: date,
+          section: shiftData.section,
+          waiter: waiter,
+          shiftNumber: shiftData.shiftNumber,
+          shiftTables: [],
+        };
+
+        const result = await Shifts.create(shiftsData);
+
+        res.json({
+          message: "Succesfully Created Shifts",
+          result: result,
+        });
+      }
     } catch (e) {
       res.status(400).json({ message: "Failed to Create New Shift", error: e });
     }
