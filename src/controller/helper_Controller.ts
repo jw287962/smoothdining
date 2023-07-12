@@ -4,7 +4,10 @@ import { ValidationError } from "express-validation";
 import { validationResult } from "express-validator";
 import { shiftInterface } from "../model/stores/Shifts";
 import { Types } from "mongoose";
+import { dbString } from "../app";
 
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 export const helperFunctions = {
   userHasStoreID: (req: Request, res: Response, next: NextFunction) => {
     const storeID: string = getStoreID(req);
@@ -53,8 +56,11 @@ export const helperFunctions = {
         const errorMessage = err.details?.body?.[0].message;
         res.status(err.statusCode).json({ error: err, message: errorMessage });
       } else if (err) {
-        console.log("handleForm error", err);
-        res.status(500).json({ error: err, message: "handleForm Error" });
+        console.log("handleForm error, not a validation error", err);
+        res.status(500).json({
+          error: err,
+          message: "handleForm Error| not a validation error",
+        });
       } else {
         next();
       }

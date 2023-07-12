@@ -7,17 +7,14 @@ import {
 } from "express";
 import { HttpError } from "http-errors";
 import mongoose from "mongoose";
-import passport from "passport";
 // const { Express, NextFunction, Request, Response } = require("express");
 // const { HttpError } = require("http-errors");
 // const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const cors = require("cors");
 
-const session = require("express-session");
-const MongoDBStore = require("connect-mongodb-session")(session);
+// const session = require("express-session");
 
-const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -54,35 +51,38 @@ const corsOptions = {
     "OPTIONS",
     "DELETE",
     "Cookie",
-    // "storeid",
+    "storeid",
+    "Authorization",
   ],
 };
-const dbString: string =
+export const dbString: string =
   process.env.MONGODB_URI ||
   process.env.CUSTOMCONNSTR_MONGODB_URI ||
   "mongodb+srv://your_user_name:your_password@cluster0.lz91hw2.mongodb.net/blog-api?retryWrites=true&w=majority";
-const store = new MongoDBStore({
-  uri: dbString, // MongoDB connection URI
-  collection: "sessions", // Collection name for session data
-});
+
+// const store = new MongoDBStore({
+//   uri: dbString, // MongoDB connection URI
+//   collection: "sessions", // Collection name for session data
+// });
 
 // app.set("trust proxy", true);
-app.use(
-  session({
-    name: "sessionId",
-    secret: process.env.SECRET,
-    saveUninitialized: false, //Should set to false in production
-    resave: false,
-    store: store,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24,
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-      secure: process.env.NODE_ENV === "production",
-      httpOnly: process.env.NODE_ENV === "production" ? true : false,
-    },
-    proxy: true,
-  })
-);
+// app.use(
+// session({
+//   name: "sessionId",
+//   secret: process.env.SECRET,
+//   saveUninitialized: false, //Should set to false in production
+//   resave: false,
+//   store: store,
+//   Headers: {}
+//   cookie: {
+//     maxAge: 1000 * 60 * 60 * 24,
+//     sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+//     secure: process.env.NODE_ENV === "production",
+//     httpOnly: process.env.NODE_ENV === "production" ? true : false,
+//   },
+//   proxy: true,
+// })
+// );
 app.use(cors(corsOptions));
 // view engine setup
 
@@ -98,7 +98,7 @@ const limiter = RateLimit({
 // Apply rate limiter to all requests
 app.use(limiter);
 
-app.use(passport.initialize());
+// app.use(passport.initialize());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -111,6 +111,7 @@ app.use((req, res: Response, next: NextFunction) => {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
+  res.header("Access-Control-Expose-Headers", "x-access-token");
   next();
 });
 

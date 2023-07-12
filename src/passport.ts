@@ -5,17 +5,48 @@ import passportLocal, {
 } from "passport-local";
 
 import User, { UserInterface } from "./model/User";
+import { JwkKeyExportOptions } from "crypto";
 const crypto = require("crypto");
 // const jwt = require("jsonwebtoken");
 
 const LocalStrategy = passportLocal.Strategy;
 
 type VerifyCallback = passportLocal.VerifyFunction;
+
+var JwtStrategy = require("passport-jwt").Strategy,
+  ExtractJwt = require("passport-jwt").ExtractJwt;
+const dotenv = require("dotenv").config();
+// console.log("emtpy");
+var opts = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.SECRET,
+  // issuer: "",
+  // audience: "yoursite.net",
+};
+passport.use(
+  new JwtStrategy(opts, async function (jwt_payload: any, done: any) {
+    // console.log("hi", jwt_payload, done);
+
+    try {
+      const user = await User.findOne({ _id: jwt_payload.user });
+
+      if (user) {
+        return done(null, user);
+      } else {
+        return done(null, false);
+        // or create a new account
+      }
+    } catch (err) {
+      return done(err, false);
+    }
+  })
+);
 passport.use(
   new LocalStrategy(
     {
       usernameField: "username",
       passwordField: "password",
+      session: false,
     },
 
     function (username: string, password: string, cb) {
@@ -64,41 +95,43 @@ export const genPassword = function genPassword(password: string) {
   };
 };
 
-passport.serializeUser(function (user: any, done) {
-  try {
-    done(null, user.id);
-  } catch (e) {
-    console.log("seralize ERROR");
-  }
-});
-interface checkUser extends UserInterface {
-  login?: Boolean;
-}
-passport.deserializeUser(async function (id, done) {
-  try {
-    const user = await User.findById(id);
-
-    if (user) {
-      // const userSuccess: checkUser = user;
-      // userSuccess.login = true;
-      done(null, user);
-    } else {
-      done(null, user);
-    }
-  } catch (err) {
-    console.log("deserailize ERROR", err);
-    done(err);
-  }
-});
-
-// checking
-
-// module.exports.verifyToken = function verifyToken(req, res, next) {
-//   const token = req.headers["token"];
-//   if (typeof token !== "undefined") {
-//     req.token = token;
-//     next();
-//   } else {
-//     next();
+// passport.serializeUser(function (user: any, done) {
+//   console.log("serialize");
+//   try {
+//     done(null, user.id);
+//   } catch (e) {
+//     console.log("seralize ERROR");
 //   }
-// };
+// });
+// interface checkUser extends UserInterface {
+//   login?: Boolean;
+// }
+// passport.deserializeUser(async function (id, done) {
+//   console.log("derialize");
+//   try {
+//     const user = await User.findById(id);
+
+//     if (user) {
+//       // const userSuccess: checkUser = user;
+//       // userSuccess.login = true;
+//       done(null, user);
+//     } else {
+//       done(null, user);
+//     }
+//   } catch (err) {
+//     console.log("deserailize ERROR", err);
+//     done(err);
+//   }
+// });
+
+// // checking
+
+// // module.exports.verifyToken = function verifyToken(req, res, next) {
+// //   const token = req.headers["token"];
+// //   if (typeof token !== "undefined") {
+// //     req.token = token;
+// //     next();
+// //   } else {
+// //     next();
+// //   }
+// // };

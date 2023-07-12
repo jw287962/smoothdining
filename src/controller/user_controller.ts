@@ -4,29 +4,54 @@ import User, { UserInterface } from "../model/User";
 import { helperFunctions } from "./helper_Controller";
 import { genPassword } from "../passport";
 // const validPassword = require("../").validPassword;
-
+const jwt = require("jsonwebtoken");
 import { Joi } from "express-validation";
+
+interface RequestSession extends Request {
+  sessionID?: string;
+}
 export const userController = {
-  userLogin: (req: Request, res: Response, next: NextFunction) => {
-    const { username } = req.body;
-    const user = req.user as UserInterface;
+  userLogin: (req: RequestSession, res: Response, next: NextFunction) => {
+    const user = (req.user as UserInterface)._id;
+    // console.log(req.sessionID);
+    // console.log(req.cookies.sessionId);
+
+    // console.log(req.headers);
     try {
-      res.json({
-        message: "login successfully. Welcome" + username,
-        userID: user._id,
-        host: req.hostname,
-      });
+      jwt.sign(
+        { user: user },
+        process.env.SECRET,
+        { expiresIn: "1d" },
+        (err: Error, token: string) => {
+          if (err) {
+            res.status(401).json({ message: "JWT SIgn in error", error: err });
+          } else {
+            // req.headers.authorization = `bearer="${token}"`;
+            res.header("x-access-token", token);
+            res.json({
+              message: "Login Successfully! Welcome!",
+              userID: user,
+            });
+          }
+        }
+      );
+      // next();
+      // res.json({
+      //   message: "login successfully. Welcome" + username,
+      //   userID: user._id,
+      //   host: req.hostname,
+      // });
     } catch (e: any) {
       res.status(500).json({ error: e, message: "Failed to login" });
     }
   },
+
   userSignout: (req: Request, res: Response, next: NextFunction) => {
     try {
       req.logout((err) => {
         if (err) {
           throw err;
         }
-        res.clearCookie("sessionId");
 
         res.json({
           message: "SIGNOUT Successfully",
