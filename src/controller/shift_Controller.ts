@@ -121,7 +121,13 @@ const shiftController = {
         shiftNumber: shiftData.shiftNumber,
         section: shiftData.section,
       });
-      if (found.length > 0) {
+
+      const samePerson = await Shifts.find({
+        date: date,
+        shiftNumber: shiftData.shiftNumber,
+        // section: shiftData.section,
+      });
+      if (found.length > 0 || samePerson.length > 0) {
         res.status(403).json({
           message: "Shift Number is taken!, choose a different section",
           error: "error",
