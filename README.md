@@ -1,8 +1,8 @@
 # API Requests
 
 DEPLOYED with AZURE Pipelines: https://smoothdining.azurewebsites.net/
-ALL REQUEST API CALLS are built based on the HOSTLINK
-**{hostLink}/...**
+
+JWT + LOCAL (WILL IMPLEMENT OAUTH FOR GOOGLE LOGIN IN THE FUTURE)
 
 # Documentation TODO
 
