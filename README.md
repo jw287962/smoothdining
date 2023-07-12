@@ -127,6 +127,13 @@ PUT :pencil2: : UPDATE WAITER DETAILS
 
 ### Shifts Handling
 
+POST :pencil: : CREATE NEW SHIFT FOR WAITER
+
+- **URL:** '/api/account/store/shifts/:waiterID`
+- **Method:** POST
+- **Request:** req.body { section: shiftSection, shiftNumber: shiftNumber}
+- **Response:** Success/Failure error
+
 # TESTS Using JEST
 
 ## Plan to implement full test coverage in the future.
