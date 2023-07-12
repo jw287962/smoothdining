@@ -111,34 +111,80 @@ const shiftController = {
     next: NextFunction
   ) => {
     const waiter = req.params.waiterID;
-
+    const store = req.headers.storeid;
     const date = removeTimeinDate(new Date());
     const shiftData = req.body;
 
     try {
-      const found = await Shifts.find({
-        date: date,
-        shiftNumber: shiftData.shiftNumber,
-        section: shiftData.section,
-      });
+      const found = await Shifts.aggregate([
+        {
+          $match: {
+            date: date,
+            shiftNumber: shiftData.shiftNumber,
+            // store: store,
+          },
+        },
+        {
+          $lookup: {
+            from: "shifts",
+            let: { waiter: new ObjectId(waiter) },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [{ $eq: ["$waiter", "$$waiter"] }],
+                  },
+                },
+              },
+            ],
+            as: "samePerson",
+          },
+        },
+        {
+          $lookup: {
+            from: "shifts",
+            let: { sectionNumber: shiftData.section * 1 },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [{ $eq: ["$section", "$$sectionNumber"] }],
+                  },
+                },
+              },
+            ],
+            as: "sectionTaken",
+          },
+        },
+        {
+          $project: {
+            sectionTaken: { $size: "$sectionTaken" },
+            samePerson: { $size: "$samePerson" },
+          },
+        },
+      ]);
 
-      const samePerson = await Shifts.find({
-        date: date,
-        shiftNumber: shiftData.shiftNumber,
-        // section: shiftData.section,
-      });
-      if (found.length > 0 || samePerson.length > 0) {
+      console.log("found", found);
+      if (found[0].sectionTaken > 0) {
         res.status(403).json({
-          message: "Shift Number is taken!, choose a different section",
-          error: "error",
+          message: "Section Number is taken!, choose a different section",
+          error: "error CANNOT REPEAT SECTIONS OR USERS",
+        });
+      } else if (found[0].samePerson > 0) {
+        res.status(403).json({
+          message:
+            "You can't choose to work 2 sections on the same shift, choose a different section",
+          error: "error CANNOT REPEAT SECTIONS OR USERS",
         });
       } else {
+        // create
         const shiftsData = {
           date: date,
           section: shiftData.section,
           waiter: waiter,
           shiftNumber: shiftData.shiftNumber,
           shiftTables: [],
+          store: store,
         };
 
         const result = await Shifts.create(shiftsData);

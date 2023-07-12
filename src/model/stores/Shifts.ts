@@ -4,6 +4,7 @@ export interface shiftInterface {
   date: Date;
   section: number;
   waiter: ObjectId;
+  store: ObjectId;
   shiftNumber: number; //for Grouping
   shiftTables: ObjectId[];
 }
@@ -16,6 +17,7 @@ const shiftSchema = new Schema(
     },
     section: { type: Number, required: true },
     waiter: { type: Schema.Types.ObjectId, ref: "Waiters", required: true },
+    store: { type: Schema.Types.ObjectId, ref: "Store", required: true },
     shiftNumber: { type: Number, required: true }, //for Grouping
     shiftTables: [{ type: Schema.Types.ObjectId, ref: "Party" }],
     // store: { type: Schema.Types.ObjectId, ref: "Store", required: true },
