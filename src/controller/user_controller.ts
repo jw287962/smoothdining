@@ -13,10 +13,7 @@ interface RequestSession extends Request {
 export const userController = {
   userLogin: (req: RequestSession, res: Response, next: NextFunction) => {
     const user = (req.user as UserInterface)._id;
-    // console.log(req.sessionID);
-    // console.log(req.cookies.sessionId);
 
-    // console.log(req.headers);
     try {
       jwt.sign(
         { user: user },
@@ -35,12 +32,6 @@ export const userController = {
           }
         }
       );
-      // next();
-      // res.json({
-      //   message: "login successfully. Welcome" + username,
-      //   userID: user._id,
-      //   host: req.hostname,
-      // });
     } catch (e: any) {
       res.status(500).json({ error: e, message: "Failed to login" });
     }
@@ -48,14 +39,10 @@ export const userController = {
 
   userSignout: (req: Request, res: Response, next: NextFunction) => {
     try {
-      req.logout((err) => {
-        if (err) {
-          throw err;
-        }
-
-        res.json({
-          message: "SIGNOUT Successfully",
-        });
+      // ADD TO BLOCKED JWT TOKEN
+      req.headers.authorization
+      res.json({
+        message: "SIGNOUT Successfully",
       });
     } catch (e) {
       res.status(500).json({ message: "signout failed", error: e });
