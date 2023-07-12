@@ -168,13 +168,14 @@ const shiftController = {
       if (found[0].sectionTaken > 0) {
         res.status(403).json({
           message: "Section Number is taken!, choose a different section",
-          error: "error CANNOT REPEAT SECTIONS OR USERS",
+          error: "Section Number is taken!, choose a different section",
         });
       } else if (found[0].samePerson > 0) {
         res.status(403).json({
           message:
             "You can't choose to work 2 sections on the same shift, choose a different section",
-          error: "error CANNOT REPEAT SECTIONS OR USERS",
+          error:
+            "You can't choose to work 2 sections on the same shift, choose a different section",
         });
       } else {
         // create
