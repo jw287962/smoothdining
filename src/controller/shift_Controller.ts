@@ -119,7 +119,7 @@ const shiftController = {
         shiftNumber: shiftData.shiftNumber,
         section: shiftData.section,
       });
-      if (found) {
+      if (found.length > 0) {
         res.status(403).json({
           message: "Shift Number is taken!, choose a different section",
           error: "error",
