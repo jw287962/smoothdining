@@ -8,7 +8,7 @@ const router = express.Router();
 router.use(helperFunctions.userHasStoreID);
 
 // router.get("/:dateID", shiftController.queryShiftsToday);
-router.get("/:waiterID", shiftController.queryShiftsToday);
+router.get("/", shiftController.queryShiftsToday);
 
 router.get("/:dateID", shiftController.queryShiftsDate);
 

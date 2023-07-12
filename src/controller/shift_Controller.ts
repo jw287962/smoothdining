@@ -25,7 +25,7 @@ const groupByShiftNumber = (result: shiftInterface[]) => {
 const shiftController = {
   queryShiftsToday: async (req: Request, res: Response, next: NextFunction) => {
     // const store = req.cookies.storeID;
-    const waiter = req.params.waiterID;
+    // const waiter = req.params.waiterID;
     const date = removeTimeinDate(new Date());
     try {
       // const result = await Shifts.find({ date: date, store: store });
@@ -33,7 +33,7 @@ const shiftController = {
         {
           $match: {
             date: date,
-            waiter: new ObjectId(waiter),
+            // waiter: new ObjectId(waiter),
           },
         },
         {
@@ -59,6 +59,7 @@ const shiftController = {
   queryShiftsDate: async (req: Request, res: Response, next: NextFunction) => {
     // const store = req.cookies.storeID;
     // const waiter = req.params.waiterID;
+    // maybe a param for shitNumber instead of returning all SHIFTNUMBERS?
     const dateID = req.params.dateID;
     if (!Date.parse(dateID)) {
       return res.status(400).json({
@@ -91,6 +92,7 @@ const shiftController = {
           },
         },
       ]);
+
       const dataFiltered = groupByShiftNumber(result);
       res.json({
         message: "Succesfully Queried Shifts:" + date,
