@@ -73,7 +73,7 @@ router.use((req: Request, res: Response, next: NextFunction) => {
       } else if (!user) {
         res.status(401).json({ error: "Unauthorized", message: info.message });
       } else {
-        console.log(user);
+        // console.log(user);
         req.user = user;
         next();
       }
