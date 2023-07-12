@@ -53,7 +53,7 @@ export const storecontroller = {
         // const user = req.user as UserInterface;
 
         const data = await Store.findById(new ObjectId(storeID));
-        res.setHeader("storeid", storeID);
+        res.header("storeid", storeID);
         // ;HttpOnly; Secure;
         res.json({ store: data, results: storeID });
       } catch (e) {
