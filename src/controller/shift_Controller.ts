@@ -191,7 +191,7 @@ const shiftController = {
         const result = await Shifts.create(shiftsData);
 
         res.json({
-          message: "Succesfully Created Shifts",
+          message: "Succesfully Created Shift",
           result: result,
         });
       }
