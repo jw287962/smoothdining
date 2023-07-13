@@ -116,8 +116,12 @@ const shiftController = {
     next: NextFunction
   ) => {
     const waiter = req.params.waiterID;
-    const store = req.headers.storeid;
-    const date = removeTimeinDate(new Date());
+
+    const store = req.headers.storeid as string;
+    const parseDateString = req.params.dateID;
+    const date = parseDateString
+      ? removeTimeinDate(new Date(parseDateString))
+      : removeTimeinDate(new Date());
     const shiftData = req.body;
 
     try {
@@ -126,7 +130,7 @@ const shiftController = {
           $match: {
             date: date,
             shiftNumber: shiftData.shiftNumber,
-            store: store,
+            store: new ObjectId(store),
           },
         },
         {
@@ -199,9 +203,11 @@ const shiftController = {
           result: result,
         });
       }
-    } catch (e) {
-      console.log(e);
-      res.status(400).json({ message: "Failed to Create New Shift", error: e });
+    } catch (err) {
+      console.log(err);
+      res
+        .status(400)
+        .json({ message: "Failed to Create New Shift", error: err });
     }
   },
   addNewPartyTable: async (req: Request, res: Response, next: NextFunction) => {

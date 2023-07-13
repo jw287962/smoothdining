@@ -13,7 +13,7 @@ router.get("/", shiftController.queryShiftsToday);
 router.get("/:dateID", shiftController.queryShiftsDate);
 
 router.post(
-  "/:waiterID",
+  "/:waiterID/:dateID?",
   shiftController.validation.createWaiterData,
   shiftController.createWaiterShiftData
 );

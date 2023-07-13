@@ -12,7 +12,7 @@ const shiftSchema = new Schema(
   {
     // name: { type: String },
     date: {
-      type: Date,
+      type: String,
       required: true,
     },
     section: { type: Number, required: true },
@@ -34,17 +34,16 @@ const shiftSchema = new Schema(
   }
 );
 
-shiftSchema.pre("save", async function (next) {
-  const existingShift = await this.collection.findOne({
-    date: this.date,
-    shiftNumber: this.shiftNumber,
-    section: this.section,
-  });
-  if (existingShift) {
-    const err = new Error(`${this.section} is already taken`);
-    next(err);
-  } else {
-    next();
-  }
-});
+// shiftSchema.pre("save", async function (next) {
+//   const existingShift = await this.collection.findOne({
+//     date: this.date,
+//     shiftNumber: this.shiftNumber,
+//     section: this.section,
+//   });
+//   if (existingShift) {
+//     next(new Error(`${this.section} is already taken`));
+//   } else {
+//     next();
+//   }
+// });
 export default model("Shift", shiftSchema);
