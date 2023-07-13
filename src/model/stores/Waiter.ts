@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { Schema, model, Document } from "mongoose";
-interface waiterInterface {
+export interface waiterInterface {
   name: string;
   birthdate: Date;
   preferences?: {
