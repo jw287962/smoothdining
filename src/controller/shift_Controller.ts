@@ -28,7 +28,6 @@ const shiftController = {
     const date = removeTimeinDate(new Date());
     try {
       // const result = await Shifts.find({ date: date, store: store });
-      console.log("query");
       const result = await Shifts.aggregate([
         {
           $match: {
