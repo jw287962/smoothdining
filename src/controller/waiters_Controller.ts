@@ -1,20 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { UserInterface } from "../model/User";
 import Waiter from "../model/stores/Waiter";
-import {
-  body,
-  cookie,
-  header,
-  query,
-  validationResult,
-} from "express-validator";
+
+import { body, cookie } from "express-validator";
 import { Db, ObjectId } from "mongodb";
 import {
   getStoreID,
   helperFunctions,
   parseStatusQuery,
 } from "./helper_Controller";
-import { request } from "http";
 
 // interface headerData extends Record<string, string | string[] | undefined> {
 //   storeID: string;
@@ -45,7 +38,8 @@ export const waiterController = {
       search.status = status;
     }
     try {
-      const result = await Waiter.find(search);
+      const result = await Waiter.find(search).sort({ name: 1 });
+
       res.json({ result: result });
     } catch (e) {
       res.status(400).json({
@@ -53,7 +47,7 @@ export const waiterController = {
         message:
           "failed to get all waiters. takes params or cookie header of storeID",
         controller: "getAllWaiters",
-        headers: req.headers.storeid,
+        headers: req.headers.storeid && "Exists",
       });
       console.log(headers);
     }
