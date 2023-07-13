@@ -8,4 +8,8 @@ router.get("/", function (req: Request, res: Response, next: NextFunction) {
   res.render("index", { title: "Smooth Dining API" });
 });
 
+router.get("/docs", function (req: Request, res: Response, next: NextFunction) {
+  res.render("docs", { title: "Smooth Dining API" });
+});
+
 module.exports = router;

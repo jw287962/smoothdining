@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "dev-watch": "nodemon --exec ts-node ./bin/www",
+    "dev-build": "node ./build.js",
     "start": "node .dist/bin/www.js",
     "dev": "nodemon --exec ts-node ./bin/www",
     "build": "node ./build.js",
