@@ -37,6 +37,7 @@ const shiftSchema = new Schema(
 shiftSchema.pre("save", async function (next) {
   const existingShift = await this.collection.findOne({
     date: this.date,
+    shiftNumber: this.shiftNumber,
     section: this.section,
   });
   if (existingShift) {

@@ -13,11 +13,10 @@ const groupByShiftNumber = (result: shiftInterface[]) => {
   const dataFiltered: groupShiftsType = {};
   result.forEach((waiterShift) => {
     const shiftNumber = waiterShift.shiftNumber;
-    if (dataFiltered[shiftNumber]) {
-      dataFiltered[shiftNumber].push(waiterShift);
-    } else {
+    if (!dataFiltered[shiftNumber]) {
       dataFiltered[shiftNumber] = [];
     }
+    dataFiltered[shiftNumber].push(waiterShift);
   });
 
   return dataFiltered;
@@ -83,14 +82,7 @@ const shiftController = {
             // waiter: new ObjectId(waiter),
           },
         },
-        // {
-        //   $lookup: {
-        //     from: "parties",
-        //     localField: "shiftTables",
-        //     foreignField: "_id",
-        //     as: "shiftTables",
-        //   },
-        // },
+
         {
           $lookup: {
             from: "waiters",
