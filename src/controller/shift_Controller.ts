@@ -56,21 +56,13 @@ const shiftController = {
     }
   },
   queryShiftsDate: async (req: Request, res: Response, next: NextFunction) => {
-    // const store = req.cookies.storeID;
-    // const waiter = req.params.waiterID;
-    // maybe a param for shitNumber instead of returning all SHIFTNUMBERS?
     const dateID = req.params.dateID;
     if (!Date.parse(dateID)) {
       return res.status(400).json({
         message: "Not Date Format, should be 2023-07-03T00:00:00.000Z",
       });
     }
-    // if (
-    //   new Date(dateID).setHours(0, 0, 0, 0) > new Date().setHours(0, 0, 0, 0)
-    // ) {
-    //   return res.status(400).json({ message: "Cannot query future dates" });
-    // }
-
+    // read and create shifts should be allowed to prepare for future
     const date = removeTimeinDate(new Date(dateID));
 
     try {
@@ -79,7 +71,6 @@ const shiftController = {
         {
           $match: {
             date: date,
-            // waiter: new ObjectId(waiter),
           },
         },
 
@@ -116,33 +107,27 @@ const shiftController = {
     next: NextFunction
   ) => {
     const waiter = req.params.waiterID;
-
     const store = req.headers.storeid as string;
     const parseDateString = req.params.dateID;
     const date = parseDateString
       ? removeTimeinDate(new Date(parseDateString))
       : removeTimeinDate(new Date());
+
     const shiftData = req.body;
 
     try {
       const found = await Shifts.aggregate([
         {
-          $match: {
-            date: date,
-            shiftNumber: shiftData.shiftNumber,
-            store: new ObjectId(store),
-          },
-        },
-        {
           $lookup: {
             from: "shifts",
-            let: { waiter: new ObjectId(waiter) },
+            // let: { waiters: new ObjectId(waiter) },
             pipeline: [
               {
                 $match: {
-                  $expr: {
-                    $and: [{ $eq: ["$waiter", "$$waiter"] }],
-                  },
+                  date: date,
+                  shiftNumber: shiftData.shiftNumber,
+                  store: new ObjectId(store),
+                  waiter: new ObjectId(waiter),
                 },
               },
             ],
@@ -156,9 +141,10 @@ const shiftController = {
             pipeline: [
               {
                 $match: {
-                  $expr: {
-                    $and: [{ $eq: ["$section", "$$sectionNumber"] }],
-                  },
+                  date: date,
+                  shiftNumber: shiftData.shiftNumber,
+                  store: new ObjectId(store),
+                  section: shiftData.section,
                 },
               },
             ],
@@ -172,7 +158,6 @@ const shiftController = {
           },
         },
       ]);
-      console.log(found, shiftData);
       if (found.length > 0 && found[0].sectionTaken > 0) {
         res.status(403).json({
           message: "Section Number is taken!, choose a different section",

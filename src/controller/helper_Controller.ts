@@ -100,6 +100,7 @@ export const helperFunctions = {
 
 export function removeTimeinDate(date: Date) {
   const dateFormat = format(new Date(date), "yyyy-MM-dd");
+  console.log("date", date, dateFormat);
   // console.log(new Date(dateFormat));
   return dateFormat;
 }
