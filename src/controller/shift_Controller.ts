@@ -71,7 +71,7 @@ const shiftController = {
       return res.status(400).json({ message: "Cannot query future dates" });
     }
 
-    const date = removeTimeinDate(new Date());
+    const date = removeTimeinDate(new Date(dateID));
 
     try {
       // const result = await Shifts.find({ date: date, waiter: waiter });
