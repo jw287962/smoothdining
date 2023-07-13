@@ -126,7 +126,7 @@ const shiftController = {
           $match: {
             date: date,
             shiftNumber: shiftData.shiftNumber,
-            // store: store,
+            store: store,
           },
         },
         {
@@ -148,7 +148,7 @@ const shiftController = {
         {
           $lookup: {
             from: "shifts",
-            let: { sectionNumber: shiftData.section * 1 },
+            let: { sectionNumber: shiftData.section },
             pipeline: [
               {
                 $match: {
@@ -168,7 +168,7 @@ const shiftController = {
           },
         },
       ]);
-
+      console.log(found, shiftData);
       if (found.length > 0 && found[0].sectionTaken > 0) {
         res.status(403).json({
           message: "Section Number is taken!, choose a different section",
@@ -267,7 +267,7 @@ const shiftController = {
         .isNumeric()
         .notEmpty()
         .withMessage(
-          "Section cannot be empty, Waiters must choose tonight's section"
+          "Section cannot be empty, Waiters must choose today's section"
         ),
       body("shiftNumber")
         .isNumeric()
