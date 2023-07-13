@@ -50,9 +50,9 @@ const shiftController = {
         result: dataFiltered,
       });
     } catch (e) {
-      res
-        .status(400)
-        .json({ message: "Failed to query Today's Shifts", error: e });
+      const json = { message: "Failed to query Today's Shifts", error: e };
+      console.log(json);
+      res.status(400).json(json);
     }
   },
   queryShiftsDate: async (req: Request, res: Response, next: NextFunction) => {
@@ -95,9 +95,9 @@ const shiftController = {
         result: dataFiltered,
       });
     } catch (e) {
-      res
-        .status(400)
-        .json({ message: "Failed to query Today's Shifts", error: e });
+      const json = { message: "Failed to query Today's Shifts", error: e };
+      console.log(json);
+      res.status(400).json(json);
     }
   },
 
@@ -189,10 +189,9 @@ const shiftController = {
         });
       }
     } catch (err) {
-      console.log(err);
-      res
-        .status(400)
-        .json({ message: "Failed to Create New Shift", error: err });
+      const json = { message: "Failed to Create New Shift", error: err };
+      console.log(json);
+      res.status(400).json(json);
     }
   },
   addNewPartyTable: async (req: Request, res: Response, next: NextFunction) => {
@@ -214,8 +213,10 @@ const shiftController = {
         message: "appended table to waiter ",
         result: result,
       });
-    } catch (e) {
-      res.status(400).json({ message: "Failed to add Party:" + party.partyID });
+    } catch (err) {
+      const json = { message: "Failed to add Party:" + party.partyID };
+      console.log(json);
+      res.status(400).json(json);
     }
   },
   updateWaiterShiftData: async (
@@ -245,11 +246,13 @@ const shiftController = {
         date: date,
       });
     } catch (e) {
-      res.status(400).json({
+      const json = {
         shiftData: shiftData,
         error: e,
         message: "Failed to Update Waiter Shift Data",
-      });
+      };
+      console.log(json);
+      res.status(400).json(json);
     }
   },
   validation: {
