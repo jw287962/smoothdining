@@ -177,13 +177,12 @@ const shiftController = {
         },
       ]);
 
-      console.log("found", found);
-      if (found[0].sectionTaken > 0) {
+      if (found.length > 0 && found[0].sectionTaken > 0) {
         res.status(403).json({
           message: "Section Number is taken!, choose a different section",
           error: "Section Number is taken! Choose a different section",
         });
-      } else if (found[0].samePerson > 0) {
+      } else if (found.length > 0 && found[0].samePerson > 0) {
         res.status(403).json({
           message:
             "You can't choose to work 2 sections on the same shift! Choose a different section",
@@ -209,6 +208,7 @@ const shiftController = {
         });
       }
     } catch (e) {
+      console.log(e);
       res.status(400).json({ message: "Failed to Create New Shift", error: e });
     }
   },
