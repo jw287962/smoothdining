@@ -65,11 +65,11 @@ const shiftController = {
         message: "Not Date Format, should be 2023-07-03T00:00:00.000Z",
       });
     }
-    if (
-      new Date(dateID).setHours(0, 0, 0, 0) > new Date().setHours(0, 0, 0, 0)
-    ) {
-      return res.status(400).json({ message: "Cannot query future dates" });
-    }
+    // if (
+    //   new Date(dateID).setHours(0, 0, 0, 0) > new Date().setHours(0, 0, 0, 0)
+    // ) {
+    //   return res.status(400).json({ message: "Cannot query future dates" });
+    // }
 
     const date = removeTimeinDate(new Date(dateID));
 

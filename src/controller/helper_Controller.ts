@@ -5,6 +5,7 @@ import { validationResult } from "express-validator";
 import { shiftInterface } from "../model/stores/Shifts";
 import { Types } from "mongoose";
 import { dbString } from "../app";
+import { addHours, format } from "date-fns";
 
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -98,8 +99,9 @@ export const helperFunctions = {
 };
 
 export function removeTimeinDate(date: Date) {
-  date.setHours(0, 0, 0, 0);
-  return date;
+  const dateFormat = format(new Date(date), "yyyy-MM-dd");
+  // console.log(new Date(dateFormat));
+  return dateFormat;
 }
 
 export function parseStatusQuery(query: Request["query"]): boolean | undefined {

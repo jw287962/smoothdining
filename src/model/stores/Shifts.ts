@@ -1,7 +1,7 @@
 import { Schema, model, Document } from "mongoose";
 import { Db, ObjectId } from "mongodb";
 export interface shiftInterface {
-  date: Date;
+  date: string;
   section: number;
   waiter: ObjectId;
   store: ObjectId;
