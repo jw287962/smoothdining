@@ -36,13 +36,13 @@ export const helperFunctions = {
     if (user && user.role === "Owner") {
       next();
     } else {
-      console.log("isAuthOwnerFailed");
-
-      res.status(401).json({
+      const json = {
         user: user,
         error: "Not authenticated, or non-owner role. login at: /api/login",
         login: false,
-      });
+      };
+      console.log(json);
+      res.status(401).json(json);
     }
   },
 
@@ -66,9 +66,10 @@ export const helperFunctions = {
         next();
       }
     } catch (e) {
-      console.log(" handleFOrmvalid", e);
+      const json = { error: e, message: "Form Validation Failed" };
+      console.log(json);
 
-      res.status(400).json({ error: e, message: "Form Validation Failed" });
+      res.status(400).json(json);
     }
   },
 
@@ -82,9 +83,13 @@ export const helperFunctions = {
     if (result.isEmpty()) {
       next();
     } else {
-      res
-        .status(400)
-        .json({ error: result.array(), message: "ExpressValidation Failed" });
+      const json = {
+        error: result.array(),
+        message: "ExpressValidation Failed",
+      };
+      console.log(json);
+
+      res.status(400).json(json);
     }
     // } catch (e) {
     //   res.status(400).json({ error: e, message: "expressValidationFailed" });
