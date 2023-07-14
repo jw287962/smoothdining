@@ -205,8 +205,9 @@ Support different user Roles, but will implement owner support first
 ```js
   name: { type: String },
   partySize: { type: Number, required: true },
-  phoneNumber: { type: Number, required: true },
+  phoneNumber: { type: String },
   reservationDate: { type: Date },
+  reservationDateTime: { type: Date },
   timeData: {
     checkInTime: { type: Date },
     startDining: { time: { type: Date }, isEntreeOnTable: { type: Boolean } },
