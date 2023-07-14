@@ -5,7 +5,7 @@ export interface partyInterface {
   name: string;
   partySize: number;
   phoneNumber?: string;
-  reservationDate: Date;
+  reservationDate: string;
   reservationDateTime: Date;
   timeData: {
     checkInTime?: Date;
@@ -20,7 +20,7 @@ const partySchema: Schema<partyInterface> = new Schema<partyInterface>({
   name: { type: String },
   partySize: { type: Number, required: true },
   phoneNumber: { type: String },
-  reservationDate: { type: Date },
+  reservationDate: { type: String },
   reservationDateTime: { type: Date },
   timeData: {
     checkInTime: { type: Date },
