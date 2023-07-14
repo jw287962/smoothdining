@@ -19,6 +19,8 @@ const groupByShiftNumber = (result: shiftInterface[]) => {
     dataFiltered[shiftNumber].push(waiterShift);
   });
 
+  
+
   return dataFiltered;
 };
 const shiftController = {
