@@ -57,10 +57,11 @@ export const waiterController = {
       req.cookies.storeid || req.params.storeID || req.headers.storeid;
     const waiterFormData = req.body;
     const found = await Waiter.find({
-      store: header,
-      name: waiterFormData.name,
+      $and: [
+        { store: { $eq: header } },
+        { name: { $eq: waiterFormData.name } },
+      ],
     });
-
     try {
       if (found.length > 0) {
         throw new Error("Name is taken");
@@ -76,15 +77,16 @@ export const waiterController = {
         store: header,
         isActive: true,
       });
-
       const waiter = await Waiter.create(newWaiter);
+
       res.json({
         message: "Created Waiter:" + waiter.name,
         newWaiter: newWaiter,
       });
-    } catch (e) {
+    } catch (e: any) {
+      console.log(e);
       res.json({
-        error: e,
+        error: e.message,
         message: "failed to add new Waiter with Store Data:",
         storeID: header.storeid,
         controller: "addNewWaiter",
