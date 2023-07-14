@@ -37,7 +37,7 @@ jest.mock("../../model/stores/Shifts");
 
 describe("test query Shifts controller", () => {
   it("Should return a query result", async () => {
-    const tmr = new Date(Date.now() + 86400000);
+    const tmr = new Date(Date.now());
     const req = {
       params: { dateID: tmr },
       cookies: jest.fn(request.cookies),
@@ -53,7 +53,7 @@ describe("test query Shifts controller", () => {
     await shiftController.queryShiftsDate(req, res, {} as NextFunction);
 
     expect(res.json).toHaveBeenCalledWith({
-      message: "Succesfully Queried Shifts:2023-07-14",
+      message: `Succesfully Queried Shifts:2023-07-${tmr.getDate()}`,
       result: {
         0: obj,
       },
