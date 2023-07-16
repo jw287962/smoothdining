@@ -30,7 +30,7 @@ const partySchema: Schema<partyInterface> = new Schema<partyInterface>({
   },
   status: {
     type: String,
-    enum: ["Active", "Finished", "Canceled"],
+    enum: ["Active", "Finished", "Canceled", "In-Progress"],
     default: "Active",
   },
   store: { type: Schema.Types.ObjectId, ref: "Store", required: true },

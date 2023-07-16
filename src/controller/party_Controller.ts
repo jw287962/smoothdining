@@ -244,8 +244,15 @@ const partyController = {
       helperFunctions.expressValidationMiddleware,
     ],
     validateCreatePartyData: [
-      body("name").notEmpty().escape().isString(),
-      body("partySize").notEmpty().isNumeric(),
+      body("name")
+        .notEmpty()
+        .escape()
+        .isString()
+        .withMessage("Name is required"),
+      body("partySize")
+        .notEmpty()
+        .isNumeric()
+        .withMessage("Party Size is required"),
       body("reservationDate")
         .optional()
         .matches(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)
@@ -254,7 +261,7 @@ const partyController = {
       body("status")
         .optional()
         .isIn(["Active", "Finished", "Canceled"])
-        .withMessage("Active, Finished, or Canceled Only"),
+        .withMessage("Active, Finished, Canceled, or In-Progress Only"),
       body("phoneNumber")
         .optional()
         .isMobilePhone(["en-US"], { strictMode: false }),
