@@ -2,6 +2,7 @@ import { Request, Response, NextFunction, response, json } from "express";
 import Party, { partyInterface } from "../../model/stores/Party";
 import partyController from "../party_Controller";
 import { ObjectId } from "mongodb";
+import { removeTimeinDate } from "../helper_Controller";
 
 // import { Request as request, Response as response } from "supertest";
 
@@ -11,7 +12,7 @@ const partyData: partyInterface = {
   name: "Test Party",
   partySize: 5,
   phoneNumber: "1234567890",
-  reservationDate: new Date(),
+  reservationDate: removeTimeinDate(new Date()),
   reservationDateTime: new Date(),
   timeData: {
     checkInTime: new Date(),
