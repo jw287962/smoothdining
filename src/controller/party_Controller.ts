@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import Party, { partyInterface } from "../model/stores/Party";
 import {
   dateRegex,
+  getStoreID,
   helperFunctions,
   parseStatusQuery,
   removeTimeinDate,
@@ -22,7 +23,7 @@ const partyController = {
     res: Response,
     next: NextFunction
   ) => {
-    const store = req.cookies.storeID;
+    const store = getStoreID(req);
     const allPartyToday = await Party.find({
       reservationDate: new Date().setHours(0, 0, 0, 0),
       store: store,
@@ -39,7 +40,7 @@ const partyController = {
     res: Response,
     next: NextFunction
   ) => {
-    const store = req.cookies.storeID;
+    const store = getStoreID(req);
     const dateID = new Date(req.params.dateID).setHours(0, 0, 0, 0);
 
     try {

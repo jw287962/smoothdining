@@ -53,8 +53,7 @@ export const waiterController = {
     }
   },
   addNewWaiter: async (req: RequestEdit, res: Response, next: NextFunction) => {
-    const header =
-      req.cookies.storeid || req.params.storeID || req.headers.storeid;
+    const header = getStoreID(req);
     const waiterFormData = req.body;
     const found = await Waiter.find({
       $and: [
@@ -99,8 +98,7 @@ export const waiterController = {
     res: Response,
     next: NextFunction
   ) => {
-    const header =
-      req.cookies.storeid || req.params.storeID || req.headers.storeid;
+    const header = getStoreID(req);
     if (header) {
       next();
     } else {
