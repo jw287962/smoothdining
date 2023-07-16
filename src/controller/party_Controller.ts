@@ -57,7 +57,6 @@ const partyController = {
         ],
       }).sort({ reservationDateTime: 1 });
 
-      console.log(allPartyToday);
       res.json({
         message: "query shifts of party of date:" + dateID,
         result: allPartyToday,
