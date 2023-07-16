@@ -40,6 +40,9 @@ const partyController = {
     res: Response,
     next: NextFunction
   ) => {
+    // need to make sure PARTY FETCHES BASED ON STATUS TOO... FOR NOW I WILL DEFAULT TO ACTIVE PARTIES FOR PRIMARY PURPOSE
+    // need to make sure fetch will sort by reservationDateTime
+
     const store = getStoreID(req);
     console.log(req.params);
     // const dateID = new Date(req.params.dateID).setHours(0, 0, 0, 0);
@@ -47,8 +50,12 @@ const partyController = {
 
     try {
       const allPartyToday = await Party.find({
-        $and: [{ reservationDate: { $eq: dateID } }, { store: { $eq: store } }],
-      });
+        $and: [
+          { reservationDate: { $eq: dateID } },
+          { store: { $eq: store } },
+          { status: { $eq: "Active" } },
+        ],
+      }).sort({ reservationDateTime: 1 });
 
       console.log(allPartyToday);
       res.json({
@@ -68,13 +75,14 @@ const partyController = {
     const party = req.body;
     party.reservationDateTime = party.reservationDate;
     removeTimeData(party);
-
+    // need to make sure it works for reservationDateTime
     try {
       const newParty = new Party({
         name: party.name,
         partySize: party.partySize,
         phoneNumber: party.phoneNumber,
         reservationDate: party.reservationDate,
+        reservationDateTime: party.reservationDateTime,
         timeData: {
           checkInTime: party.checkInTime,
           startDining: {
