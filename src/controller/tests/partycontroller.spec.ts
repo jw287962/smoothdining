@@ -28,7 +28,8 @@ const partyData: partyInterface = {
 };
 const req = {
   body: { party: partyData },
-  cookies: { storeID: new ObjectId("649e74a70ade9c43e91ae591") },
+  cookies: { storeid: new ObjectId("649e74a70ade9c43e91ae591") },
+  headers: { storeid: new ObjectId("649e74a70ade9c43e91ae591") },
 } as unknown as Request;
 
 describe("createNewParty", () => {
