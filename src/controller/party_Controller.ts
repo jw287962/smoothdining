@@ -248,7 +248,6 @@ const partyController = {
       body("phoneNumber")
         .optional()
         .isMobilePhone(["en-US"], { strictMode: false }),
-      cookie("storeID").escape().notEmpty(),
       helperFunctions.expressValidationMiddleware,
     ],
     validatePartyTimeData: [
