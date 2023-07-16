@@ -94,6 +94,7 @@ PUT :pencil2: : Update Party Details
 - **URL:** '/api/account/store/:partyID'
 - **Method:** POST
 - **Response:** Success/Failure
+- **Request Body:** checkInTime, startDiningTime, isEntreeOnTable
 
 ### Waiter Handling
 

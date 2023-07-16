@@ -72,8 +72,8 @@ const partyController = {
   },
   createNewParty: async (req: Request, res: Response, next: NextFunction) => {
     const party = req.body;
-    party.reservationDateTime = party.reservationDate;
-    removeTimeData(party);
+    // party.reservationDateTime = party.reservationDate;
+    // removeTimeData(party.reservationDate);
     // need to make sure it works for reservationDateTime
     try {
       const newParty = new Party({
@@ -131,24 +131,24 @@ const partyController = {
 
   setPartyTimeData: async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.partyID;
-    // const timeData = {
-    //   checkInTime: req.body.checkInTime,
-    //   startDining: {
-    //     time: req.body.startDining,
-    //     isEntreeOnTable: req.body.isEntreeOnTable,
-    //   },
-    //   finishedTime: req.body.finishedTime,
-    //   waitingTime: req.body.waitingTime,
-    // };
-    const timeData = req.body;
+    const timeData = {
+      checkInTime: req.body.checkInTime || undefined,
+      startDining: {
+        time: req.body.startDiningTime || undefined,
+        isEntreeOnTable: req.body.isEntreeOnTable || undefined,
+      },
+      finishedTime: req.body.finishedTime || undefined,
+      waitingTime: req.body.waitingTime || undefined,
+    };
+    // const timeData = req.body;
     try {
-      const timeDataFilter = Object.fromEntries(
-        Object.entries(timeData).filter(
-          ([key, value]) => value != undefined && value != null
-        )
-      );
+      // const timeDataFilter = Object.fromEntries(
+      //   Object.entries(timeData).filter(
+      //     ([key, value]) => value != undefined && value != null
+      //   )
+      // );
 
-      const result = Party.updateOne({ _id: id }, { $set: timeDataFilter });
+      const result = Party.updateOne({ _id: id }, { $set: timeData });
       res.json({ result: result, message: "Party Time Updated Successfully" });
     } catch (e) {
       res.status(400).json({ message: "Failed to Update Party Time Data" });
@@ -248,9 +248,9 @@ const partyController = {
       body("partySize").notEmpty().isNumeric(),
       body("reservationDate")
         .optional()
-        .matches(dateRegex)
-        .withMessage("format: new Date() objects | YYYY-MM-DDTHH:mm:ss.SSSZ"),
-      body("checkInTime").optional().matches(dateRegex),
+        .matches(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)
+        .withMessage("format: | YYYY-MM-DD"),
+      body("reservationDateTime").optional().matches(dateRegex),
       body("status")
         .optional()
         .isIn(["Active", "Finished", "Canceled"])
@@ -262,7 +262,7 @@ const partyController = {
     ],
     validatePartyTimeData: [
       body("checkInTime").matches(dateRegex).optional(),
-      body("time")
+      body("startDiningTime")
         .matches(dateRegex)
         .optional()
         .withMessage("for startDining Time: Must be of type Data"),
