@@ -33,7 +33,7 @@ const partySchema: Schema<partyInterface> = new Schema<partyInterface>({
     enum: ["Active", "Finished", "Canceled"],
     default: "Active",
   },
-  store: { type: Schema.Types.ObjectId, ref: "Store" },
+  store: { type: Schema.Types.ObjectId, ref: "Store", required: true },
   // finished: { type: Boolean },
 });
 partySchema.pre("save", function (next) {

@@ -41,14 +41,16 @@ const partyController = {
     next: NextFunction
   ) => {
     const store = getStoreID(req);
-    const dateID = new Date(req.params.dateID).setHours(0, 0, 0, 0);
+    console.log(req.params);
+    // const dateID = new Date(req.params.dateID).setHours(0, 0, 0, 0);
+    const dateID = req.params.dateID;
 
     try {
       const allPartyToday = await Party.find({
-        reservationDate: dateID,
-        store: store,
+        $and: [{ reservationDate: { $eq: dateID } }, { store: { $eq: store } }],
       });
 
+      console.log(allPartyToday);
       res.json({
         message: "query shifts of party of date:" + dateID,
         result: allPartyToday,
@@ -83,7 +85,7 @@ const partyController = {
           waitingTime: null,
         },
         status: "Active",
-        store: req.cookies.storeID,
+        store: getStoreID(req),
       });
 
       const result = await Party.create(newParty);
@@ -194,8 +196,8 @@ const partyController = {
     res: Response,
     next: NextFunction
   ) => {
-    const store = req.cookies.storeID;
-    const status = req.body.status;
+    const store = getStoreID(req);
+    // const status = req.body.status;
     const party = req.body;
 
     try {
@@ -215,7 +217,7 @@ const partyController = {
           // waitingTime: null,
         },
         status: "Active",
-        store: req.cookies.storeID,
+        store: store,
       };
 
       const result = await Party.create(newParty);
