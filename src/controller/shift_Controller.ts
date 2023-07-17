@@ -197,9 +197,14 @@ const shiftController = {
   addNewPartyTable: async (req: Request, res: Response, next: NextFunction) => {
     const waiterID = req.params.waiterID;
     const shiftNumber = req.params.shiftNumber;
-    const party = req.body;
+    const body = req.body;
 
     const date = removeTimeinDate(new Date());
+    const pushNew = [];
+    for (let i = 0; i < Math.ceil(body.partySize / 4) % 4; i++) {
+      pushNew.push(new ObjectId(body.partyID));
+    }
+
     try {
       const result = await Shifts.updateOne(
         {
@@ -207,14 +212,14 @@ const shiftController = {
           date: date,
           shiftNumber: shiftNumber,
         },
-        { $push: { shiftTables: new ObjectId(party) } }
+        { $push: { shiftTables: pushNew } }
       );
       res.json({
         message: "appended table to waiter ",
         result: result,
       });
     } catch (err) {
-      const json = { message: "Failed to add Party:" + party.partyID };
+      const json = { message: "Failed to add Party:" + body.partyID };
       console.log(json);
       res.status(400).json(json);
     }
