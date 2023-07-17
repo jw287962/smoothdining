@@ -8,16 +8,30 @@ import {
 } from "./helper_Controller";
 import { body } from "express-validator";
 import { ObjectId } from "mongodb";
+import { partyInterface } from "../model/stores/Party";
 
 const groupByShiftNumber = (result: shiftInterface[]) => {
   const dataFiltered: groupShiftsType = {};
   result.forEach((waiterShift) => {
+    const updatewaiterPartyData: partyInterface[] = [];
+
+    (waiterShift.shiftTables as unknown as partyInterface[]).forEach((ele) => {
+      const times = Math.ceil(ele.partySize / 4);
+
+      for (let i = 0; i < times; i++) {
+        updatewaiterPartyData.push(ele);
+      }
+    });
+    (waiterShift.shiftTables as unknown as partyInterface[]) = [
+      ...updatewaiterPartyData,
+    ];
     const shiftNumber = waiterShift.shiftNumber;
     if (!dataFiltered[shiftNumber]) {
       dataFiltered[shiftNumber] = [];
     }
     dataFiltered[shiftNumber].push(waiterShift);
   });
+  console.log(dataFiltered);
 
   return dataFiltered;
 };
@@ -73,6 +87,11 @@ const shiftController = {
             date: date,
           },
         },
+        {
+          $sort: {
+            section: 1,
+          },
+        },
 
         {
           $lookup: {
@@ -83,8 +102,11 @@ const shiftController = {
           },
         },
         {
-          $sort: {
-            section: 1,
+          $lookup: {
+            from: "parties",
+            localField: "shiftTables",
+            foreignField: "_id",
+            as: "shiftTables",
           },
         },
       ]);
@@ -195,24 +217,27 @@ const shiftController = {
     }
   },
   addNewPartyTable: async (req: Request, res: Response, next: NextFunction) => {
-    const waiterID = req.params.waiterID;
-    const shiftNumber = req.params.shiftNumber;
+    // const waiterID = req.params.waiterID;
+    // const shiftNumber = req.params.shiftNumber;
+    // const date = removeTimeinDate(new Date());
     const body = req.body;
 
-    const date = removeTimeinDate(new Date());
-    const pushNew = [];
-    for (let i = 0; i < Math.ceil(body.partySize / 4) % 4; i++) {
-      pushNew.push(new ObjectId(body.partyID));
-    }
+    // ALSO NEED TO UPDATE STATUS OF PARTY DETAILS TO IN-PROGRESS
 
+    // const pushNew = [];
+    // for (let i = 0; i < Math.ceil(body.partySize / 4); i++) {
+    //   pushNew.push(new ObjectId(body.partyID));
+    // }
+    // console.log(body, pushNew);
     try {
       const result = await Shifts.updateOne(
         {
-          _id: waiterID,
-          date: date,
-          shiftNumber: shiftNumber,
+          _id: body.shiftID,
+          // _id: waiterID,
+          // date: date,
+          // shiftNumber: shiftNumber,
         },
-        { $push: { shiftTables: pushNew } }
+        { $addToSet: { shiftTables: new ObjectId(body.partyID) } }
       );
       res.json({
         message: "appended table to waiter ",
@@ -278,7 +303,16 @@ const shiftController = {
     ],
 
     addPartyTableID: [
-      body("party").notEmpty().isString().escape(),
+      body("shiftID")
+        .notEmpty()
+        .withMessage("ShiftID is required")
+        .isString()
+        .escape(),
+      body("partyID")
+        .notEmpty()
+        .withMessage("partyID is required")
+        .isString()
+        .escape(),
       helperFunctions.expressValidationMiddleware,
     ],
     updateWaiterData: [

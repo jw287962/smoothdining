@@ -25,7 +25,8 @@ router.put(
 );
 
 router.put(
-  "/party/:waiterID/:shiftNumber",
+  // "/party/:waiterID/:shiftNumber",
+  "/party",
   shiftController.validation.addPartyTableID,
   shiftController.addNewPartyTable
 );
