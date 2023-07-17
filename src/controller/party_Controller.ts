@@ -246,13 +246,13 @@ const partyController = {
     validateCreatePartyData: [
       body("name")
         .notEmpty()
+        .withMessage("Name is required")
         .escape()
-        .isString()
-        .withMessage("Name is required"),
+        .isString(),
       body("partySize")
         .notEmpty()
-        .isNumeric()
-        .withMessage("Party Size is required"),
+        .withMessage("Party Size is required")
+        .isNumeric(),
       body("reservationDate")
         .optional()
         .matches(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)

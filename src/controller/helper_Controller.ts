@@ -79,13 +79,13 @@ export const helperFunctions = {
     next: NextFunction
   ) => {
     // try {
-    const result = validationResult(req);
-    if (result.isEmpty()) {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
       next();
     } else {
       const json = {
-        error: result.array(),
-        message: "ExpressValidation Failed",
+        error: errors.array(),
+        message: "Form Validation Failed",
       };
       console.log(json);
 
@@ -127,4 +127,3 @@ export const dateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 export function getStoreID(req: Request) {
   return req.cookies.storeid || req.params.storeID || req.headers.storeid;
 }
-
