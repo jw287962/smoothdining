@@ -8,7 +8,7 @@ import {
 } from "./helper_Controller";
 import { body } from "express-validator";
 import { ObjectId } from "mongodb";
-import { partyInterface } from "../model/stores/Party";
+import Party, { partyInterface } from "../model/stores/Party";
 
 const groupByShiftNumber = (result: shiftInterface[]) => {
   const dataFiltered: groupShiftsType = {};
@@ -106,6 +106,14 @@ const shiftController = {
             from: "parties",
             localField: "shiftTables",
             foreignField: "_id",
+            pipeline: [
+              {
+                $sort: {
+                  time: 1,
+                },
+              },
+            ],
+
             as: "shiftTables",
           },
         },
@@ -239,9 +247,22 @@ const shiftController = {
         },
         { $addToSet: { shiftTables: new ObjectId(body.partyID) } }
       );
+
+      const partyResult = await Party.updateOne(
+        {
+          _id: body.partyID,
+        },
+        {
+          $set: {
+            dineInTime: new Date(), // Set the dine-in time to the current date/time
+            status: "In-Progress", // Set the status to "inprogress"
+          },
+        }
+      );
       res.json({
         message: "appended table to waiter ",
         result: result,
+        updatd_party: partyResult,
       });
     } catch (err) {
       const json = { message: "Failed to add Party:" + body.partyID };
