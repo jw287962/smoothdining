@@ -155,7 +155,7 @@ const partyController = {
     }
   },
   setPartyStatus: async (req: Request, res: Response, next: NextFunction) => {
-    const store = req.cookies.storeID;
+    const store = getStoreID(req);
     const id = req.params.partyID;
     const status = req.body.status;
 

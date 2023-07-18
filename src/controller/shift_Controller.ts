@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import Shifts, { shiftInterface } from "../model/stores/Shifts";
 import {
   dateRegex,
+  getStoreID,
   groupShiftsType,
   helperFunctions,
   removeTimeinDate,
@@ -137,8 +138,8 @@ const shiftController = {
     next: NextFunction
   ) => {
     const waiter = req.params.waiterID;
-    const store = req.headers.storeid as string;
     const parseDateString = req.params.dateID;
+    const store = getStoreID(req);
     const date = parseDateString
       ? removeTimeinDate(new Date(parseDateString))
       : removeTimeinDate(new Date());
