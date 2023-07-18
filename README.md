@@ -141,15 +141,15 @@ Put :pencil2: : UPDATE Shift data with new party Tables
 - **Method:** POST
 - **Request:** req.body { shiftID, partyID, partySize}
 
-  - NOTES: I will implement #3 .
-    1.  Shifttables will hold only 1 instance of the id to match the partyID. and the front end will be required to correctly modify the array where every 4 people will count as an additional table in the array.
-        Pros: This will make it easier to update the party Data, and allow for flexible recreation on the frontend don loadtime
+  - NOTES: I will implement C .
+    1.  shiftTables will hold only 1 instance of the partyID reference. The front end will be required to correctly modify the array where, for example, every 4 people will count as an additional table in the array
+        Pros: This will make it easier to update the Party collection Data, and allow for flexibility by recreating the correct data at loadtime
         Con: Front-end will have to logically create it
-    2.  If I add multiple instances of the partyID in the shiftTables to represent bigger party/guest groups... it will be harder to manipulate the array.
+    2.  OR If I add multiple instances of the partyID reference in the shiftTables to represent bigger party/guest groups, so the frontend doesn't have to worry about it. But, it will be harder to manipulate the party collection data and reflect it correctly in the shiftTables
         IE: If I update the party from 9 people to 7 people.
-        I would have to identify and delete the old data/ and re add it in with the updated sizeTable.
+        I would have to identify and delete the old data/ and re add it into the shiftTables with the correct # of instances.
         PRO: front-end only needs to display data.
-    3.  Combine the two together. Do #2, but rearrange the array before sending it to the host. 
+    3.  Combine the two together. Mongodb will only store a single instance (IE: Do B first) , then rearrange the array before sending it to the host within express, so the front-end won't have to worry about how to configure the logic
 
 - **Response:** Success/Failure error
 
