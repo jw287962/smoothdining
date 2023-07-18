@@ -12,6 +12,8 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 export const helperFunctions = {
   userHasStoreID: (req: Request, res: Response, next: NextFunction) => {
     const storeID: string = getStoreID(req);
+    // console.log("check storeid", storeID);
+
     const checkStoreID = (value: Types.ObjectId) => {
       return value.equals(storeID);
     };

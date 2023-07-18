@@ -32,7 +32,7 @@ const groupByShiftNumber = (result: shiftInterface[]) => {
     }
     dataFiltered[shiftNumber].push(waiterShift);
   });
-  console.log(dataFiltered);
+  // console.log(dataFiltered);
 
   return dataFiltered;
 };

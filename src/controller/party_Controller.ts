@@ -44,7 +44,7 @@ const partyController = {
     // need to make sure fetch will sort by reservationDateTime
 
     const store = getStoreID(req);
-    console.log(req.params);
+    // console.log(req.params);
     // const dateID = new Date(req.params.dateID).setHours(0, 0, 0, 0);
     const dateID = req.params.dateID;
 
@@ -204,7 +204,6 @@ const partyController = {
     next: NextFunction
   ) => {
     const store = getStoreID(req);
-    // const status = req.body.status;
     const party = req.body;
 
     try {
@@ -234,13 +233,17 @@ const partyController = {
       res.status(400).json({
         error: e,
         message: "Failed to create Generic Party",
+        store: store,
         input: req.body,
       });
     }
   },
   validation: {
     genericPartyData: [
-      body("partySize").isNumeric().notEmpty(),
+      body("partySize")
+        .isNumeric()
+        .notEmpty()
+        .withMessage("partySize cannot be empty"),
       helperFunctions.expressValidationMiddleware,
     ],
     validateCreatePartyData: [
