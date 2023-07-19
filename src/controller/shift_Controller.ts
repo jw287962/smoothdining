@@ -23,6 +23,7 @@ const groupByShiftNumber = (result: shiftInterface[]) => {
         updatewaiterPartyData.push(ele);
       }
     });
+
     (waiterShift.shiftTables as unknown as partyInterface[]) = [
       ...updatewaiterPartyData,
     ];
