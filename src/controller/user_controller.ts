@@ -38,14 +38,19 @@ export const userController = {
           // Handle user not found
           res.status(404).json({ error: "User not found" });
         }
-        const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
+        const token = jwt.sign({ user: user._id }, process.env.SECRET, {
           expiresIn: "24h", // Set the token expiration time as needed
         });
-        res.header("x-access-token", token);
-        res.json({
-          message: "Login Successfully! Welcome!",
-          userID: user.google?.name,
-        });
+        // res.header("x-access-token", token);
+        var responseHTML =
+          '<html><head><title>Main</title></head><body></body><script>res = %value%; window.opener.postMessage(res, "*");window.close();</script></html>';
+        responseHTML = responseHTML.replace(
+          "%value%",
+          JSON.stringify({
+            token,
+          })
+        );
+        res.status(200).send(responseHTML);
       }
     )(req, res, next);
   },

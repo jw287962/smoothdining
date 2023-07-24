@@ -26,8 +26,9 @@ passport.use(
       clientID: process.env.CLIENT_ID,
       scope: ["profile", "email"],
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL:
-        "https://smoothdining.azurewebsites.net/api/login/oauth/callback",
+      callbackURL: 
+      "http://localhost:3000/api/login/oauth/callback",
+      // "https://smoothdining.azurewebsites.net/api/login/oauth/callback",
     },
     async function (
       accessToken: any,

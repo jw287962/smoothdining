@@ -83,6 +83,8 @@ router.use((req: Request, res: Response, next: NextFunction) => {
     "jwt",
     { session: false },
     (err: Error, user: UserInterface, info: any) => {
+      // console.log("user", user);
+
       if (err) {
         console.log("err", err);
         next(err);
