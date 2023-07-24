@@ -25,7 +25,7 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const apiRouter = require("./routes/api");
 
-const dotenv = require("dotenv").config();
+require("dotenv").config();
 
 const app: Express = express();
 
