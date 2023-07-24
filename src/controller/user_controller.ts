@@ -17,12 +17,12 @@ export const userController = {
   //   res.json({ message: "OauthLogin" });
   // },
   oauthCallback: (req: RequestSession, res: Response, next: NextFunction) => {
-    const clientRootUrl = `${req.protocol}://${req.get("host")}`;
+    // const clientRootUrl = `${req.protocol}://${req.get("host")}`;
     // const clientRootUrl = req.get("referrer");
-    console.log("client", clientRootUrl);
+    // console.log("client", clientRootUrl);
     passport.authenticate(
       "google",
-      { successRedirect: clientRootUrl },
+      // { successRedirect: clientRootUrl },
       (err: Error, user: UserInterface) => {
         console.log("passport authenticate");
         if (err) {
