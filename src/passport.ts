@@ -1,11 +1,7 @@
-import passport, { DoneCallback } from "passport";
-import passportLocal, {
-  IStrategyOptions,
-  IStrategyOptionsWithRequest,
-} from "passport-local";
+import passport from "passport";
+import passportLocal from "passport-local";
 
 import User, { UserInterface } from "./model/User";
-import { JwkKeyExportOptions } from "crypto";
 const crypto = require("crypto");
 // const jwt = require("jsonwebtoken");
 
@@ -13,10 +9,63 @@ const LocalStrategy = passportLocal.Strategy;
 
 type VerifyCallback = passportLocal.VerifyFunction;
 
-var JwtStrategy = require("passport-jwt").Strategy,
+// JWT
+const JwtStrategy = require("passport-jwt").Strategy,
   ExtractJwt = require("passport-jwt").ExtractJwt;
-const dotenv = require("dotenv").config();
-// console.log("emtpy");
+require("dotenv").config();
+
+//Oauth
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+
+passport.use(
+  "google",
+  new GoogleStrategy(
+    {
+      // authorizationURL: "https://accounts.google.com/o/oauth2/v2/auth",
+      // tokenURL: "https://accounts.google.com/o/oauth2/token",
+      clientID: process.env.CLIENT_ID,
+      scope: ["profile", "email"],
+      clientSecret: process.env.CLIENT_SECRET,
+      callbackURL: "http://localhost:3000/api/login/oauth/callback",
+    },
+    async function (
+      accessToken: any,
+      refreshToken: any,
+      profile: any,
+      done: any
+    ) {
+      // console.log("googleprovider", accessToken, refreshToken, profile.id);
+      try {
+        const user = await User.findOne({ "google.id": profile.id });
+
+        if (user) {
+          done(null, user);
+        } else if (profile?.id === undefined) {
+          console.log(profile, "empty");
+          throw new Error("No Profile Data from Oauth Provider");
+        } else {
+          const userData = {
+            signUpDate: new Date(),
+            google: {
+              id: profile.id,
+              name: profile.displayName,
+              email: profile.email,
+            },
+          };
+
+          const newUser = await User.create(userData);
+          done(null, newUser);
+        }
+      } catch (e) {
+        console.log("failed to create new user and did not find user data", e);
+        done(null, false);
+      }
+    }
+  )
+);
+
+// JWT
+
 var opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.SECRET,

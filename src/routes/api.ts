@@ -22,7 +22,24 @@ import { UserInterface } from "../model/User";
 const express = require("express");
 const router = express.Router();
 
-// router.use(passport.session());
+router.get(
+  "/login/oauth",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+router.get(
+  "/login/oauth/callback",
+
+  userController.oauthCallback
+);
+
+// { scope: ["email", "profile"] }
+
+// router.get(
+//   "/login/oauth/token",
+//   passport.authenticate("provider", { scope: ["email", "profile"] }),
+//   userController.oauthCallback
+// );
 /* GET home page. */
 
 router.get("/", function (req: Request, res: Response, next: NextFunction) {
@@ -55,7 +72,6 @@ router.post(
   },
   userController.userLogin
 );
-
 router.post(
   "/register",
   validate(registerValidation, {}, {}),
@@ -80,6 +96,7 @@ router.use((req: Request, res: Response, next: NextFunction) => {
     }
   )(req, res, next);
 });
+
 router.use(helperFunctions.handleFormValidationError);
 
 router.get("/logout", userController.userSignout);

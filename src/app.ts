@@ -34,6 +34,7 @@ const allowedOrigins = [
   "https://jw287962.github.io",
   "https://smoothdining.netlify.app",
   "http://localhost:4200",
+  "http://localhost:3000",
 ];
 const corsOptions = {
   origin: (origin: string, callback: any) => {

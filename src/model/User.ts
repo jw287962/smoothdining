@@ -1,11 +1,16 @@
 import { Schema, model, Document } from "mongoose";
+
+interface emailInterface {
+  value: string;
+  type: string;
+}
 export interface UserInterface {
   signUpDate: Date;
   // title: { type: String },
   google?: {
     id?: string;
     name?: string;
-    email?: string;
+    email?: emailInterface[];
   };
   username: string;
   salt: string;
@@ -20,11 +25,11 @@ const userSchema: Schema<UserInterface> = new Schema<UserInterface>({
   google: {
     id: { type: String },
     name: { type: String },
-    email: { type: String },
+    email: [{ value: { type: String }, type: { type: String } }],
   },
-  username: { type: String, required: true },
-  salt: { type: String, required: true },
-  hash: { type: String, required: true },
+  username: { type: String },
+  salt: { type: String },
+  hash: { type: String },
   store: [{ type: Schema.Types.ObjectId, ref: "Store" }],
   role: {
     type: String,
